@@ -13,6 +13,7 @@ Para executar este projeto existem alguns pré-requisitos:
   </ol>
   <br>
   <b>ADICIONAR MUDANÇA NO PROJECT.PROPERTIES, PARA CREDENCIAIS DE ACESSO AO BANCO<b>
+  <br>
   <li>Após configurados Java e Maven, em um terminal utilizar o seguinte comando: mvn compile exec:java</li>
   <li>Pronto! O projeto já está executando.</li>
 </ol>
