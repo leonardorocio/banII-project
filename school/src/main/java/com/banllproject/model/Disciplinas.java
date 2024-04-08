@@ -24,6 +24,12 @@ public class Disciplinas {
         this.nome = nome;
         this.cargaHoraria = cargaHoraria;
     }
+
+    public Disciplinas(String nome, int cargaHoraria, int idCursoDaDisciplina) {
+        this.nome = nome;
+        this.cargaHoraria = cargaHoraria;
+        this.idCursoDaDisciplina = idCursoDaDisciplina;
+    }
     
     public Disciplinas(int idDisciplina, String nome, int cargaHoraria) {
         this(nome, cargaHoraria);
@@ -75,6 +81,15 @@ public class Disciplinas {
         );
     }
 
+    private static void createManyToManyRelation(Disciplinas disciplina) throws SQLException {
+        String sql = "INSERT INTO cursos_disciplinas (id_disciplina, id_curso) VALUES (?, ?)";
+        PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+        preparedStatement.setInt(1, disciplina.getIdDisciplina());
+        preparedStatement.setInt(2, disciplina.getIdCursoDaDisciplina());
+        preparedStatement.execute();
+        preparedStatement.close();
+    }
+
     public static void create(Disciplinas disciplina) throws SQLException {
         String sql = "INSERT INTO disciplinas (nome) VALUES (?, ?)";
         PreparedStatement preparedStatement = conexao.prepareStatement(sql);
@@ -82,6 +97,8 @@ public class Disciplinas {
         preparedStatement.setInt(2, disciplina.getCargaHoraria());
         preparedStatement.execute();
         preparedStatement.close();
+        
+        Disciplinas.createManyToManyRelation(disciplina);
     }
 
     public static void update(List<String> updatedFields, Disciplinas disciplina) throws SQLException {
@@ -112,9 +129,9 @@ public class Disciplinas {
         String sql = "SELECT * FROM disciplinas";
         Statement statement = conexao.createStatement();
         ResultSet resultList = statement.executeQuery(sql);
-        List<Disciplinas> Disciplinas = new ArrayList<>();
+        List<Disciplinas> disciplinas = new ArrayList<>();
         while (resultList.next()) {
-            Disciplinas.add(
+            disciplinas.add(
                 new Disciplinas(
                     resultList.getInt("id_disciplina"),
                     resultList.getString("nome"),
@@ -122,7 +139,7 @@ public class Disciplinas {
                 )
             );
         }
-        return Disciplinas;
+        return disciplinas;
     }
 
 }
