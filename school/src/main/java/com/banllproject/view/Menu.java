@@ -1,6 +1,10 @@
 package com.banllproject.view;
 
+import java.sql.SQLException;
 import java.util.Scanner;
+
+import com.banllproject.controller.Controller;
+import com.banllproject.controller.CursosController;
 
 public class Menu {
 
@@ -9,6 +13,23 @@ public class Menu {
     public static int buscaOpcaoInteira() {
         System.out.println("Escolha sua opção: ");
         return Menu.scanner.nextInt();
+    }
+
+    public static int buscaOpcaoInteira(String msg) {
+        System.out.println(msg);
+        return Menu.scanner.nextInt();
+    }
+
+    public static String buscaDadoString() {
+        System.out.println("Digite sua opção: ");
+        Menu.scanner.next();
+        return Menu.scanner.nextLine();
+    }
+
+    public static String buscaDadoString(String msg) {
+        System.out.println(msg);
+        Menu.scanner.next();
+        return Menu.scanner.nextLine();
     }
 
     public static void criaMenu() {
@@ -49,25 +70,25 @@ public class Menu {
             option = Menu.buscaOpcaoInteira();
             switch (option) {
                 case 1:
-                    System.out.println("Mostra crud cursos");
+                    Menu.menuEntidade(new CursosController());
                     break;
                 case 2:
-                    System.out.println("Mostra crud disciplinas");
+                    Menu.menuEntidade(new CursosController());
                     break;
                 case 3:
-                    System.out.println("Mostra crud turmas");
+                    Menu.menuEntidade(new CursosController());
                     break;
                 case 4:
-                    System.out.println("Mostra crud alunos");
+                    Menu.menuEntidade(new CursosController());
                     break;
                 case 5:
-                    System.out.println("Mostra crud professores");
+                    Menu.menuEntidade(new CursosController());
                     break;
                 case 6:
-                    System.out.println("Mostra crud atividades avaliativas");
+                    Menu.menuEntidade(new CursosController());
                     break;
                 case 7:
-                    System.out.println("Mostra crud departamentos");
+                    Menu.menuEntidade(new CursosController());
                     break;
                 case 8:
                     break;
@@ -132,6 +153,39 @@ public class Menu {
                     break;
             }
         } while (option != 4);
+    }
+
+    public static void menuEntidade(Controller controller) {
+        int option;
+        do {
+            System.out.println("Escolha uma das ações nesta entidade:");
+            System.out.println(
+                    "1 - Criar registro\n2 - Editar registro\n3 - Consultar um registro\n4 - Listar todos os registros\n5 - Apagar um registro\n6 - Sair");
+            option = Menu.buscaOpcaoInteira();
+            try {
+                switch (option) {
+                    case 1:
+                        controller.create();
+                        break;
+                    case 2:
+                        controller.update();
+                        break;
+                    case 3:
+                        controller.getById();
+                        break;
+                    case 4:
+                        controller.getAll();
+                        break;
+                    case 5:
+                        controller.delete();
+                        break;
+                    case 6:
+                        break;
+                }
+            } catch (SQLException e) {
+                System.out.println("Erro: " + e.getMessage());
+            }
+        } while (option != 6);
     }
 
 }

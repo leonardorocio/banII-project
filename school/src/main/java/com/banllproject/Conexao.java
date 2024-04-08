@@ -33,12 +33,17 @@ public class Conexao {
         return connection;
     }
 
-    public static Conexao getInstance() throws SQLException {
-        if (instance == null || instance.getConnection().isClosed()) {
-            instance = new Conexao();
-            instance.getConexao();
+    public static Conexao getInstance() {
+        try {
+            if (instance == null || instance.getConnection().isClosed()) {
+                instance = new Conexao();
+                instance.getConexao();
+            }
+            return instance;
+        } catch (SQLException e) {
+            System.out.println("Erro de SQL: " + e.getMessage());
+            return null;
         }
-        return instance;
     }
 	
 	private static Properties getProperties() throws IOException {
