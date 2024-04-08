@@ -27,7 +27,8 @@ public class DisciplinasController implements Controller {
     public void create() throws SQLException {
         Disciplinas novaDisciplina = new Disciplinas(
             Menu.buscaDadoString("Digite o nome da disciplina: "),
-            Menu.buscaOpcaoInteira("Digite a carga horária da disciplina: ")
+            Menu.buscaOpcaoInteira("Digite a carga horária da disciplina: "),
+            Menu.buscaOpcaoInteira("Digite o curso que será inserida a disciplina: ")
         );
         Disciplinas.create(novaDisciplina);
         System.out.println("Disciplina criada com sucesso!");
