@@ -26,7 +26,8 @@ public class AtividadesController extends Controller {
                 Menu.buscaDadoString("Digite o tipo da nova atividade: "),
                 Menu.buscaDadoString("Digite a descrição da nova atividade: "),
                 convertStringToSQLDate(Menu.buscaDadoString("Digite a data de entrega da nova atividade: ")),
-                Menu.buscaOpcaoInteira("Digite o id do professor que aplicou a atividade: "));
+                Menu.buscaOpcaoInteira("Digite o id do professor que aplicou a atividade: "),
+                Menu.buscaOpcaoInteira("Digite o id da turma a qual foi aplicada a atividade: "));
         Atividades.create(novaAtividade);
         System.out.println("Atividade criada com sucesso!");
     }
@@ -36,9 +37,9 @@ public class AtividadesController extends Controller {
         int idAtividade = Menu.buscaOpcaoInteira("Digite o id da atividade: ");
         Atividades atividadeAtualizada = new Atividades(
                 idAtividade,
-                Menu.buscaDadoString("Digite o tipo da nova atividade: "),
-                Menu.buscaDadoString("Digite a descrição da nova atividade: "),
-                convertStringToSQLDate(Menu.buscaDadoString("Digite a data de entrega da nova atividade: ")));
+                Menu.buscaDadoString("Digite o tipo da atividade (Digite . para manter o atual): "),
+                Menu.buscaDadoString("Digite a descrição da atividade (Digite . para manter o atual): "),
+                convertStringToSQLDate(Menu.buscaDadoString("Digite a data de entrega da atividade (Digite . para manter o atual): ")));
 
         List<String> updatedFieldNames = new ArrayList<>();
 

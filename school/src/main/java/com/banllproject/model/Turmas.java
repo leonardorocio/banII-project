@@ -23,6 +23,9 @@ public class Turmas {
     // N:N
     private int idProfessorDaTurma;
 
+    public Turmas() {
+    }
+
     public Turmas(int idTurma, String anoSemestre, String localAula) {
         this.idTurma = idTurma;
         this.anoSemestre = anoSemestre;

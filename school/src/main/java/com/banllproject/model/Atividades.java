@@ -21,6 +21,8 @@ public class Atividades {
     private Date dtEntrega;
     private int fkProfessores;
     private Professores fkProfessoresObject;
+    private int fkTurma;
+    private Turmas fkTurmasObject;
 
     // N:N
     private int idAlunoAtividade;
@@ -32,7 +34,7 @@ public class Atividades {
         this.dtEntrega = dtEntrega;
     }
 
-    public Atividades(String tipoAtividade, String descricaoAtividade, Date dtEntrega, int fkProfessores) {
+    public Atividades(String tipoAtividade, String descricaoAtividade, Date dtEntrega, int fkProfessores, int fkTurma) {
         this.tipoAtividade = tipoAtividade;
         this.descricaoAtividade = descricaoAtividade;
         this.dtEntrega = dtEntrega;
@@ -40,7 +42,7 @@ public class Atividades {
     }
 
     public Atividades(int idAtividade, String tipoAtividade, String descricaoAtividade, Date dtEntrega,
-            int fkProfessores, Professores fkProfessoresObject) {
+            int fkProfessores, Professores fkProfessoresObject, int fkTurma, Turmas fkTurmasObject) {
         this.idAtividade = idAtividade;
         this.tipoAtividade = tipoAtividade;
         this.descricaoAtividade = descricaoAtividade;
@@ -123,18 +125,25 @@ public class Atividades {
         statement.setInt(1, idAtividade);
         ResultSet result = statement.executeQuery();
         if (result.next()) {
-            int fk = result.getInt("fk_professor");
+            int fk_professor = result.getInt("fk_professor");
             Professores professores = new Professores();
-            if (fk != 0) {
-                professores = Professores.getById(fk);
+            if (fk_professor != 0) {
+                professores = Professores.getById(fk_professor);
+            }
+            int fk_turma = result.getInt("fk_turma");
+            Turmas turmas = new Turmas();
+            if (fk_turma != 0) {
+                turmas = Turmas.getById(fk_turma);
             }
             return new Atividades(
                     result.getInt("id_atividade"),
                     result.getString("tipo_atividade"),
                     result.getString("descricao_atividade"),
                     result.getDate("dt_entrega"),
-                    fk,
-                    professores);
+                    fk_professor,
+                    professores,
+                    fk_turma,
+                    turmas);
         } else {
             System.out.println("Atividade não encontrada com esse ID!");
             return null;
@@ -142,7 +151,7 @@ public class Atividades {
     }
 
     private static void createManyToManyRelation(Atividades atividades) throws SQLException {
-        String sql = "INSERT INTO atividade_aluno (id_turma, id_aluno) VALUES (?, ?)";
+        String sql = "INSERT INTO atividade_aluno (id_turma, id_aluno, nota) VALUES (?, ?)";
         PreparedStatement preparedStatement = conexao.prepareStatement(sql);
         preparedStatement.setInt(1, atividades.getIdAtividade());
         preparedStatement.setInt(2, atividades.getIdAlunoAtividade());
@@ -204,10 +213,15 @@ public class Atividades {
         ResultSet resultList = statement.executeQuery(sql);
         List<Atividades> atividades = new ArrayList<>();
         while (resultList.next()) {
-            int fk = resultList.getInt("fk_curso");
+            int fk_professor = resultList.getInt("fk_professor");
             Professores professores = new Professores();
-            if (fk != 0) {
-                professores = Professores.getById(fk);
+            if (fk_professor != 0) {
+                professores = Professores.getById(fk_professor);
+            }
+            int fk_turma = resultList.getInt("fk_turma");
+            Turmas turmas = new Turmas();
+            if (fk_turma != 0) {
+                turmas = Turmas.getById(fk_turma);
             }
             atividades.add(
                     new Atividades(
@@ -215,8 +229,10 @@ public class Atividades {
                             resultList.getString("tipo_atividade"),
                             resultList.getString("descricao_atividade"),
                             resultList.getDate("dt_entrega"),
-                            fk,
-                            professores));
+                            fk_professor,
+                            professores,
+                            fk_turma,
+                            turmas));
         }
         return atividades;
     }

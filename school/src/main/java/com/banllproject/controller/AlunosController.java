@@ -39,11 +39,11 @@ public class AlunosController extends Controller {
         int idAluno = Menu.buscaOpcaoInteira("Digite o id do aluno: ");
         Alunos alunoAtualizado = new Alunos(
                 idAluno,
-                Menu.buscaDadoString("Digite o nome do novo aluno: "),
-                Menu.buscaDadoString("Digite o sobrenome do novo aluno: "),
-                convertStringToSQLDate(Menu.buscaDadoString("Digite a data de nascimento do novo aluno: ")),
-                Menu.buscaDadoString("Digite o sexo biológico do novo aluno: "),
-                convertStringToSQLDate(Menu.buscaDadoString("Digite a data de ingresso do novo aluno: ")));
+                Menu.buscaDadoString("Digite o nome do aluno (Digite . para manter o atual): "),
+                Menu.buscaDadoString("Digite o sobrenome do aluno (Digite . para manter o atual): "),
+                convertStringToSQLDate(Menu.buscaDadoString("Digite a data de nascimento do aluno (Digite . para manter o atual): ")),
+                Menu.buscaDadoString("Digite o sexo biológico do aluno (Digite . para manter o atual): "),
+                convertStringToSQLDate(Menu.buscaDadoString("Digite a data de ingresso do aluno (Digite . para manter o atual): ")));
         List<String> updatedFieldNames = new ArrayList<>();
 
         if (alunoAtualizado.getNome().equals(".")) {
