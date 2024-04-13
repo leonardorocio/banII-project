@@ -111,8 +111,17 @@ public class Disciplinas {
         }
         String sql = "UPDATE disciplinas " + setFields + " WHERE id_disciplina = ?";
         PreparedStatement preparedStatement = conexao.prepareStatement(sql);
-        preparedStatement.setString(1, disciplina.nome);
-        preparedStatement.setInt(2, disciplina.idDisciplina);
+        int i;
+        for (i = 1; i <= updatedFields.size(); i++) {
+            if (updatedFields.get(i).equals("nome")) {
+                preparedStatement.setString(i, disciplina.getNome());
+            }
+            if (updatedFields.get(i).equals("carga_horaria")) {
+                preparedStatement.setInt(i, disciplina.getCargaHoraria());
+            }
+
+        }
+        preparedStatement.setInt(i, disciplina.idDisciplina);
         preparedStatement.executeUpdate();
         preparedStatement.close();
     }
