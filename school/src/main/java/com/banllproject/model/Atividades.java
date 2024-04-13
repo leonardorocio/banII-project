@@ -107,6 +107,22 @@ public class Atividades {
         this.idAlunoAtividade = idAlunoAtividade;
     }
 
+    public int getFkTurma() {
+        return fkTurma;
+    }
+
+    public void setFkTurma(int fkTurma) {
+        this.fkTurma = fkTurma;
+    }
+
+    public Turmas getFkTurmasObject() {
+        return fkTurmasObject;
+    }
+
+    public void setFkTurmasObject(Turmas fkTurmasObject) {
+        this.fkTurmasObject = fkTurmasObject;
+    }
+
     public void imprimeAtividade() {
         System.out.println(
                 String.format(
@@ -115,6 +131,9 @@ public class Atividades {
                         this.getDtEntrega().toString()));
         if (this.getFkProfessoresObject() != null) {
             this.getFkProfessoresObject().imprimeProfessor();
+        }
+        if (this.getFkTurmasObject() != null) {
+            this.getFkTurmasObject().imprimeTurma();
         }
         Menu.pausaMenu();
     }
