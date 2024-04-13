@@ -46,19 +46,19 @@ public class AlunosController extends Controller {
                 convertStringToSQLDate(Menu.buscaDadoString("Digite a data de ingresso do aluno (Digite . para manter o atual): ")));
         List<String> updatedFieldNames = new ArrayList<>();
 
-        if (alunoAtualizado.getNome().equals(".")) {
+        if (!alunoAtualizado.getNome().equals(".")) {
             updatedFieldNames.add("nome");
         }
-        if (alunoAtualizado.getSobrenome().equals(".")) {
+        if (!alunoAtualizado.getSobrenome().equals(".")) {
             updatedFieldNames.add("sobrenome");
         }
-        if (alunoAtualizado.getSexoBiologico().equals(".")) {
+        if (!alunoAtualizado.getSexoBiologico().equals(".")) {
             updatedFieldNames.add("sexo_biologico");
         }
-        if (alunoAtualizado.getDtNascimento().toString().equals(".")) {
+        if (!alunoAtualizado.getDtNascimento().toString().equals(".")) {
             updatedFieldNames.add("dt_nascimento");
         }
-        if (alunoAtualizado.getDtIngresso().toString().equals(".")) {
+        if (!alunoAtualizado.getDtIngresso().toString().equals(".")) {
             updatedFieldNames.add("dt_ingresso");
         }
 

@@ -38,15 +38,15 @@ public class DepartamentosController extends Controller {
                 Menu.buscaDadoString("Digite a sigla do departamento: "));
         List<String> updatedFieldNames = new ArrayList<>();
 
-        if (departamentoAtualizado.getNome().equals(".")) {
-            updatedFieldNames.add("nome");
+        if (!departamentoAtualizado.getNome().equals(".")) {
+            updatedFieldNames.add("departamento");
         }
 
-        if (departamentoAtualizado.getSigla().equals(".")) {
+        if (!departamentoAtualizado.getSigla().equals(".")) {
             updatedFieldNames.add("sigla");
         }
 
-        Departamentos.update(updatedFieldNames ,departamentoAtualizado);
+        Departamentos.update(updatedFieldNames, departamentoAtualizado);
         System.out.println("Departamento atualizado com sucesso!");
     }
 

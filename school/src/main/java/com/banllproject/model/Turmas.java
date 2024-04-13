@@ -153,18 +153,18 @@ public class Turmas {
         String setFields = "SET ";
         for (int i = 0; i < updatedFields.size(); i++) {
             if (i < updatedFields.size() - 1)
-                setFields += updatedFields.get(i) + " = ?";
-            else
                 setFields += updatedFields.get(i) + " = ?,";
+            else
+                setFields += updatedFields.get(i) + " = ?";
         }
         String sql = "UPDATE turmas " + setFields + " WHERE id_turma = ?";
         PreparedStatement preparedStatement = conexao.prepareStatement(sql);
         int i;
         for (i = 1; i <= updatedFields.size(); i++) {
-            if (updatedFields.get(i).equals("ano_semestre")) {
+            if (updatedFields.get(i - 1).equals("ano_semestre")) {
                 preparedStatement.setString(i, turmas.getAnoSemestre());
             }
-            if (updatedFields.get(i).equals("local_aula")) {
+            if (updatedFields.get(i - 1).equals("local_aula")) {
                 preparedStatement.setString(i, turmas.getLocalAula());
             }
 

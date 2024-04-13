@@ -82,7 +82,7 @@ public class Cursos {
     public void imprimeCurso() {
         System.out.println(
                 String.format(
-                        "\nInformações do curso:\nID: %d\nNome: %s\nSigla: %s\nDuração Mínima: %d semestres\nDuração máxima: %d semestres",
+                        "\nInformações do curso:\nID: %d\nNome: %s\nSigla: %s\nDuração Mínima: %d semestres\nDuração Máxima: %d semestres",
                         this.getIdCurso(), this.getNome(), this.getSigla(), this.getDuracaoMinima(),
                         this.getDuracaoMaxima()));
         Menu.pausaMenu();
@@ -98,7 +98,7 @@ public class Cursos {
                     result.getString("nome"),
                     result.getInt("duracao_minima"),
                     result.getInt("duracao_maxima"),
-                    result.getString("nome"));
+                    result.getString("sigla"));
         } else {
             System.out.println("Curso não encontrado com esse ID!");
             return null;
@@ -120,24 +120,24 @@ public class Cursos {
         String setFields = "SET ";
         for (int i = 0; i < updatedFields.size(); i++) {
             if (i < updatedFields.size() - 1)
-                setFields += updatedFields.get(i) + " = ?";
-            else
                 setFields += updatedFields.get(i) + " = ?,";
+            else
+                setFields += updatedFields.get(i) + " = ?";
         }
         String sql = "UPDATE cursos " + setFields + " WHERE id_curso = ?";
         PreparedStatement preparedStatement = conexao.prepareStatement(sql);
         int i;
         for (i = 1; i <= updatedFields.size(); i++) {
-            if (updatedFields.get(i).equals("nome")) {
+            if (updatedFields.get(i - 1).equals("nome")) {
                 preparedStatement.setString(i, curso.getNome());
             }
-            if (updatedFields.get(i).equals("duracao_minima")) {
+            if (updatedFields.get(i - 1).equals("duracao_minima")) {
                 preparedStatement.setInt(i, curso.getDuracaoMinima());
             }
-            if (updatedFields.get(i).equals("duracao_maxima")) {
+            if (updatedFields.get(i - 1).equals("duracao_maxima")) {
                 preparedStatement.setInt(i, curso.getDuracaoMaxima());
             }
-            if (updatedFields.get(i).equals("sigla")) {
+            if (updatedFields.get(i - 1).equals("sigla")) {
                 preparedStatement.setString(i, curso.getSigla());
             }
         }
@@ -165,7 +165,7 @@ public class Cursos {
                             resultList.getString("nome"),
                             resultList.getInt("duracao_minima"),
                             resultList.getInt("duracao_maxima"),
-                            resultList.getString("nome")));
+                            resultList.getString("sigla")));
         }
         return cursos;
     }

@@ -39,11 +39,11 @@ public class DisciplinasController extends Controller {
                 Menu.buscaOpcaoInteira("Digite a nova carga horaria da disciplina (Digite 0 para manter o atual): "));
         List<String> updatedFieldNames = new ArrayList<>();
 
-        if (disciplinaAtualizada.getNome().equals(".")) {
+        if (!disciplinaAtualizada.getNome().equals(".")) {
             updatedFieldNames.add("nome");
         }
 
-        if (disciplinaAtualizada.getCargaHoraria() == 0) {
+        if (disciplinaAtualizada.getCargaHoraria() != 0) {
             updatedFieldNames.add("carga_horaria");
         }
 

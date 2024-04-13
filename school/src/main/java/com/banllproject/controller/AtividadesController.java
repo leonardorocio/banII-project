@@ -43,15 +43,15 @@ public class AtividadesController extends Controller {
 
         List<String> updatedFieldNames = new ArrayList<>();
 
-        if (atividadeAtualizada.getTipoAtividade().equals(".")) {
+        if (!atividadeAtualizada.getTipoAtividade().equals(".")) {
             updatedFieldNames.add("nome");
         }
 
-        if (atividadeAtualizada.getDescricaoAtividade().equals(".")) {
+        if (!atividadeAtualizada.getDescricaoAtividade().equals(".")) {
             updatedFieldNames.add("descricao_atividade");
         }
 
-        if (atividadeAtualizada.getDtEntrega().toString().equals(".")) {
+        if (!atividadeAtualizada.getDtEntrega().toString().equals(".")) {
             updatedFieldNames.add("dt_entrega");
         }
 

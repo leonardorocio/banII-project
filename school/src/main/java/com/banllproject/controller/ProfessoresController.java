@@ -46,16 +46,16 @@ public class ProfessoresController extends Controller {
                         "Digite a data de nascimento do novo professor (dd/MM/aaaa) (Digite . para manter o atual): ")));
         List<String> updatedFieldNames = new ArrayList<>();
 
-        if (professorAtualizado.getNome().equals(".")) {
+        if (!professorAtualizado.getNome().equals(".")) {
             updatedFieldNames.add("nome");
         }
-        if (professorAtualizado.getSobrenome().equals(".")) {
+        if (!professorAtualizado.getSobrenome().equals(".")) {
             updatedFieldNames.add("sobrenome");
         }
-        if (professorAtualizado.getSexoBiologico().equals(".")) {
+        if (!professorAtualizado.getSexoBiologico().equals(".")) {
             updatedFieldNames.add("sexo_biologico");
         }
-        if (professorAtualizado.getDtNascimento().toString().equals(".")) {
+        if (!professorAtualizado.getDtNascimento().toString().equals(".")) {
             updatedFieldNames.add("dt_nascimento");
         }
 

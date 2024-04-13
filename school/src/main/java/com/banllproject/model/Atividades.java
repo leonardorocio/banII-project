@@ -195,21 +195,21 @@ public class Atividades {
         String setFields = "SET ";
         for (int i = 0; i < updatedFields.size(); i++) {
             if (i < updatedFields.size() - 1)
-                setFields += updatedFields.get(i) + " = ?";
-            else
                 setFields += updatedFields.get(i) + " = ?,";
+            else
+                setFields += updatedFields.get(i) + " = ?";
         }
         String sql = "UPDATE atividades " + setFields + " WHERE id_atividade = ?";
         PreparedStatement preparedStatement = conexao.prepareStatement(sql);
         int i;
         for (i = 1; i <= updatedFields.size(); i++) {
-            if (updatedFields.get(i).equals("tipo_atividade")) {
+            if (updatedFields.get(i - 1).equals("tipo_atividade")) {
                 preparedStatement.setString(i, atividade.getTipoAtividade());
             }
-            if (updatedFields.get(i).equals("descricao_atividade")) {
+            if (updatedFields.get(i - 1).equals("descricao_atividade")) {
                 preparedStatement.setString(i, atividade.getDescricaoAtividade());
             }
-            if (updatedFields.get(i).equals("dt_entrega")) {
+            if (updatedFields.get(i - 1).equals("dt_entrega")) {
                 preparedStatement.setDate(i, atividade.getDtEntrega());
             }
         }

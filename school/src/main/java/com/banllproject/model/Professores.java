@@ -178,24 +178,24 @@ public class Professores {
         String setFields = "SET ";
         for (int i = 0; i < updatedFields.size(); i++) {
             if (i < updatedFields.size() - 1)
-                setFields += updatedFields.get(i) + " = ?";
-            else
                 setFields += updatedFields.get(i) + " = ?,";
+            else
+                setFields += updatedFields.get(i) + " = ?";
         }
         String sql = "UPDATE professores " + setFields + " WHERE id_professor = ?";
         PreparedStatement preparedStatement = conexao.prepareStatement(sql);
         int i;
         for (i = 1; i <= updatedFields.size(); i++) {
-            if (updatedFields.get(i).equals("nome")) {
+            if (updatedFields.get(i - 1).equals("nome")) {
                 preparedStatement.setString(i, professores.getNome());
             }
-            if (updatedFields.get(i).equals("sobrenome")) {
+            if (updatedFields.get(i - 1).equals("sobrenome")) {
                 preparedStatement.setString(i, professores.getSobrenome());
             }
-            if (updatedFields.get(i).equals("sexo_biologico")) {
+            if (updatedFields.get(i - 1).equals("sexo_biologico")) {
                 preparedStatement.setString(i, professores.getSobrenome());
             }
-            if (updatedFields.get(i).equals("dt_nascimento")) {
+            if (updatedFields.get(i - 1).equals("dt_nascimento")) {
                 preparedStatement.setDate(i, professores.getDtNascimento());
             }
         }

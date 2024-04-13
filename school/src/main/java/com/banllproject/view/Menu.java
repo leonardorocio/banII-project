@@ -32,14 +32,16 @@ public class Menu {
 
     public static String buscaDadoString() {
         System.out.println("Digite sua opção: ");
-        Menu.scanner.next();
-        return Menu.scanner.nextLine();
+        String returnValue = Menu.scanner.next();
+        Menu.scanner.nextLine();
+        return returnValue;
     }
 
     public static String buscaDadoString(String msg) {
         System.out.println(msg);
-        Menu.scanner.next();
-        return Menu.scanner.nextLine();
+        String returnValue = Menu.scanner.next();
+        Menu.scanner.nextLine();
+        return returnValue;
     }
 
     public static void pausaMenu() {

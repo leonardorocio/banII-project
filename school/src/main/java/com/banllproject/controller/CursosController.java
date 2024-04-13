@@ -38,19 +38,19 @@ public class CursosController extends Controller {
                 Menu.buscaDadoString("Digite a sigla do curso (Digite . para manter o atual): "));
         List<String> updatedFieldNames = new ArrayList<>();
 
-        if (cursoAtualizado.getNome().equals(".")) {
+        if (!cursoAtualizado.getNome().equals(".")) {
             updatedFieldNames.add("nome");
         }
 
-        if (cursoAtualizado.getDuracaoMinima() == 0) {
+        if (cursoAtualizado.getDuracaoMinima() != 0) {
             updatedFieldNames.add("duracao_minima");
         }
 
-        if (cursoAtualizado.getDuracaoMaxima() == 0) {
+        if (cursoAtualizado.getDuracaoMaxima() != 0) {
             updatedFieldNames.add("duracao_maxima");
         }
 
-        if (cursoAtualizado.getSigla().equals(".")) {
+        if (!cursoAtualizado.getSigla().equals(".")) {
             updatedFieldNames.add("sigla");
         }
 

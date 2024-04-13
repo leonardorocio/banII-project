@@ -42,11 +42,11 @@ public class TurmasController extends Controller {
 
         List<String> updatedFieldNames = new ArrayList<>();
 
-        if (turmaAtualizada.getAnoSemestre().equals(".")) {
+        if (!turmaAtualizada.getAnoSemestre().equals(".")) {
             updatedFieldNames.add("ano_semestre");
         }
 
-        if (turmaAtualizada.getLocalAula().equals(".")) {
+        if (!turmaAtualizada.getLocalAula().equals(".")) {
             updatedFieldNames.add("local_aula");
         }
 

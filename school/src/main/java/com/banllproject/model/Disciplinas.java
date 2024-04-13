@@ -120,18 +120,18 @@ public class Disciplinas {
         String setFields = "SET ";
         for (int i = 0; i < updatedFields.size(); i++) {
             if (i < updatedFields.size() - 1)
-                setFields += updatedFields.get(i) + " = ?";
-            else
                 setFields += updatedFields.get(i) + " = ?,";
+            else
+                setFields += updatedFields.get(i) + " = ?";
         }
         String sql = "UPDATE disciplinas " + setFields + " WHERE id_disciplina = ?";
         PreparedStatement preparedStatement = conexao.prepareStatement(sql);
         int i;
         for (i = 1; i <= updatedFields.size(); i++) {
-            if (updatedFields.get(i).equals("nome")) {
+            if (updatedFields.get(i - 1).equals("nome")) {
                 preparedStatement.setString(i, disciplina.getNome());
             }
-            if (updatedFields.get(i).equals("carga_horaria")) {
+            if (updatedFields.get(i - 1).equals("carga_horaria")) {
                 preparedStatement.setInt(i, disciplina.getCargaHoraria());
             }
 

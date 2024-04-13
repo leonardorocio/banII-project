@@ -70,7 +70,7 @@ public class Departamentos {
         ResultSet result = statement.executeQuery();
         if (result.next()) {
             return new Departamentos(result.getInt("id_departamento"),
-                    result.getString("nome"),
+                    result.getString("departamento"),
                     result.getString("sigla"));
         } else {
             System.out.println("Departamento não encontrado com esse ID!");
@@ -79,8 +79,9 @@ public class Departamentos {
     }
 
     public static void create(Departamentos departamento) throws SQLException {
-        String sql = "INSERT INTO departamentos (nome, sigla) VALUES (?, ?)";
+        String sql = "INSERT INTO departamentos (departamento, sigla) VALUES (?, ?)";
         PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+        departamento.imprimeDepartamento();
         preparedStatement.setString(1, departamento.getNome());
         preparedStatement.setString(2, departamento.getSigla());
         preparedStatement.execute();
@@ -91,18 +92,18 @@ public class Departamentos {
         String setFields = "SET ";
         for (int i = 0; i < updatedFields.size(); i++) {
             if (i < updatedFields.size() - 1)
-                setFields += updatedFields.get(i) + " = ?";
-            else
                 setFields += updatedFields.get(i) + " = ?,";
+            else
+                setFields += updatedFields.get(i) + " = ?";
         }
         String sql = "UPDATE departamentos " + setFields + " WHERE id_departamento = ?";
         PreparedStatement preparedStatement = conexao.prepareStatement(sql);
         int i;
         for (i = 1; i <= updatedFields.size(); i++) {
-            if (updatedFields.get(i).equals("nome")) {
+            if (updatedFields.get(i - 1).equals("departamento")) {
                 preparedStatement.setString(i, departamento.getNome());
             }
-            if (updatedFields.get(i).equals("duracao_minima")) {
+            if (updatedFields.get(i - 1).equals("sigla")) {
                 preparedStatement.setString(i, departamento.getSigla());
             }
         }
@@ -127,7 +128,7 @@ public class Departamentos {
         while (resultList.next()) {
             departamentos.add(
                     new Departamentos(resultList.getInt("id_departamento"),
-                            resultList.getString("nome"),
+                            resultList.getString("departamento"),
                             resultList.getString("sigla")));
         }
         return departamentos;
