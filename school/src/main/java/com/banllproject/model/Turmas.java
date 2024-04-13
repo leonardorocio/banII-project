@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.banllproject.Conexao;
+import com.banllproject.view.Menu;
 
 public class Turmas {
 
@@ -93,11 +94,12 @@ public class Turmas {
 
     public void imprimeTurma() {
         System.out.println(
-                String.format("Informações da turma:\nID: %d\nAno/Semestre: %s\nLocal de aula: %d", this.getIdTurma(),
+                String.format("\nInformações da turma:\nID: %d\nAno/Semestre: %s\nLocal de aula: %d", this.getIdTurma(),
                         this.getAnoSemestre(), this.getLocalAula()));
         if (this.getFkDisciplinaObject() != null) {
             this.getFkDisciplinaObject().imprimeDisciplina();
         }
+        Menu.pausaMenu();
     }
 
     public static Turmas getById(int idTurma) throws SQLException {
@@ -105,17 +107,22 @@ public class Turmas {
         PreparedStatement statement = conexao.prepareStatement(sql);
         statement.setInt(1, idTurma);
         ResultSet result = statement.executeQuery();
-        int fk = result.getInt("fk_disciplina");
-        Disciplinas disciplinas = new Disciplinas();
-        if (fk != 0) {
-            disciplinas = Disciplinas.getById(fk);
+        if (result.next()) {
+            int fk = result.getInt("fk_disciplina");
+            Disciplinas disciplinas = new Disciplinas();
+            if (fk != 0) {
+                disciplinas = Disciplinas.getById(fk);
+            }
+            return new Turmas(
+                    result.getInt("id_turma"),
+                    result.getString("ano_semestre"),
+                    result.getString("local_aula"),
+                    fk,
+                    disciplinas);
+        } else {
+            System.out.println("Turma não encontrada com esse ID!");
+            return null;
         }
-        return new Turmas(
-                result.getInt("id_turma"),
-                result.getString("ano_semestre"),
-                result.getString("local_aula"),
-                fk,
-                disciplinas);
     }
 
     private static void createManyToManyRelation(Turmas turmas) throws SQLException {

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.banllproject.Conexao;
+import com.banllproject.view.Menu;
 
 public class Departamentos {
 
@@ -46,8 +47,9 @@ public class Departamentos {
 
     public void imprimeDepartamento() {
         System.out.println(
-                String.format("Informações do departamento:\nID: %d\nNome: %s", this.getIdDepartamento(),
+                String.format("\nInformações do departamento:\nID: %d\nNome: %s", this.getIdDepartamento(),
                         this.getNome()));
+        Menu.pausaMenu();
     }
 
     public static Departamentos getById(int idDepartamento) throws SQLException {
@@ -55,7 +57,12 @@ public class Departamentos {
         PreparedStatement statement = conexao.prepareStatement(sql);
         statement.setInt(1, idDepartamento);
         ResultSet result = statement.executeQuery();
-        return new Departamentos(result.getInt("id_departamento"), result.getString("nome"));
+        if (result.next()) {
+            return new Departamentos(result.getInt("id_departamento"), result.getString("nome"));
+        } else {
+            System.out.println("Departamento não encontrado com esse ID!");
+            return null;
+        }
     }
 
     public static void create(Departamentos departamento) throws SQLException {

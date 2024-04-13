@@ -11,8 +11,6 @@ import com.banllproject.controller.DepartamentosController;
 import com.banllproject.controller.DisciplinasController;
 import com.banllproject.controller.ProfessoresController;
 import com.banllproject.controller.TurmasController;
-import com.banllproject.model.Alunos;
-import com.banllproject.model.Departamentos;
 
 public class Menu {
 
@@ -20,12 +18,16 @@ public class Menu {
 
     public static int buscaOpcaoInteira() {
         System.out.println("Escolha sua opção: ");
-        return Menu.scanner.nextInt();
+        int returnValue = Menu.scanner.nextInt();
+        Menu.scanner.nextLine();
+        return returnValue;
     }
 
     public static int buscaOpcaoInteira(String msg) {
         System.out.println(msg);
-        return Menu.scanner.nextInt();
+        int returnValue = Menu.scanner.nextInt();
+        Menu.scanner.nextLine();
+        return returnValue;
     }
 
     public static String buscaDadoString() {
@@ -38,6 +40,11 @@ public class Menu {
         System.out.println(msg);
         Menu.scanner.next();
         return Menu.scanner.nextLine();
+    }
+
+    public static void pausaMenu() {
+        System.out.print("Aperte Enter para continuar...");
+        Menu.scanner.nextLine();
     }
 
     public static void criaMenu() {
@@ -138,7 +145,7 @@ public class Menu {
     }
 
     public static void menuOutrasConsultas() {
-        
+
         int option;
         do {
             System.out.println("Escolha a consulta que deseja realizar:");

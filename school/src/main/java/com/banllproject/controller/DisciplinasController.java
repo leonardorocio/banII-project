@@ -11,7 +11,7 @@ public class DisciplinasController extends Controller {
 
     @Override
     public void getById() throws SQLException {
-        int idDisciplina = Menu.buscaOpcaoInteira("Digite o id do departamento: ");
+        int idDisciplina = Menu.buscaOpcaoInteira("Digite o id da disciplina: ");
         Disciplinas.getById(idDisciplina).imprimeDisciplina();
     }
 
@@ -32,7 +32,7 @@ public class DisciplinasController extends Controller {
 
     @Override
     public void update() throws SQLException {
-        int idDisciplina = Menu.buscaOpcaoInteira("Digite o id do departamento: ");
+        int idDisciplina = Menu.buscaOpcaoInteira("Digite o id da disciplina: ");
         Disciplinas disciplinaAtualizada = new Disciplinas(
                 idDisciplina,
                 Menu.buscaDadoString("Digite o novo nome da disciplina (Digite . para manter o atual): "),
@@ -53,7 +53,7 @@ public class DisciplinasController extends Controller {
 
     @Override
     public void delete() throws SQLException {
-        int idDisciplina = Menu.buscaOpcaoInteira("Digite o id do departamento: ");
+        int idDisciplina = Menu.buscaOpcaoInteira("Digite o id da disciplina: ");
         Disciplinas.delete(idDisciplina);
         System.out.println("Disciplina deletada com sucesso!");
     }

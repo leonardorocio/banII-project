@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.banllproject.Conexao;
+import com.banllproject.view.Menu;
 
 public class Disciplinas {
 
@@ -65,8 +66,10 @@ public class Disciplinas {
 
     public void imprimeDisciplina() {
         System.out.println(
-                String.format("Informações da disciplina:\nID: %d\nNome: %s\nCarga Horária: %d", this.getIdDisciplina(),
+                String.format("\nInformações da disciplina:\nID: %d\nNome: %s\nCarga Horária: %d",
+                        this.getIdDisciplina(),
                         this.getNome(), this.getCargaHoraria()));
+        Menu.pausaMenu();
     }
 
     public int getIdCursoDaDisciplina() {
@@ -82,10 +85,15 @@ public class Disciplinas {
         PreparedStatement statement = conexao.prepareStatement(sql);
         statement.setInt(1, idDisciplina);
         ResultSet result = statement.executeQuery();
-        return new Disciplinas(
-                result.getInt("id_disciplina"),
-                result.getString("nome"),
-                result.getInt("carga_horaria"));
+        if (result.next()) {
+            return new Disciplinas(
+                    result.getInt("id_disciplina"),
+                    result.getString("nome"),
+                    result.getInt("carga_horaria"));
+        } else {
+            System.out.println("Disciplina não encontrada com este ID!");
+            return null;
+        }
     }
 
     private static void createManyToManyRelation(Disciplinas disciplina) throws SQLException {

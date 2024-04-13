@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.banllproject.Conexao;
+import com.banllproject.view.Menu;
 
 public class Professores {
 
@@ -23,7 +24,8 @@ public class Professores {
     private int fkDepartamento;
     private Departamentos fkDepartamentoObject;
 
-    public Professores() {};
+    public Professores() {
+    };
 
     public Professores(int idProfessor, String nome, String sobrenome, String sexoBiologico, Date dtNascimento) {
         this.idProfessor = idProfessor;
@@ -122,13 +124,14 @@ public class Professores {
     public void imprimeProfessor() {
         System.out.println(
                 String.format(
-                        "Informações do professor:\nID: %d\nNome: %s\nSobrenome: %s\nSexo: %s\nCPF: %s\nData de nascimento: %s",
+                        "\nInformações do professor:\nID: %d\nNome: %s\nSobrenome: %s\nSexo: %s\nCPF: %s\nData de nascimento: %s",
                         this.getIdProfessor(), this.getNome(), this.getSobrenome(), this.getSexoBiologico(),
                         this.getCpf(),
                         this.getDtNascimento().toString()));
         if (this.getFkDepartamentoObject() != null) {
             this.getFkDepartamentoObject().imprimeDepartamento();
         }
+        Menu.pausaMenu();
     }
 
     public static Professores getById(int idProfessor) throws SQLException {
@@ -136,20 +139,26 @@ public class Professores {
         PreparedStatement statement = conexao.prepareStatement(sql);
         statement.setInt(1, idProfessor);
         ResultSet result = statement.executeQuery();
-        int fk = result.getInt("fk_disciplina");
-        Departamentos departamentos = new Departamentos();
-        if (fk != 0) {
-            departamentos = Departamentos.getById(fk);
+        if (result.next()) {
+
+            int fk = result.getInt("fk_disciplina");
+            Departamentos departamentos = new Departamentos();
+            if (fk != 0) {
+                departamentos = Departamentos.getById(fk);
+            }
+            return new Professores(
+                    result.getInt("id_professor"),
+                    result.getString("nome"),
+                    result.getString("sobrenome"),
+                    result.getString("sexo_biologico"),
+                    result.getString("cpf"),
+                    result.getDate("dt_nascimento"),
+                    fk,
+                    departamentos);
+        } else {
+            System.out.println("Professor não encontrado com esse ID!");
+            return null;
         }
-        return new Professores(
-                result.getInt("id_professor"),
-                result.getString("nome"),
-                result.getString("sobrenome"),
-                result.getString("sexo_biologico"),
-                result.getString("cpf"),
-                result.getDate("dt_nascimento"),
-                fk,
-                departamentos);
     }
 
     public static void create(Professores professores) throws SQLException {

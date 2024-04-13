@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.banllproject.Conexao;
+import com.banllproject.view.Menu;
 
 public class Cursos {
 
@@ -47,7 +48,8 @@ public class Cursos {
 
     public void imprimeCurso() {
         System.out.println(
-                String.format("Informações do curso:\nID: %d\nNome: %s", this.getIdCurso(), this.getNome()));
+                String.format("\nInformações do curso:\nID: %d\nNome: %s", this.getIdCurso(), this.getNome()));
+        Menu.pausaMenu();
     }
 
     public static Cursos getById(int idCurso) throws SQLException {
@@ -55,7 +57,12 @@ public class Cursos {
         PreparedStatement statement = conexao.prepareStatement(sql);
         statement.setInt(1, idCurso);
         ResultSet result = statement.executeQuery();
-        return new Cursos(result.getInt("id_curso"), result.getString("nome"));
+        if (result.next()) {
+            return new Cursos(result.getInt("id_curso"), result.getString("nome"));
+        } else {
+            System.out.println("Curso não encontrado com esse ID!");
+            return null;
+        }
     }
 
     public static void create(Cursos curso) throws SQLException {

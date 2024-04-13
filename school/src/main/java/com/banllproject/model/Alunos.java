@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.banllproject.Conexao;
+import com.banllproject.view.Menu;
 
 public class Alunos {
 
@@ -128,12 +129,13 @@ public class Alunos {
     public void imprimeAluno() {
         System.out.println(
                 String.format(
-                        "Informações do aluno:\nID: %d\nNome: %s\nSobrenome: %s\nSexo: %s\nCPF: %s\nData de nascimento: %s\nData de Ingresso: %s",
+                        "\nInformações do aluno:\nID: %d\nNome: %s\nSobrenome: %s\nSexo: %s\nCPF: %s\nData de nascimento: %s\nData de Ingresso: %s",
                         this.getIdAluno(), this.getNome(), this.getSobrenome(), this.getSexoBiologico(), this.getCpf(),
                         this.getDtNascimento().toString(), this.getDtIngresso().toString()));
         if (this.getFkCursoObject() != null) {
             this.getFkCursoObject().imprimeCurso();
         }
+        Menu.pausaMenu();
     }
 
     public int getFkCurso() {
@@ -157,21 +159,26 @@ public class Alunos {
         PreparedStatement statement = conexao.prepareStatement(sql);
         statement.setInt(1, idAluno);
         ResultSet result = statement.executeQuery();
-        int fk = result.getInt("fk_curso");
-        Cursos cursos = new Cursos();
-        if (fk != 0) {
-            cursos = Cursos.getById(fk);
+        if (result.next()) {
+            int fk = result.getInt("fk_curso");
+            Cursos cursos = new Cursos();
+            if (fk != 0) {
+                cursos = Cursos.getById(fk);
+            }
+            return new Alunos(
+                    result.getInt("id_aluno"),
+                    result.getString("nome"),
+                    result.getString("sobrenome"),
+                    result.getDate("dt_nascimento"),
+                    result.getString("cpf"),
+                    result.getString("sexo_biologico"),
+                    result.getDate("dt_ingresso"),
+                    fk,
+                    cursos);
+        } else {
+            System.out.println("Aluno não encontrado com esse ID!");
+            return null;
         }
-        return new Alunos(
-                result.getInt("id_aluno"),
-                result.getString("nome"),
-                result.getString("sobrenome"),
-                result.getDate("dt_nascimento"),
-                result.getString("cpf"),
-                result.getString("sexo_biologico"),
-                result.getDate("dt_ingresso"),
-                fk,
-                cursos);
     }
 
     private static void createManyToManyRelation(Alunos aluno) throws SQLException {

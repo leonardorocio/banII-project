@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.banllproject.Conexao;
+import com.banllproject.view.Menu;
 
 public class Atividades {
 
@@ -107,12 +108,13 @@ public class Atividades {
     public void imprimeAtividade() {
         System.out.println(
                 String.format(
-                        "Informações da atividade:\nID: %d\nTipo: %s\nDescrição: %s\nData de Entrega: %s",
+                        "\nInformações da atividade:\nID: %d\nTipo: %s\nDescrição: %s\nData de Entrega: %s",
                         this.getIdAtividade(), this.getTipoAtividade(), this.getDescricaoAtividade(),
                         this.getDtEntrega().toString()));
         if (this.getFkProfessoresObject() != null) {
             this.getFkProfessoresObject().imprimeProfessor();
         }
+        Menu.pausaMenu();
     }
 
     public static Atividades getById(int idAtividade) throws SQLException {
@@ -120,18 +122,23 @@ public class Atividades {
         PreparedStatement statement = conexao.prepareStatement(sql);
         statement.setInt(1, idAtividade);
         ResultSet result = statement.executeQuery();
-        int fk = result.getInt("fk_professor");
-        Professores professores = new Professores();
-        if (fk != 0) {
-            professores = Professores.getById(fk);
+        if (result.next()) {
+            int fk = result.getInt("fk_professor");
+            Professores professores = new Professores();
+            if (fk != 0) {
+                professores = Professores.getById(fk);
+            }
+            return new Atividades(
+                    result.getInt("id_atividade"),
+                    result.getString("tipo_atividade"),
+                    result.getString("descricao_atividade"),
+                    result.getDate("dt_entrega"),
+                    fk,
+                    professores);
+        } else {
+            System.out.println("Atividade não encontrada com esse ID!");
+            return null;
         }
-        return new Atividades(
-                result.getInt("id_atividade"),
-                result.getString("tipo_atividade"),
-                result.getString("descricao_atividade"),
-                result.getDate("dt_entrega"),
-                fk,
-                professores);
     }
 
     private static void createManyToManyRelation(Atividades atividades) throws SQLException {
@@ -203,14 +210,13 @@ public class Atividades {
                 professores = Professores.getById(fk);
             }
             atividades.add(
-                new Atividades(
-                    resultList.getInt("id_atividade"),
-                    resultList.getString("tipo_atividade"),
-                    resultList.getString("descricao_atividade"),
-                    resultList.getDate("dt_entrega"),
-                    fk,
-                    professores)
-            );
+                    new Atividades(
+                            resultList.getInt("id_atividade"),
+                            resultList.getString("tipo_atividade"),
+                            resultList.getString("descricao_atividade"),
+                            resultList.getDate("dt_entrega"),
+                            fk,
+                            professores));
         }
         return atividades;
     }
