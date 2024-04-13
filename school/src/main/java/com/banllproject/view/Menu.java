@@ -1,6 +1,7 @@
 package com.banllproject.view;
 
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import com.banllproject.controller.AlunosController;
@@ -18,16 +19,28 @@ public class Menu {
 
     public static int buscaOpcaoInteira() {
         System.out.println("Escolha sua opção: ");
-        int returnValue = Menu.scanner.nextInt();
-        Menu.scanner.nextLine();
-        return returnValue;
+        try {
+            int returnValue = Menu.scanner.nextInt();
+            Menu.scanner.nextLine();
+            return returnValue;
+        } catch (InputMismatchException e) {
+            System.out.println("Erro! É necessário digitar um número");
+            Menu.scanner.nextLine();
+            return Menu.buscaOpcaoInteira();
+        }
     }
 
     public static int buscaOpcaoInteira(String msg) {
         System.out.println(msg);
-        int returnValue = Menu.scanner.nextInt();
-        Menu.scanner.nextLine();
-        return returnValue;
+        try {
+            int returnValue = Menu.scanner.nextInt();
+            Menu.scanner.nextLine();
+            return returnValue;
+        } catch (InputMismatchException e) {
+            System.out.println("Erro! É necessário digitar um número");
+            Menu.scanner.nextLine();
+            return Menu.buscaOpcaoInteira(msg);
+        }
     }
 
     public static String buscaDadoString() {
@@ -87,25 +100,25 @@ public class Menu {
             option = Menu.buscaOpcaoInteira();
             switch (option) {
                 case 1:
-                    Menu.menuEntidade(new CursosController());
+                    Menu.menuEntidade(new CursosController(), "Cursos");
                     break;
                 case 2:
-                    Menu.menuEntidade(new DisciplinasController());
+                    Menu.menuEntidade(new DisciplinasController(), "Disciplinas");
                     break;
                 case 3:
-                    Menu.menuEntidade(new TurmasController());
+                    Menu.menuEntidade(new TurmasController(), "Turmas");
                     break;
                 case 4:
-                    Menu.menuEntidade(new AlunosController());
+                    Menu.menuEntidade(new AlunosController(), "Alunos");
                     break;
                 case 5:
-                    Menu.menuEntidade(new ProfessoresController());
+                    Menu.menuEntidade(new ProfessoresController(), "Professores");
                     break;
                 case 6:
-                    Menu.menuEntidade(new AtividadesController());
+                    Menu.menuEntidade(new AtividadesController(), "Atividades Avaliativas");
                     break;
                 case 7:
-                    Menu.menuEntidade(new DepartamentosController());
+                    Menu.menuEntidade(new DepartamentosController(), "Departamentos");
                     break;
                 case 8:
                     break;
@@ -113,10 +126,10 @@ public class Menu {
         } while (option != 8);
     }
 
-    public static void menuEntidade(Controller controller) {
+    public static void menuEntidade(Controller controller, String entidade) {
         int option;
         do {
-            System.out.println("Escolha uma das ações nesta entidade:");
+            System.out.println("Escolha uma das ações na entidade " + entidade + ": ");
             System.out.println(
                     "1 - Criar registro\n2 - Editar registro\n3 - Consultar um registro\n4 - Listar todos os registros\n5 - Apagar um registro\n6 - Sair");
             option = Menu.buscaOpcaoInteira();
