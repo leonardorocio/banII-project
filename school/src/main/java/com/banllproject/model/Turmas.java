@@ -101,8 +101,9 @@ public class Turmas {
                         this.getAnoSemestre(), this.getLocalAula()));
         if (this.getFkDisciplinaObject() != null) {
             this.getFkDisciplinaObject().imprimeDisciplina();
+        } else {
+            Menu.pausaMenu();
         }
-        Menu.pausaMenu();
     }
 
     public static Turmas getById(int idTurma) throws SQLException {

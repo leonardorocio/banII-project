@@ -165,34 +165,20 @@ public class Menu {
         do {
             System.out.println("Escolha a consulta que deseja realizar:");
             System.out.println(
-                    "1 -outra consulta 1\n2 -  outra consulta 2\n3 - Turmas\n4 - Alunos\n5- Professores\n6 - Atividades Avaliativas\n7 - Departamentos\n8 - Sair");
+                "1 - Cadastrar nota na atividade de um aluno\n2 - Editar a nota na atividade de um aluno\n3 - Consultar a nota da atividade de um aluno"
+            );
             option = Menu.buscaOpcaoInteira();
             switch (option) {
                 case 1:
-                    System.out.println("Mostra outra consulta 1");
                     break;
                 case 2:
-                    System.out.println("Mostra outra consulta 2");
                     break;
                 case 3:
-                    System.out.println("Mostra outra consulta 3");
                     break;
                 case 4:
-                    System.out.println("Mostra outra consulta 4");
-                    break;
-                case 5:
-                    System.out.println("Mostra outra consulta 5");
-                    break;
-                case 6:
-                    System.out.println("Mostra outra consulta 6");
-                    break;
-                case 7:
-                    System.out.println("Mostra outra consulta 7");
-                    break;
-                case 8:
                     break;
             }
-        } while (option != 8);
+        } while (option != 4);
     }
 
     public static void menuRelatórios() {

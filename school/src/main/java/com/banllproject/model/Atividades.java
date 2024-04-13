@@ -131,11 +131,13 @@ public class Atividades {
                         this.getDtEntrega().toString()));
         if (this.getFkProfessoresObject() != null) {
             this.getFkProfessoresObject().imprimeProfessor();
-        }
+        } 
         if (this.getFkTurmasObject() != null) {
             this.getFkTurmasObject().imprimeTurma();
         }
-        Menu.pausaMenu();
+        if (this.getFkProfessoresObject() == null && this.getFkTurmasObject() == null) {
+            Menu.pausaMenu();
+        }
     }
 
     public static Atividades getById(int idAtividade) throws SQLException {

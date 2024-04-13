@@ -134,8 +134,9 @@ public class Alunos {
                         this.getDtNascimento().toString(), this.getDtIngresso().toString()));
         if (this.getFkCursoObject() != null) {
             this.getFkCursoObject().imprimeCurso();
+        } else {
+            Menu.pausaMenu();
         }
-        Menu.pausaMenu();
     }
 
     public int getFkCurso() {
