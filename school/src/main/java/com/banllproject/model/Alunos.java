@@ -175,7 +175,7 @@ public class Alunos {
     }
 
     private static void createManyToManyRelation(Alunos aluno) throws SQLException {
-        String sql = "INSERT INTO turmas_alunos (id_turma, id_aluno) VALUES (?, ?)";
+        String sql = "INSERT INTO turma_aluno (id_turma, id_aluno) VALUES (?, ?)";
         PreparedStatement preparedStatement = conexao.prepareStatement(sql);
         preparedStatement.setInt(1, aluno.getIdTurmaDoAluno());
         preparedStatement.setInt(2, aluno.getIdAluno());

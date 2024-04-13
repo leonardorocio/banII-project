@@ -135,7 +135,7 @@ public class Atividades {
     }
 
     private static void createManyToManyRelation(Atividades atividades) throws SQLException {
-        String sql = "INSERT INTO alunos_atividades (id_turma, id_aluno) VALUES (?, ?)";
+        String sql = "INSERT INTO atividade_aluno (id_turma, id_aluno) VALUES (?, ?)";
         PreparedStatement preparedStatement = conexao.prepareStatement(sql);
         preparedStatement.setInt(1, atividades.getIdAtividade());
         preparedStatement.setInt(2, atividades.getIdAlunoAtividade());

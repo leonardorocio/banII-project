@@ -3,8 +3,16 @@ package com.banllproject.view;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+import com.banllproject.controller.AlunosController;
+import com.banllproject.controller.AtividadesController;
 import com.banllproject.controller.Controller;
 import com.banllproject.controller.CursosController;
+import com.banllproject.controller.DepartamentosController;
+import com.banllproject.controller.DisciplinasController;
+import com.banllproject.controller.ProfessoresController;
+import com.banllproject.controller.TurmasController;
+import com.banllproject.model.Alunos;
+import com.banllproject.model.Departamentos;
 
 public class Menu {
 
@@ -73,27 +81,60 @@ public class Menu {
                     Menu.menuEntidade(new CursosController());
                     break;
                 case 2:
-                    Menu.menuEntidade(new CursosController());
+                    Menu.menuEntidade(new DisciplinasController());
                     break;
                 case 3:
-                    Menu.menuEntidade(new CursosController());
+                    Menu.menuEntidade(new TurmasController());
                     break;
                 case 4:
-                    Menu.menuEntidade(new CursosController());
+                    Menu.menuEntidade(new AlunosController());
                     break;
                 case 5:
-                    Menu.menuEntidade(new CursosController());
+                    Menu.menuEntidade(new ProfessoresController());
                     break;
                 case 6:
-                    Menu.menuEntidade(new CursosController());
+                    Menu.menuEntidade(new AtividadesController());
                     break;
                 case 7:
-                    Menu.menuEntidade(new CursosController());
+                    Menu.menuEntidade(new DepartamentosController());
                     break;
                 case 8:
                     break;
             }
         } while (option != 8);
+    }
+
+    public static void menuEntidade(Controller controller) {
+        int option;
+        do {
+            System.out.println("Escolha uma das ações nesta entidade:");
+            System.out.println(
+                    "1 - Criar registro\n2 - Editar registro\n3 - Consultar um registro\n4 - Listar todos os registros\n5 - Apagar um registro\n6 - Sair");
+            option = Menu.buscaOpcaoInteira();
+            try {
+                switch (option) {
+                    case 1:
+                        controller.create();
+                        break;
+                    case 2:
+                        controller.update();
+                        break;
+                    case 3:
+                        controller.getById();
+                        break;
+                    case 4:
+                        controller.getAll();
+                        break;
+                    case 5:
+                        controller.delete();
+                        break;
+                    case 6:
+                        break;
+                }
+            } catch (SQLException e) {
+                System.out.println("Erro: " + e.getMessage());
+            }
+        } while (option != 6);
     }
 
     public static void menuOutrasConsultas() {
@@ -153,39 +194,6 @@ public class Menu {
                     break;
             }
         } while (option != 4);
-    }
-
-    public static void menuEntidade(Controller controller) {
-        int option;
-        do {
-            System.out.println("Escolha uma das ações nesta entidade:");
-            System.out.println(
-                    "1 - Criar registro\n2 - Editar registro\n3 - Consultar um registro\n4 - Listar todos os registros\n5 - Apagar um registro\n6 - Sair");
-            option = Menu.buscaOpcaoInteira();
-            try {
-                switch (option) {
-                    case 1:
-                        controller.create();
-                        break;
-                    case 2:
-                        controller.update();
-                        break;
-                    case 3:
-                        controller.getById();
-                        break;
-                    case 4:
-                        controller.getAll();
-                        break;
-                    case 5:
-                        controller.delete();
-                        break;
-                    case 6:
-                        break;
-                }
-            } catch (SQLException e) {
-                System.out.println("Erro: " + e.getMessage());
-            }
-        } while (option != 6);
     }
 
 }
