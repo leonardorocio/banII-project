@@ -15,6 +15,8 @@ public class Departamentos {
     private static Connection conexao = Conexao.getInstance().getConnection();
     private int idDepartamento;
     private String nome;
+
+    public Departamentos() {}
     
     public Departamentos(String nome) {
         this.nome = nome;
