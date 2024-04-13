@@ -49,6 +49,8 @@ public class Atividades {
         this.dtEntrega = dtEntrega;
         this.fkProfessores = fkProfessores;
         this.fkProfessoresObject = fkProfessoresObject;
+        this.fkTurma = fkTurma;
+        this.fkTurmasObject = fkTurmasObject;
     }
 
     public int getIdAtividade() {
@@ -141,7 +143,7 @@ public class Atividades {
     }
 
     public static Atividades getById(int idAtividade) throws SQLException {
-        String sql = "SELECT * FROM atividades WHERE id_aluno = ?";
+        String sql = "SELECT * FROM atividades WHERE id_atividade = ?";
         PreparedStatement statement = conexao.prepareStatement(sql);
         statement.setInt(1, idAtividade);
         ResultSet result = statement.executeQuery();

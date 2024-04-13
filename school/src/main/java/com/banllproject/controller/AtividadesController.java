@@ -12,7 +12,7 @@ public class AtividadesController extends Controller {
     @Override
     public void getById() throws SQLException {
         int idAtividade = Menu.buscaOpcaoInteira("Digite o id da atividade: ");
-        Atividades.getById(idAtividade);
+        Atividades.getById(idAtividade).imprimeAtividade();
     }
 
     @Override

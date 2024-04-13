@@ -97,7 +97,7 @@ public class Turmas {
 
     public void imprimeTurma() {
         System.out.println(
-                String.format("\nInformações da turma:\nID: %d\nAno/Semestre: %s\nLocal de aula: %d", this.getIdTurma(),
+                String.format("\nInformações da turma:\nID: %d\nAno/Semestre: %s\nLocal de aula: %s", this.getIdTurma(),
                         this.getAnoSemestre(), this.getLocalAula()));
         if (this.getFkDisciplinaObject() != null) {
             this.getFkDisciplinaObject().imprimeDisciplina();

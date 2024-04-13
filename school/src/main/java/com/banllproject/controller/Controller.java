@@ -4,15 +4,17 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 public abstract class Controller {
 
     protected Date convertStringToSQLDate(String date) {
 
         try {
-            java.util.Date dateFormat = DateFormat.getDateInstance().parse(date);
-            long toMilliseconds = dateFormat.getTime();
-            return new java.sql.Date(toMilliseconds);
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", new Locale("pt", "BR"));
+            long toMilliseconds = dateFormat.parse(date).getTime();
+            return new Date(toMilliseconds);
         } catch (ParseException e) {
             System.out.println(e.getMessage());
             return null;
