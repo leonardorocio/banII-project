@@ -20,6 +20,8 @@ public class Disciplinas {
     // Atributo para criação de tabela N:N
     private int idCursoDaDisciplina;
 
+    public Disciplinas() {}
+
     public Disciplinas(String nome, int cargaHoraria) {
         this.nome = nome;
         this.cargaHoraria = cargaHoraria;
@@ -121,7 +123,7 @@ public class Disciplinas {
             }
 
         }
-        preparedStatement.setInt(i, disciplina.idDisciplina);
+        preparedStatement.setInt(i, disciplina.getIdDisciplina());
         preparedStatement.executeUpdate();
         preparedStatement.close();
     }
