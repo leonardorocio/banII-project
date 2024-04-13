@@ -11,11 +11,14 @@ import java.util.List;
 import com.banllproject.Conexao;
 
 public class Cursos {
-    
+
     private int idCurso;
     private String nome;
 
     private static Connection conexao = Conexao.getInstance().getConnection();
+
+    public Cursos() {
+    }
 
     public Cursos(String nome) throws SQLException {
         this.nome = nome;
@@ -29,20 +32,22 @@ public class Cursos {
     public int getIdCurso() {
         return idCurso;
     }
+
     public void setIdCurso(int idCurso) {
         this.idCurso = idCurso;
     }
+
     public String getNome() {
         return nome;
     }
+
     public void setNome(String nome) {
         this.nome = nome;
     }
 
     public void imprimeCurso() {
         System.out.println(
-            String.format("Informações do curso:\nID: %d\nNome: %s", this.getIdCurso(), this.getNome())
-        );
+                String.format("Informações do curso:\nID: %d\nNome: %s", this.getIdCurso(), this.getNome()));
     }
 
     public static Cursos getById(int idCurso) throws SQLException {
@@ -69,7 +74,7 @@ public class Cursos {
         preparedStatement.executeUpdate();
         preparedStatement.close();
     }
-    
+
     public static void delete(int idCurso) throws SQLException {
         String sql = "DELETE FROM cursos WHERE id_curso = ?";
         PreparedStatement preparedStatement = conexao.prepareStatement(sql);
@@ -85,14 +90,11 @@ public class Cursos {
         List<Cursos> cursos = new ArrayList<>();
         while (resultList.next()) {
             cursos.add(
-                new Cursos(
-                    resultList.getInt("id_curso"),
-                    resultList.getString("nome")
-                )
-            );
+                    new Cursos(
+                            resultList.getInt("id_curso"),
+                            resultList.getString("nome")));
         }
         return cursos;
     }
-    
-    
+
 }

@@ -11,7 +11,7 @@ import java.util.List;
 import com.banllproject.Conexao;
 
 public class Turmas {
-    
+
     private static Connection conexao = Conexao.getInstance().getConnection();
     private int idTurma;
     private String anoSemestre;
@@ -21,7 +21,7 @@ public class Turmas {
 
     // N:N
     private int idProfessorDaTurma;
-    
+
     public Turmas(int idTurma, String anoSemestre, String localAula) {
         this.idTurma = idTurma;
         this.anoSemestre = anoSemestre;
@@ -36,60 +36,70 @@ public class Turmas {
         this.fkDisciplinaObject = fkDisciplinaObject;
     }
 
-    public Turmas(int idTurma, String anoSemestre, String localAula, int fkDisciplina, int idProfessorDaTurma) {
-        this.idTurma = idTurma;
+    public Turmas(String anoSemestre, String localAula, int fkDisciplina, int idProfessorDaTurma) {
         this.anoSemestre = anoSemestre;
         this.localAula = localAula;
         this.fkDisciplina = fkDisciplina;
         this.idProfessorDaTurma = idProfessorDaTurma;
     }
-    
+
     public int getIdProfessorDaTurma() {
         return idProfessorDaTurma;
     }
+
     public void setIdProfessorDaTurma(int idProfessorDaTurma) {
         this.idProfessorDaTurma = idProfessorDaTurma;
     }
+
     public int getIdTurma() {
         return idTurma;
     }
+
     public void setIdTurma(int idTurma) {
         this.idTurma = idTurma;
     }
+
     public String getAnoSemestre() {
         return anoSemestre;
     }
+
     public void setAnoSemestre(String anoSemestre) {
         this.anoSemestre = anoSemestre;
     }
+
     public String getLocalAula() {
         return localAula;
     }
+
     public void setLocalAula(String localAula) {
         this.localAula = localAula;
     }
+
     public int getFkDisciplina() {
         return fkDisciplina;
     }
+
     public void setFkDisciplina(int fkDisciplina) {
         this.fkDisciplina = fkDisciplina;
     }
+
     public Disciplinas getFkDisciplinaObject() {
         return fkDisciplinaObject;
     }
+
     public void setFkDisciplinaObject(Disciplinas fkDisciplinaObject) {
         this.fkDisciplinaObject = fkDisciplinaObject;
     }
 
     public void imprimeTurma() {
         System.out.println(
-            String.format("Informações da turma:\nID: %d\nAno/Semestre: %s\nLocal de aula: %d", this.getIdTurma(), this.getAnoSemestre(), this.getLocalAula())
-        );
+                String.format("Informações da turma:\nID: %d\nAno/Semestre: %s\nLocal de aula: %d", this.getIdTurma(),
+                        this.getAnoSemestre(), this.getLocalAula()));
         if (this.getFkDisciplinaObject() != null) {
             this.getFkDisciplinaObject().imprimeDisciplina();
         }
     }
-    
+
     public static Turmas getById(int idTurma) throws SQLException {
         String sql = "SELECT * FROM turmas WHERE id_turma = ?";
         PreparedStatement statement = conexao.prepareStatement(sql);
@@ -101,12 +111,11 @@ public class Turmas {
             disciplinas = Disciplinas.getById(fk);
         }
         return new Turmas(
-            result.getInt("id_turma"), 
-            result.getString("ano_semestre"),
-            result.getString("local_aula"),
-            fk,
-            disciplinas
-        );
+                result.getInt("id_turma"),
+                result.getString("ano_semestre"),
+                result.getString("local_aula"),
+                fk,
+                disciplinas);
     }
 
     private static void createManyToManyRelation(Turmas turmas) throws SQLException {
@@ -126,14 +135,14 @@ public class Turmas {
         preparedStatement.setInt(3, turmas.getFkDisciplina());
         preparedStatement.execute();
         preparedStatement.close();
-        
+
         Turmas.createManyToManyRelation(turmas);
     }
 
     public static void update(List<String> updatedFields, Turmas turmas) throws SQLException {
         String setFields = "SET ";
         for (int i = 0; i < updatedFields.size(); i++) {
-            if (i < updatedFields.size() - 1) 
+            if (i < updatedFields.size() - 1)
                 setFields += updatedFields.get(i) + " = ?";
             else
                 setFields += updatedFields.get(i) + " = ?,";
@@ -154,7 +163,7 @@ public class Turmas {
         preparedStatement.executeUpdate();
         preparedStatement.close();
     }
-    
+
     public static void delete(int idTurma) throws SQLException {
         String sql = "DELETE FROM turmas WHERE id_turma = ?";
         PreparedStatement preparedStatement = conexao.prepareStatement(sql);
@@ -176,14 +185,12 @@ public class Turmas {
                 disciplinas = Disciplinas.getById(fk);
             }
             turmas.add(
-                new Turmas(
-                    resultList.getInt("id_turma"),
-                    resultList.getString("ano_semestre"),
-                    resultList.getString("local_aula"),
-                    fk,
-                    disciplinas
-                )
-            );
+                    new Turmas(
+                            resultList.getInt("id_turma"),
+                            resultList.getString("ano_semestre"),
+                            resultList.getString("local_aula"),
+                            fk,
+                            disciplinas));
         }
         return turmas;
     }

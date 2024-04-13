@@ -23,6 +23,8 @@ public class Professores {
     private int fkDepartamento;
     private Departamentos fkDepartamentoObject;
 
+    public Professores() {};
+
     public Professores(int idProfessor, String nome, String sobrenome, String sexoBiologico, Date dtNascimento) {
         this.idProfessor = idProfessor;
         this.nome = nome;
@@ -31,9 +33,8 @@ public class Professores {
         this.dtNascimento = dtNascimento;
     }
 
-    public Professores(int idProfessor, String nome, String sobrenome, String sexoBiologico, String cpf,
+    public Professores(String nome, String sobrenome, String sexoBiologico, String cpf,
             Date dtNascimento, int fkDepartamento) {
-        this.idProfessor = idProfessor;
         this.nome = nome;
         this.sobrenome = sobrenome;
         this.sexoBiologico = sexoBiologico;
@@ -121,10 +122,13 @@ public class Professores {
     public void imprimeProfessor() {
         System.out.println(
                 String.format(
-                        "Informações do professor:\nID: %d\nNome: %s\nSobrenome: %s\nCPF: %s\nData de nascimento: %s",
-                        this.getIdProfessor(), this.getNome(), this.getSobrenome(), this.getCpf(),
+                        "Informações do professor:\nID: %d\nNome: %s\nSobrenome: %s\nSexo: %s\nCPF: %s\nData de nascimento: %s",
+                        this.getIdProfessor(), this.getNome(), this.getSobrenome(), this.getSexoBiologico(),
+                        this.getCpf(),
                         this.getDtNascimento().toString()));
-        this.getFkDepartamentoObject().imprimeDepartamento();
+        if (this.getFkDepartamentoObject() != null) {
+            this.getFkDepartamentoObject().imprimeDepartamento();
+        }
     }
 
     public static Professores getById(int idProfessor) throws SQLException {
@@ -147,17 +151,6 @@ public class Professores {
                 fk,
                 departamentos);
     }
-
-    // private static void createManyToManyRelation(Disciplinas disciplina) throws
-    // SQLException {
-    // String sql = "INSERT INTO cursos_disciplinas (id_disciplina, id_curso) VALUES
-    // (?, ?)";
-    // PreparedStatement preparedStatement = conexao.prepareStatement(sql);
-    // preparedStatement.setInt(1, disciplina.getIdDisciplina());
-    // preparedStatement.setInt(2, disciplina.getIdCursoDaDisciplina());
-    // preparedStatement.execute();
-    // preparedStatement.close();
-    // }
 
     public static void create(Professores professores) throws SQLException {
         String sql = "INSERT INTO professores (nome, sobrenome, sexo_biologico, cpf, dt_nascimento, fk_departamento) VALUES (?, ?, ?, ?, ?, ?)";
@@ -222,16 +215,15 @@ public class Professores {
                 departamentos = Departamentos.getById(fk);
             }
             professores.add(
-                new Professores(
-                    resultList.getInt("id_professor"),
-                    resultList.getString("nome"),
-                    resultList.getString("sobrenome"),
-                    resultList.getString("sexo_biologico"),
-                    resultList.getString("cpf"),
-                    resultList.getDate("dt_nascimento"),
-                    fk,
-                    departamentos)
-            );
+                    new Professores(
+                            resultList.getInt("id_professor"),
+                            resultList.getString("nome"),
+                            resultList.getString("sobrenome"),
+                            resultList.getString("sexo_biologico"),
+                            resultList.getString("cpf"),
+                            resultList.getDate("dt_nascimento"),
+                            fk,
+                            departamentos));
         }
         return professores;
     }

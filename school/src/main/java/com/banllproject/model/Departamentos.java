@@ -11,13 +11,14 @@ import java.util.List;
 import com.banllproject.Conexao;
 
 public class Departamentos {
-    
+
     private static Connection conexao = Conexao.getInstance().getConnection();
     private int idDepartamento;
     private String nome;
 
-    public Departamentos() {}
-    
+    public Departamentos() {
+    }
+
     public Departamentos(String nome) {
         this.nome = nome;
     }
@@ -26,24 +27,27 @@ public class Departamentos {
         this.idDepartamento = idDepartamento;
         this.nome = nome;
     }
-    
+
     public int getIdDepartamento() {
         return idDepartamento;
     }
+
     public void setIdDepartamento(int idDepartamento) {
         this.idDepartamento = idDepartamento;
     }
+
     public String getNome() {
         return nome;
     }
+
     public void setNome(String nome) {
         this.nome = nome;
     }
 
     public void imprimeDepartamento() {
         System.out.println(
-            String.format("Informações do departamento:\nID: %d\nNome: %s", this.getIdDepartamento(), this.getNome())
-        );
+                String.format("Informações do departamento:\nID: %d\nNome: %s", this.getIdDepartamento(),
+                        this.getNome()));
     }
 
     public static Departamentos getById(int idDepartamento) throws SQLException {
@@ -70,7 +74,7 @@ public class Departamentos {
         preparedStatement.executeUpdate();
         preparedStatement.close();
     }
-    
+
     public static void delete(int idDepartamento) throws SQLException {
         String sql = "DELETE FROM departamentos WHERE id_departamento = ?";
         PreparedStatement preparedStatement = conexao.prepareStatement(sql);
@@ -86,11 +90,9 @@ public class Departamentos {
         List<Departamentos> departamentos = new ArrayList<>();
         while (resultList.next()) {
             departamentos.add(
-                new Departamentos(
-                    resultList.getInt("id_departamento"),
-                    resultList.getString("nome")
-                )
-            );
+                    new Departamentos(
+                            resultList.getInt("id_departamento"),
+                            resultList.getString("nome")));
         }
         return departamentos;
     }

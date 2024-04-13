@@ -11,7 +11,7 @@ import java.util.List;
 import com.banllproject.Conexao;
 
 public class Disciplinas {
-    
+
     private static Connection conexao = Conexao.getInstance().getConnection();
     private int idDisciplina;
     private String nome;
@@ -20,7 +20,8 @@ public class Disciplinas {
     // Atributo para criação de tabela N:N
     private int idCursoDaDisciplina;
 
-    public Disciplinas() {}
+    public Disciplinas() {
+    }
 
     public Disciplinas(String nome, int cargaHoraria) {
         this.nome = nome;
@@ -32,35 +33,40 @@ public class Disciplinas {
         this.cargaHoraria = cargaHoraria;
         this.idCursoDaDisciplina = idCursoDaDisciplina;
     }
-    
+
     public Disciplinas(int idDisciplina, String nome, int cargaHoraria) {
         this(nome, cargaHoraria);
         this.idDisciplina = idDisciplina;
     }
-    
+
     public int getIdDisciplina() {
         return idDisciplina;
     }
+
     public void setIdDisciplina(int idDisciplina) {
         this.idDisciplina = idDisciplina;
     }
+
     public String getNome() {
         return nome;
     }
+
     public void setNome(String nome) {
         this.nome = nome;
     }
+
     public int getCargaHoraria() {
         return cargaHoraria;
     }
+
     public void setCargaHoraria(int cargaHoraria) {
         this.cargaHoraria = cargaHoraria;
     }
 
     public void imprimeDisciplina() {
         System.out.println(
-            String.format("Informações da disciplina:\nID: %d\nNome: %s\nCarga Horária: %d", this.getIdDisciplina(), this.getNome(), this.getCargaHoraria())
-        );
+                String.format("Informações da disciplina:\nID: %d\nNome: %s\nCarga Horária: %d", this.getIdDisciplina(),
+                        this.getNome(), this.getCargaHoraria()));
     }
 
     public int getIdCursoDaDisciplina() {
@@ -77,10 +83,9 @@ public class Disciplinas {
         statement.setInt(1, idDisciplina);
         ResultSet result = statement.executeQuery();
         return new Disciplinas(
-            result.getInt("id_disciplina"), 
-            result.getString("nome"),
-            result.getInt("carga_horaria")
-        );
+                result.getInt("id_disciplina"),
+                result.getString("nome"),
+                result.getInt("carga_horaria"));
     }
 
     private static void createManyToManyRelation(Disciplinas disciplina) throws SQLException {
@@ -99,14 +104,14 @@ public class Disciplinas {
         preparedStatement.setInt(2, disciplina.getCargaHoraria());
         preparedStatement.execute();
         preparedStatement.close();
-        
+
         Disciplinas.createManyToManyRelation(disciplina);
     }
 
     public static void update(List<String> updatedFields, Disciplinas disciplina) throws SQLException {
         String setFields = "SET ";
         for (int i = 0; i < updatedFields.size(); i++) {
-            if (i < updatedFields.size() - 1) 
+            if (i < updatedFields.size() - 1)
                 setFields += updatedFields.get(i) + " = ?";
             else
                 setFields += updatedFields.get(i) + " = ?,";
@@ -127,7 +132,7 @@ public class Disciplinas {
         preparedStatement.executeUpdate();
         preparedStatement.close();
     }
-    
+
     public static void delete(int idDisciplina) throws SQLException {
         String sql = "DELETE FROM disciplinas WHERE id_disciplina = ?";
         PreparedStatement preparedStatement = conexao.prepareStatement(sql);
@@ -143,12 +148,10 @@ public class Disciplinas {
         List<Disciplinas> disciplinas = new ArrayList<>();
         while (resultList.next()) {
             disciplinas.add(
-                new Disciplinas(
-                    resultList.getInt("id_disciplina"),
-                    resultList.getString("nome"),
-                    resultList.getInt("carga_horaria")
-                )
-            );
+                    new Disciplinas(
+                            resultList.getInt("id_disciplina"),
+                            resultList.getString("nome"),
+                            resultList.getInt("carga_horaria")));
         }
         return disciplinas;
     }
