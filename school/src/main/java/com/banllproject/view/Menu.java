@@ -1,10 +1,17 @@
 package com.banllproject.view;
 
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import com.banllproject.controller.AlunosController;
+import com.banllproject.controller.AtividadesController;
 import com.banllproject.controller.Controller;
 import com.banllproject.controller.CursosController;
+import com.banllproject.controller.DepartamentosController;
+import com.banllproject.controller.DisciplinasController;
+import com.banllproject.controller.ProfessoresController;
+import com.banllproject.controller.TurmasController;
 
 public class Menu {
 
@@ -12,24 +19,47 @@ public class Menu {
 
     public static int buscaOpcaoInteira() {
         System.out.println("Escolha sua opção: ");
-        return Menu.scanner.nextInt();
+        try {
+            int returnValue = Menu.scanner.nextInt();
+            Menu.scanner.nextLine();
+            return returnValue;
+        } catch (InputMismatchException e) {
+            System.out.println("Erro! É necessário digitar um número");
+            Menu.scanner.nextLine();
+            return Menu.buscaOpcaoInteira();
+        }
     }
 
     public static int buscaOpcaoInteira(String msg) {
         System.out.println(msg);
-        return Menu.scanner.nextInt();
+        try {
+            int returnValue = Menu.scanner.nextInt();
+            Menu.scanner.nextLine();
+            return returnValue;
+        } catch (InputMismatchException e) {
+            System.out.println("Erro! É necessário digitar um número");
+            Menu.scanner.nextLine();
+            return Menu.buscaOpcaoInteira(msg);
+        }
     }
 
     public static String buscaDadoString() {
         System.out.println("Digite sua opção: ");
-        Menu.scanner.next();
-        return Menu.scanner.nextLine();
+        String returnValue = Menu.scanner.next();
+        Menu.scanner.nextLine();
+        return returnValue;
     }
 
     public static String buscaDadoString(String msg) {
         System.out.println(msg);
-        Menu.scanner.next();
-        return Menu.scanner.nextLine();
+        String returnValue = Menu.scanner.next();
+        Menu.scanner.nextLine();
+        return returnValue;
+    }
+
+    public static void pausaMenu() {
+        System.out.print("Aperte Enter para continuar...");
+        Menu.scanner.nextLine();
     }
 
     public static void criaMenu() {
@@ -70,25 +100,25 @@ public class Menu {
             option = Menu.buscaOpcaoInteira();
             switch (option) {
                 case 1:
-                    Menu.menuEntidade(new CursosController());
+                    Menu.menuEntidade(new CursosController(), "Cursos");
                     break;
                 case 2:
-                    Menu.menuEntidade(new CursosController());
+                    Menu.menuEntidade(new DisciplinasController(), "Disciplinas");
                     break;
                 case 3:
-                    Menu.menuEntidade(new CursosController());
+                    Menu.menuEntidade(new TurmasController(), "Turmas");
                     break;
                 case 4:
-                    Menu.menuEntidade(new CursosController());
+                    Menu.menuEntidade(new AlunosController(), "Alunos");
                     break;
                 case 5:
-                    Menu.menuEntidade(new CursosController());
+                    Menu.menuEntidade(new ProfessoresController(), "Professores");
                     break;
                 case 6:
-                    Menu.menuEntidade(new CursosController());
+                    Menu.menuEntidade(new AtividadesController(), "Atividades Avaliativas");
                     break;
                 case 7:
-                    Menu.menuEntidade(new CursosController());
+                    Menu.menuEntidade(new DepartamentosController(), "Departamentos");
                     break;
                 case 8:
                     break;
@@ -96,8 +126,41 @@ public class Menu {
         } while (option != 8);
     }
 
+    public static void menuEntidade(Controller controller, String entidade) {
+        int option;
+        do {
+            System.out.println("Escolha uma das ações na entidade " + entidade + ": ");
+            System.out.println(
+                    "1 - Criar registro\n2 - Editar registro\n3 - Consultar um registro\n4 - Listar todos os registros\n5 - Apagar um registro\n6 - Sair");
+            option = Menu.buscaOpcaoInteira();
+            try {
+                switch (option) {
+                    case 1:
+                        controller.create();
+                        break;
+                    case 2:
+                        controller.update();
+                        break;
+                    case 3:
+                        controller.getById();
+                        break;
+                    case 4:
+                        controller.getAll();
+                        break;
+                    case 5:
+                        controller.delete();
+                        break;
+                    case 6:
+                        break;
+                }
+            } catch (SQLException e) {
+                System.out.println("Erro: " + e.getMessage());
+            }
+        } while (option != 6);
+    }
+
     public static void menuOutrasConsultas() {
-        
+
         int option;
         do {
             System.out.println("Escolha a consulta que deseja realizar:");
@@ -153,39 +216,6 @@ public class Menu {
                     break;
             }
         } while (option != 4);
-    }
-
-    public static void menuEntidade(Controller controller) {
-        int option;
-        do {
-            System.out.println("Escolha uma das ações nesta entidade:");
-            System.out.println(
-                    "1 - Criar registro\n2 - Editar registro\n3 - Consultar um registro\n4 - Listar todos os registros\n5 - Apagar um registro\n6 - Sair");
-            option = Menu.buscaOpcaoInteira();
-            try {
-                switch (option) {
-                    case 1:
-                        controller.create();
-                        break;
-                    case 2:
-                        controller.update();
-                        break;
-                    case 3:
-                        controller.getById();
-                        break;
-                    case 4:
-                        controller.getAll();
-                        break;
-                    case 5:
-                        controller.delete();
-                        break;
-                    case 6:
-                        break;
-                }
-            } catch (SQLException e) {
-                System.out.println("Erro: " + e.getMessage());
-            }
-        } while (option != 6);
     }
 
 }
