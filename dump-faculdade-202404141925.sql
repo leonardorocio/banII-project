@@ -5,7 +5,7 @@
 -- Dumped from database version 16.2
 -- Dumped by pg_dump version 16.2
 
--- Started on 2024-04-13 23:04:20
+-- Started on 2024-04-14 19:25:34
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -19,7 +19,7 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- TOC entry 4947 (class 1262 OID 16530)
+-- TOC entry 4958 (class 1262 OID 16530)
 -- Name: faculdade; Type: DATABASE; Schema: -; Owner: postgres
 --
 
@@ -76,7 +76,7 @@ CREATE SEQUENCE public.alunos_id_aluno_seq
 ALTER SEQUENCE public.alunos_id_aluno_seq OWNER TO postgres;
 
 --
--- TOC entry 4949 (class 0 OID 0)
+-- TOC entry 4960 (class 0 OID 0)
 -- Dependencies: 225
 -- Name: alunos_id_aluno_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -105,11 +105,11 @@ ALTER TABLE public.atividade_aluno OWNER TO postgres;
 
 CREATE TABLE public.atividades (
     id_atividade integer NOT NULL,
-    tipo_atividade character varying(50),
     descricao_atividade character varying(255),
     dt_entrega date,
     fk_professor integer NOT NULL,
-    fk_turma integer DEFAULT 1 NOT NULL
+    fk_turma integer DEFAULT 1 NOT NULL,
+    fk_tipo_atividade integer NOT NULL
 );
 
 
@@ -132,7 +132,7 @@ CREATE SEQUENCE public.atividades_id_atividade_seq
 ALTER SEQUENCE public.atividades_id_atividade_seq OWNER TO postgres;
 
 --
--- TOC entry 4950 (class 0 OID 0)
+-- TOC entry 4961 (class 0 OID 0)
 -- Dependencies: 227
 -- Name: atividades_id_atividade_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -186,7 +186,7 @@ CREATE SEQUENCE public.cursos_id_curso_seq
 ALTER SEQUENCE public.cursos_id_curso_seq OWNER TO postgres;
 
 --
--- TOC entry 4951 (class 0 OID 0)
+-- TOC entry 4962 (class 0 OID 0)
 -- Dependencies: 215
 -- Name: cursos_id_curso_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -225,7 +225,7 @@ CREATE SEQUENCE public.departamentos_id_departamento_seq
 ALTER SEQUENCE public.departamentos_id_departamento_seq OWNER TO postgres;
 
 --
--- TOC entry 4952 (class 0 OID 0)
+-- TOC entry 4963 (class 0 OID 0)
 -- Dependencies: 221
 -- Name: departamentos_id_departamento_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -264,7 +264,7 @@ CREATE SEQUENCE public.disciplinas_id_disciplina_seq
 ALTER SEQUENCE public.disciplinas_id_disciplina_seq OWNER TO postgres;
 
 --
--- TOC entry 4953 (class 0 OID 0)
+-- TOC entry 4964 (class 0 OID 0)
 -- Dependencies: 217
 -- Name: disciplinas_id_disciplina_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -307,12 +307,50 @@ CREATE SEQUENCE public.professores_id_professor_seq
 ALTER SEQUENCE public.professores_id_professor_seq OWNER TO postgres;
 
 --
--- TOC entry 4954 (class 0 OID 0)
+-- TOC entry 4965 (class 0 OID 0)
 -- Dependencies: 223
 -- Name: professores_id_professor_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
 ALTER SEQUENCE public.professores_id_professor_seq OWNED BY public.professores.id_professor;
+
+
+--
+-- TOC entry 234 (class 1259 OID 16922)
+-- Name: tipo_atividade; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.tipo_atividade (
+    id_atividade integer NOT NULL,
+    descricao character varying NOT NULL
+);
+
+
+ALTER TABLE public.tipo_atividade OWNER TO postgres;
+
+--
+-- TOC entry 233 (class 1259 OID 16921)
+-- Name: tipo_atividade_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.tipo_atividade_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.tipo_atividade_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4966 (class 0 OID 0)
+-- Dependencies: 233
+-- Name: tipo_atividade_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.tipo_atividade_id_seq OWNED BY public.tipo_atividade.id_atividade;
 
 
 --
@@ -373,7 +411,7 @@ CREATE SEQUENCE public.turmas_id_turma_seq
 ALTER SEQUENCE public.turmas_id_turma_seq OWNER TO postgres;
 
 --
--- TOC entry 4955 (class 0 OID 0)
+-- TOC entry 4967 (class 0 OID 0)
 -- Dependencies: 219
 -- Name: turmas_id_turma_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -382,7 +420,7 @@ ALTER SEQUENCE public.turmas_id_turma_seq OWNED BY public.turmas.id_turma;
 
 
 --
--- TOC entry 4739 (class 2604 OID 16582)
+-- TOC entry 4744 (class 2604 OID 16582)
 -- Name: alunos id_aluno; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -390,7 +428,7 @@ ALTER TABLE ONLY public.alunos ALTER COLUMN id_aluno SET DEFAULT nextval('public
 
 
 --
--- TOC entry 4740 (class 2604 OID 16596)
+-- TOC entry 4745 (class 2604 OID 16596)
 -- Name: atividades id_atividade; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -398,7 +436,7 @@ ALTER TABLE ONLY public.atividades ALTER COLUMN id_atividade SET DEFAULT nextval
 
 
 --
--- TOC entry 4734 (class 2604 OID 16535)
+-- TOC entry 4739 (class 2604 OID 16535)
 -- Name: cursos id_curso; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -406,7 +444,7 @@ ALTER TABLE ONLY public.cursos ALTER COLUMN id_curso SET DEFAULT nextval('public
 
 
 --
--- TOC entry 4737 (class 2604 OID 16561)
+-- TOC entry 4742 (class 2604 OID 16561)
 -- Name: departamentos id_departamento; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -414,7 +452,7 @@ ALTER TABLE ONLY public.departamentos ALTER COLUMN id_departamento SET DEFAULT n
 
 
 --
--- TOC entry 4735 (class 2604 OID 16542)
+-- TOC entry 4740 (class 2604 OID 16542)
 -- Name: disciplinas id_disciplina; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -422,7 +460,7 @@ ALTER TABLE ONLY public.disciplinas ALTER COLUMN id_disciplina SET DEFAULT nextv
 
 
 --
--- TOC entry 4738 (class 2604 OID 16568)
+-- TOC entry 4743 (class 2604 OID 16568)
 -- Name: professores id_professor; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -430,7 +468,15 @@ ALTER TABLE ONLY public.professores ALTER COLUMN id_professor SET DEFAULT nextva
 
 
 --
--- TOC entry 4736 (class 2604 OID 16549)
+-- TOC entry 4747 (class 2604 OID 16925)
+-- Name: tipo_atividade id_atividade; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tipo_atividade ALTER COLUMN id_atividade SET DEFAULT nextval('public.tipo_atividade_id_seq'::regclass);
+
+
+--
+-- TOC entry 4741 (class 2604 OID 16549)
 -- Name: turmas id_turma; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -438,307 +484,275 @@ ALTER TABLE ONLY public.turmas ALTER COLUMN id_turma SET DEFAULT nextval('public
 
 
 --
--- TOC entry 4935 (class 0 OID 16579)
+-- TOC entry 4944 (class 0 OID 16579)
 -- Dependencies: 226
 -- Data for Name: alunos; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.alunos VALUES (3, 'Lucas', 'Silva', '2003-05-10', '11111111111', 'M', '2022-01-01', 1);
-INSERT INTO public.alunos VALUES (4, 'Ana', 'Santos', '2002-08-15', '22222222222', 'F', '2022-01-01', 1);
-INSERT INTO public.alunos VALUES (5, 'Pedro', 'Oliveira', '2002-04-20', '33333333333', 'M', '2022-01-01', 1);
-INSERT INTO public.alunos VALUES (6, 'Mariana', 'Rodrigues', '2003-02-28', '44444444444', 'F', '2022-01-01', 1);
-INSERT INTO public.alunos VALUES (7, 'Rafael', 'Almeida', '2002-07-05', '55555555555', 'M', '2022-01-01', 1);
-INSERT INTO public.alunos VALUES (8, 'Julia', 'Costa', '2003-01-15', '66666666666', 'F', '2022-01-01', 1);
-INSERT INTO public.alunos VALUES (9, 'Gustavo', 'Gomes', '2002-06-20', '77777777777', 'M', '2022-01-01', 1);
-INSERT INTO public.alunos VALUES (10, 'Carolina', 'Pereira', '2003-03-25', '88888888888', 'F', '2022-01-01', 1);
-INSERT INTO public.alunos VALUES (11, 'Mateus', 'Martins', '2002-10-31', '99999999999', 'M', '2022-01-01', 1);
-INSERT INTO public.alunos VALUES (12, 'Isabela', 'Ferreira', '2003-04-15', '10101010101', 'F', '2022-01-01', 1);
-INSERT INTO public.alunos VALUES (13, 'Gabriel', 'Lima', '2002-09-22', '11111111112', 'M', '2022-01-01', 1);
-INSERT INTO public.alunos VALUES (14, 'Leticia', 'Cunha', '2003-05-01', '12121212121', 'F', '2022-01-01', 1);
-INSERT INTO public.alunos VALUES (15, 'Nathan', 'Rocha', '2002-11-10', '13131313131', 'M', '2022-01-01', 1);
-INSERT INTO public.alunos VALUES (16, 'Ana', 'Mendes', '2003-06-20', '14141414141', 'F', '2022-01-01', 1);
-INSERT INTO public.alunos VALUES (17, 'Pedro', 'Pinto', '2002-12-30', '15151515151', 'M', '2022-01-01', 1);
-INSERT INTO public.alunos VALUES (18, 'Luana', 'Sousa', '2003-05-12', '02277885024', 'F', '2022-01-01', 1);
-INSERT INTO public.alunos VALUES (19, 'Guilherme', 'Fernandes', '2002-08-18', '28898792077', 'M', '2022-01-01', 1);
-INSERT INTO public.alunos VALUES (20, 'Carolina', 'Cavalcanti', '2002-04-22', '67721145302', 'F', '2022-01-01', 1);
-INSERT INTO public.alunos VALUES (21, 'Leonardo', 'Melo', '2003-03-01', '72052961770', 'M', '2022-01-01', 1);
-INSERT INTO public.alunos VALUES (22, 'Larissa', 'Lima', '2002-07-07', '78328511338', 'F', '2022-01-01', 1);
-INSERT INTO public.alunos VALUES (23, 'Rodrigo', 'Rocha', '2003-01-17', '42719121083', 'M', '2022-01-01', 1);
-INSERT INTO public.alunos VALUES (24, 'Natália', 'Gonçalves', '2002-06-21', '69093328009', 'F', '2022-01-01', 1);
-INSERT INTO public.alunos VALUES (25, 'Vinícius', 'Alves', '2003-04-01', '03233643044', 'M', '2022-01-01', 1);
-INSERT INTO public.alunos VALUES (26, 'Amanda', 'Nunes', '2002-10-30', '20295601091', 'F', '2022-01-01', 1);
-INSERT INTO public.alunos VALUES (27, 'Matheus', 'Barbosa', '2003-05-15', '44085015044', 'M', '2022-01-01', 1);
-INSERT INTO public.alunos VALUES (28, 'Laura', 'Correia', '2002-09-20', '64376143073', 'F', '2022-01-01', 1);
-INSERT INTO public.alunos VALUES (29, 'José', 'Campos', '2003-05-01', '27391827009', 'M', '2022-01-01', 1);
-INSERT INTO public.alunos VALUES (30, 'Bianca', 'Santana', '2002-11-10', '58488225055', 'F', '2022-01-01', 1);
-INSERT INTO public.alunos VALUES (31, 'Diego', 'Cruz', '2003-06-20', '30114988003', 'M', '2022-01-01', 1);
-INSERT INTO public.alunos VALUES (33, 'Gabriela', 'Pereira', '2003-07-05', '14573646000', 'F', '2022-07-01', 1);
-INSERT INTO public.alunos VALUES (34, 'Rafael', 'Cardoso', '2002-11-22', '86779146042', 'M', '2022-07-01', 1);
-INSERT INTO public.alunos VALUES (35, 'Mariana', 'Gomes', '2003-08-01', '90418756055', 'F', '2022-07-01', 1);
-INSERT INTO public.alunos VALUES (36, 'Bruno', 'Moraes', '2002-12-10', '09273488045', 'M', '2022-07-01', 1);
-INSERT INTO public.alunos VALUES (37, 'Juliana', 'Barros', '2003-09-15', '56582017008', 'F', '2022-07-01', 1);
-INSERT INTO public.alunos VALUES (38, 'Fernando', 'Ferreira', '2003-01-25', '48849830093', 'M', '2022-07-01', 1);
-INSERT INTO public.alunos VALUES (39, 'Camila', 'Costa', '2002-07-01', '95706403006', 'F', '2022-07-01', 1);
-INSERT INTO public.alunos VALUES (40, 'Marcos', 'Sousa', '2003-02-12', '03328068082', 'M', '2022-07-01', 1);
-INSERT INTO public.alunos VALUES (41, 'Letícia', 'Silva', '2002-08-22', '71320908005', 'F', '2022-07-01', 1);
-INSERT INTO public.alunos VALUES (42, 'Thiago', 'Gonçalves', '2003-03-03', '18542138069', 'M', '2022-07-01', 1);
-INSERT INTO public.alunos VALUES (43, 'Ana', 'Melo', '2002-09-05', '36622053050', 'F', '2022-07-01', 1);
-INSERT INTO public.alunos VALUES (44, 'Gustavo', 'Carvalho', '2003-04-20', '69386113020', 'M', '2022-07-01', 1);
-INSERT INTO public.alunos VALUES (45, 'Luiza', 'Almeida', '2002-10-10', '04687642095', 'F', '2022-07-01', 1);
-INSERT INTO public.alunos VALUES (46, 'Cristian', 'Oliveira', '2003-05-01', '95487893095', 'M', '2022-07-01', 1);
-INSERT INTO public.alunos VALUES (47, 'Bárbara', 'Nascimento', '2002-11-15', '54702827083', 'F', '2022-07-01', 1);
-INSERT INTO public.alunos VALUES (48, 'Eduardo', 'Barbosa', '2003-06-30', '21747958077', 'M', '2022-07-01', 1);
-INSERT INTO public.alunos VALUES (49, 'Alice', 'Silveira', '2003-01-05', '35092440049', 'F', '2022-07-01', 1);
-INSERT INTO public.alunos VALUES (50, 'Marcia', 'Pinto', '2002-07-20', '81916188060', 'F', '2022-07-01', 1);
-INSERT INTO public.alunos VALUES (51, 'Lucas', 'Fernandes', '2003-02-25', '00385681033', 'M', '2022-07-01', 1);
-INSERT INTO public.alunos VALUES (52, 'Beatriz', 'Rodrigues', '2002-08-12', '51052887005', 'F', '2022-07-01', 1);
-INSERT INTO public.alunos VALUES (53, 'Ricardo', 'Santos', '2003-03-18', '88973802071', 'M', '2022-07-01', 1);
-INSERT INTO public.alunos VALUES (54, 'Vanessa', 'Lima', '2002-09-20', '18963508080', 'F', '2022-07-01', 1);
-INSERT INTO public.alunos VALUES (55, 'Felipe', 'Oliveira', '2003-04-05', '46394624066', 'M', '2022-07-01', 1);
-INSERT INTO public.alunos VALUES (56, 'Laura', 'Silva', '2002-10-01', '74293829040', 'F', '2022-07-01', 1);
-INSERT INTO public.alunos VALUES (57, 'Thiago', 'Sousa', '2003-05-22', '01759209096', 'M', '2022-07-01', 1);
-INSERT INTO public.alunos VALUES (58, 'Caroline', 'Ferreira', '2002-11-12', '27496586009', 'F', '2022-07-01', 1);
-INSERT INTO public.alunos VALUES (59, 'Guilherme', 'Melo', '2003-06-25', '73950331066', 'M', '2022-07-01', 1);
-INSERT INTO public.alunos VALUES (60, 'Mariana', 'Gomes', '2003-01-10', '45783248080', 'F', '2022-07-01', 1);
-INSERT INTO public.alunos VALUES (61, 'Renato', 'Barros', '2002-07-15', '92086422085', 'M', '2022-07-01', 1);
-INSERT INTO public.alunos VALUES (62, 'Juliana', 'Santos', '2003-02-28', '10432701006', 'F', '2022-07-01', 1);
-INSERT INTO public.alunos VALUES (32, 'Tatiane', 'Oliveira', '2002-12-30', '82598901001', 'F', '2022-01-01', 1);
-INSERT INTO public.alunos VALUES (71, 'Maria', 'Silva', '2003-07-12', '88022885024', 'F', '2023-01-01', 1);
-INSERT INTO public.alunos VALUES (72, 'Ricardo', 'Fernandes', '2003-08-18', '15898792077', 'M', '2023-01-01', 1);
-INSERT INTO public.alunos VALUES (73, 'Isabela', 'Cavalcanti', '2003-04-22', '67721148302', 'F', '2023-01-01', 1);
-INSERT INTO public.alunos VALUES (74, 'Lucas', 'Melo', '2003-03-01', '72052962770', 'M', '2023-01-01', 1);
-INSERT INTO public.alunos VALUES (75, 'Mariana', 'Lima', '2003-07-07', '78328512338', 'F', '2023-01-01', 1);
-INSERT INTO public.alunos VALUES (76, 'Matheus', 'Rocha', '2003-01-17', '42719121383', 'M', '2023-01-01', 1);
-INSERT INTO public.alunos VALUES (77, 'Camila', 'Gonçalves', '2003-06-21', '69093328309', 'F', '2023-01-01', 1);
-INSERT INTO public.alunos VALUES (78, 'Thiago', 'Alves', '2003-04-01', '03233643404', 'M', '2023-01-01', 1);
-INSERT INTO public.alunos VALUES (79, 'Amanda', 'Nunes', '2003-10-30', '20295601391', 'F', '2023-01-01', 1);
-INSERT INTO public.alunos VALUES (80, 'Bruno', 'Barbosa', '2003-05-15', '44085015404', 'M', '2023-01-01', 1);
-INSERT INTO public.alunos VALUES (81, 'Laura', 'Correia', '2003-09-20', '64376143473', 'F', '2023-01-01', 1);
-INSERT INTO public.alunos VALUES (82, 'José', 'Campos', '2003-05-01', '27391827409', 'M', '2023-01-01', 1);
-INSERT INTO public.alunos VALUES (83, 'Bianca', 'Santana', '2003-11-10', '58488225305', 'F', '2023-01-01', 1);
-INSERT INTO public.alunos VALUES (84, 'Diego', 'Cruz', '2003-06-20', '30114988303', 'M', '2023-01-01', 1);
-INSERT INTO public.alunos VALUES (85, 'Tatiane', 'Oliveira', '2003-12-30', '82598901301', 'F', '2023-01-01', 1);
-INSERT INTO public.alunos VALUES (86, 'Gabriela', 'Pereira', '2004-07-05', '14573646300', 'F', '2023-01-01', 1);
-INSERT INTO public.alunos VALUES (87, 'Rafael', 'Cardoso', '2003-11-22', '86779146342', 'M', '2023-01-01', 1);
-INSERT INTO public.alunos VALUES (88, 'Mariana', 'Gomes', '2004-08-01', '90418756305', 'F', '2023-01-01', 1);
-INSERT INTO public.alunos VALUES (89, 'Bruno', 'Moraes', '2003-12-10', '09273488345', 'M', '2023-01-01', 1);
-INSERT INTO public.alunos VALUES (90, 'Juliana', 'Barros', '2004-09-15', '56582017308', 'F', '2023-01-01', 1);
-INSERT INTO public.alunos VALUES (91, 'Fernando', 'Ferreira', '2004-01-25', '48849830393', 'M', '2023-01-01', 1);
-INSERT INTO public.alunos VALUES (92, 'Camila', 'Costa', '2003-07-01', '95706403308', 'F', '2023-01-01', 1);
-INSERT INTO public.alunos VALUES (93, 'Marcos', 'Sousa', '2004-02-12', '03328068382', 'M', '2023-01-01', 1);
-INSERT INTO public.alunos VALUES (94, 'Letícia', 'Silva', '2003-08-22', '71320908305', 'F', '2023-01-01', 1);
-INSERT INTO public.alunos VALUES (95, 'Thiago', 'Gonçalves', '2004-03-03', '18542138309', 'M', '2023-01-01', 1);
-INSERT INTO public.alunos VALUES (96, 'Ana', 'Melo', '2003-09-05', '36622053350', 'F', '2023-01-01', 1);
-INSERT INTO public.alunos VALUES (97, 'Gustavo', 'Carvalho', '2004-04-20', '69386113300', 'M', '2023-01-01', 1);
-INSERT INTO public.alunos VALUES (98, 'Luiza', 'Almeida', '2003-10-10', '04687642345', 'F', '2023-01-01', 1);
-INSERT INTO public.alunos VALUES (99, 'Cristian', 'Oliveira', '2004-05-01', '95487893300', 'M', '2023-01-01', 1);
-INSERT INTO public.alunos VALUES (100, 'Bárbara', 'Nascimento', '2004-01-12', '54702827305', 'F', '2023-07-01', 1);
-INSERT INTO public.alunos VALUES (101, 'Eduardo', 'Barbosa', '2003-06-30', '21747958377', 'M', '2023-07-01', 1);
-INSERT INTO public.alunos VALUES (102, 'Alice', 'Silveira', '2003-01-05', '35092440349', 'F', '2023-07-01', 1);
-INSERT INTO public.alunos VALUES (103, 'Marcia', 'Pinto', '2002-07-20', '81916188360', 'F', '2023-07-01', 1);
-INSERT INTO public.alunos VALUES (104, 'Lucas', 'Fernandes', '2003-02-25', '00385681333', 'M', '2023-07-01', 1);
-INSERT INTO public.alunos VALUES (105, 'Beatriz', 'Rodrigues', '2002-08-12', '51052887305', 'F', '2023-07-01', 1);
-INSERT INTO public.alunos VALUES (106, 'Ricardo', 'Santos', '2003-03-18', '88973802371', 'M', '2023-07-01', 1);
-INSERT INTO public.alunos VALUES (107, 'Vanessa', 'Lima', '2002-09-20', '18963508380', 'F', '2023-07-01', 1);
-INSERT INTO public.alunos VALUES (108, 'Felipe', 'Oliveira', '2003-04-05', '46394624366', 'M', '2023-07-01', 1);
-INSERT INTO public.alunos VALUES (109, 'Laura', 'Silva', '2002-10-01', '74293829340', 'F', '2023-07-01', 1);
-INSERT INTO public.alunos VALUES (110, 'Thiago', 'Sousa', '2003-05-22', '01759209396', 'M', '2023-07-01', 1);
-INSERT INTO public.alunos VALUES (111, 'Caroline', 'Ferreira', '2002-11-12', '27496586309', 'F', '2023-07-01', 1);
-INSERT INTO public.alunos VALUES (112, 'Guilherme', 'Melo', '2003-06-25', '73950331366', 'M', '2023-07-01', 1);
-INSERT INTO public.alunos VALUES (113, 'Mariana', 'Gomes', '2003-01-10', '45783248380', 'F', '2023-07-01', 1);
-INSERT INTO public.alunos VALUES (114, 'Renato', 'Barros', '2002-07-15', '92086422385', 'M', '2023-07-01', 1);
-INSERT INTO public.alunos VALUES (115, 'Juliana', 'Santos', '2003-02-28', '10432701306', 'F', '2023-07-01', 1);
-INSERT INTO public.alunos VALUES (116, 'Lucas', 'Oliveira', '2002-08-10', '87632989382', 'M', '2023-07-01', 1);
-INSERT INTO public.alunos VALUES (117, 'Isabella', 'Silva', '2003-03-05', '40378978347', 'F', '2023-07-01', 1);
-INSERT INTO public.alunos VALUES (118, 'Thiago', 'Pereira', '2002-09-20', '12768207392', 'M', '2023-07-01', 1);
-INSERT INTO public.alunos VALUES (119, 'Julia', 'Santos', '2003-04-15', '68507236306', 'F', '2023-07-01', 1);
-INSERT INTO public.alunos VALUES (120, 'Gabriel', 'Ferreira', '2002-10-30', '23092730393', 'M', '2023-07-01', 1);
-INSERT INTO public.alunos VALUES (121, 'Carolina', 'Gonçalves', '2003-05-01', '95024603306', 'F', '2023-07-01', 1);
-INSERT INTO public.alunos VALUES (122, 'Rafael', 'Moraes', '2002-11-10', '70062017308', 'M', '2023-07-01', 1);
-INSERT INTO public.alunos VALUES (123, 'Mariana', 'Barbosa', '2003-06-20', '08839830393', 'F', '2023-07-01', 1);
-INSERT INTO public.alunos VALUES (128, 'Carlos', 'Silva', '2003-05-12', '05277885024', 'M', '2022-01-01', 2);
-INSERT INTO public.alunos VALUES (130, 'Patricia', 'Fernandes', '2002-08-18', '28898792071', 'F', '2022-01-01', 2);
-INSERT INTO public.alunos VALUES (131, 'Raul', 'Cavalcanti', '2002-04-22', '62721145302', 'M', '2022-01-01', 2);
-INSERT INTO public.alunos VALUES (132, 'Luciana', 'Melo', '2003-02-28', '72054961770', 'F', '2022-01-01', 2);
-INSERT INTO public.alunos VALUES (133, 'Marcelo', 'Lima', '2002-07-07', '78325511338', 'M', '2022-01-01', 2);
-INSERT INTO public.alunos VALUES (134, 'Patrícia', 'Rocha', '2003-01-17', '42619121083', 'F', '2022-01-01', 2);
-INSERT INTO public.alunos VALUES (135, 'Ricardo', 'Gonçalves', '2002-06-21', '67093328009', 'M', '2022-01-01', 2);
-INSERT INTO public.alunos VALUES (136, 'Beatriz', 'Alves', '2003-04-01', '03233843044', 'F', '2022-01-01', 2);
-INSERT INTO public.alunos VALUES (137, 'Felipe', 'Nunes', '2002-10-30', '20295691091', 'M', '2022-01-01', 2);
-INSERT INTO public.alunos VALUES (138, 'Camila', 'Barbosa', '2003-05-15', '44080015044', 'F', '2022-01-01', 2);
-INSERT INTO public.alunos VALUES (139, 'Renan', 'Correia', '2002-09-20', '64371143073', 'M', '2022-01-01', 2);
-INSERT INTO public.alunos VALUES (140, 'Nathalia', 'Campos', '2003-05-01', '27291827009', 'F', '2022-01-01', 2);
-INSERT INTO public.alunos VALUES (141, 'Luiz', 'Santana', '2002-11-10', '58488325055', 'M', '2022-01-01', 2);
-INSERT INTO public.alunos VALUES (142, 'Cristina', 'Cruz', '2003-06-20', '30115988003', 'F', '2022-01-01', 2);
-INSERT INTO public.alunos VALUES (143, 'Bruno', 'Oliveira', '2002-12-30', '82568901001', 'M', '2022-01-01', 2);
-INSERT INTO public.alunos VALUES (144, 'Mariana', 'Pereira', '2003-07-05', '14773646000', 'F', '2022-01-01', 2);
-INSERT INTO public.alunos VALUES (145, 'Thiago', 'Cardoso', '2002-11-22', '86789146042', 'M', '2022-01-01', 2);
-INSERT INTO public.alunos VALUES (146, 'Laura', 'Gomes', '2003-08-01', '90418796055', 'F', '2022-01-01', 2);
-INSERT INTO public.alunos VALUES (147, 'Pedro', 'Moraes', '2002-12-10', '09273088045', 'M', '2022-01-01', 2);
-INSERT INTO public.alunos VALUES (148, 'Ana', 'Barros', '2003-09-15', '56582011008', 'F', '2022-01-01', 2);
-INSERT INTO public.alunos VALUES (149, 'Rafaela', 'Ferreira', '2003-01-25', '42849830093', 'F', '2022-01-01', 2);
-INSERT INTO public.alunos VALUES (150, 'Giovanni', 'Costa', '2002-07-01', '95736403006', 'M', '2022-01-01', 2);
-INSERT INTO public.alunos VALUES (151, 'Vanessa', 'Sousa', '2003-02-12', '03324068082', 'F', '2022-01-01', 2);
-INSERT INTO public.alunos VALUES (152, 'Thiago', 'Silva', '2002-08-22', '71320508005', 'M', '2022-01-01', 2);
-INSERT INTO public.alunos VALUES (153, 'Gabriela', 'Gonçalves', '2003-03-03', '68542138069', 'F', '2022-01-01', 2);
-INSERT INTO public.alunos VALUES (154, 'Raul', 'Melo', '2002-09-05', '36622053070', 'M', '2022-01-01', 2);
-INSERT INTO public.alunos VALUES (155, 'Bruna', 'Carvalho', '2003-04-20', '69388113020', 'F', '2022-01-01', 2);
-INSERT INTO public.alunos VALUES (156, 'Diego', 'Almeida', '2002-10-10', '04687942095', 'M', '2022-01-01', 2);
-INSERT INTO public.alunos VALUES (157, 'Carla', 'Oliveira', '2003-05-01', '95480893095', 'F', '2022-01-01', 2);
-INSERT INTO public.alunos VALUES (177, 'André', 'Nascimento', '2003-01-12', '54762827083', 'M', '2022-07-01', 2);
-INSERT INTO public.alunos VALUES (178, 'Carolina', 'Barbosa', '2002-06-30', '21777958077', 'F', '2022-07-01', 2);
-INSERT INTO public.alunos VALUES (179, 'Ricardo', 'Silveira', '2003-02-05', '35082440049', 'M', '2022-07-01', 2);
-INSERT INTO public.alunos VALUES (180, 'Viviane', 'Pinto', '2002-07-20', '81916128060', 'F', '2022-07-01', 2);
-INSERT INTO public.alunos VALUES (181, 'Felipe', 'Fernandes', '2003-02-25', '00345681033', 'M', '2022-07-01', 2);
-INSERT INTO public.alunos VALUES (182, 'Bruna', 'Rodrigues', '2002-08-12', '51055887005', 'F', '2022-07-01', 2);
-INSERT INTO public.alunos VALUES (183, 'Daniel', 'Santos', '2003-03-18', '88973862071', 'M', '2022-07-01', 2);
-INSERT INTO public.alunos VALUES (184, 'Isabela', 'Lima', '2002-09-20', '18963507080', 'F', '2022-07-01', 2);
-INSERT INTO public.alunos VALUES (185, 'Gabriel', 'Oliveira', '2003-04-05', '46384624066', 'M', '2022-07-01', 2);
-INSERT INTO public.alunos VALUES (186, 'Aline', 'Silva', '2002-10-01', '74293829940', 'F', '2022-07-01', 2);
-INSERT INTO public.alunos VALUES (187, 'Rodrigo', 'Sousa', '2003-05-22', '01759219096', 'M', '2022-07-01', 2);
-INSERT INTO public.alunos VALUES (188, 'Laura', 'Ferreira', '2002-11-12', '27496386009', 'F', '2022-07-01', 2);
-INSERT INTO public.alunos VALUES (189, 'Vinicius', 'Melo', '2003-06-25', '73950341066', 'M', '2022-07-01', 2);
-INSERT INTO public.alunos VALUES (190, 'Mariana', 'Gomes', '2003-01-10', '45783258080', 'F', '2022-07-01', 2);
-INSERT INTO public.alunos VALUES (191, 'Renato', 'Barros', '2002-07-15', '92086462085', 'M', '2022-07-01', 2);
-INSERT INTO public.alunos VALUES (192, 'Juliana', 'Santos', '2003-02-28', '10432701606', 'F', '2022-07-01', 2);
-INSERT INTO public.alunos VALUES (193, 'Lucas', 'Oliveira', '2002-08-10', '87632889082', 'M', '2022-07-01', 2);
-INSERT INTO public.alunos VALUES (194, 'Isabella', 'Silva', '2003-03-05', '40378978047', 'F', '2022-07-01', 2);
-INSERT INTO public.alunos VALUES (195, 'Thiago', 'Pereira', '2002-09-20', '12768107092', 'M', '2022-07-01', 2);
-INSERT INTO public.alunos VALUES (196, 'Julia', 'Santos', '2003-04-15', '68507232006', 'F', '2022-07-01', 2);
-INSERT INTO public.alunos VALUES (197, 'Gabriel', 'Ferreira', '2002-10-30', '23032730093', 'M', '2022-07-01', 2);
-INSERT INTO public.alunos VALUES (198, 'Carolina', 'Gonçalves', '2003-05-01', '94024603006', 'F', '2022-07-01', 2);
-INSERT INTO public.alunos VALUES (199, 'Rafael', 'Moraes', '2002-11-10', '70062057008', 'M', '2022-07-01', 2);
-INSERT INTO public.alunos VALUES (200, 'Mariana', 'Barbosa', '2003-06-20', '08836830093', 'F', '2022-07-01', 2);
-INSERT INTO public.alunos VALUES (209, 'João', 'Silva', '2003-07-12', '88022885724', 'M', '2023-01-01', 2);
-INSERT INTO public.alunos VALUES (210, 'Mariana', 'Fernandes', '2003-08-18', '18898792077', 'F', '2023-01-01', 2);
-INSERT INTO public.alunos VALUES (211, 'Carlos', 'Cavalcanti', '2003-04-22', '64721148302', 'M', '2023-01-01', 2);
-INSERT INTO public.alunos VALUES (212, 'Patricia', 'Melo', '2003-03-01', '72052362770', 'F', '2023-01-01', 2);
-INSERT INTO public.alunos VALUES (213, 'Raul', 'Lima', '2003-07-07', '78328512328', 'M', '2023-01-01', 2);
-INSERT INTO public.alunos VALUES (214, 'Ana', 'Rocha', '2003-01-17', '42719121313', 'F', '2023-01-01', 2);
-INSERT INTO public.alunos VALUES (215, 'Lucas', 'Gonçalves', '2003-06-21', '69073328309', 'M', '2023-01-01', 2);
-INSERT INTO public.alunos VALUES (216, 'Marina', 'Alves', '2003-04-01', '03233683404', 'F', '2023-01-01', 2);
-INSERT INTO public.alunos VALUES (217, 'Vitor', 'Nunes', '2003-10-30', '20295607391', 'M', '2023-01-01', 2);
-INSERT INTO public.alunos VALUES (218, 'Cristina', 'Barbosa', '2003-05-15', '44685015404', 'F', '2023-01-01', 2);
-INSERT INTO public.alunos VALUES (219, 'Rodrigo', 'Correia', '2003-09-20', '64356143473', 'M', '2023-01-01', 2);
-INSERT INTO public.alunos VALUES (220, 'Nathalia', 'Campos', '2003-05-01', '27341827409', 'F', '2023-01-01', 2);
-INSERT INTO public.alunos VALUES (221, 'Luiz', 'Santana', '2003-11-10', '58488235305', 'M', '2023-01-01', 2);
-INSERT INTO public.alunos VALUES (222, 'Cristina', 'Cruz', '2003-06-20', '30114288303', 'F', '2023-01-01', 2);
-INSERT INTO public.alunos VALUES (223, 'Bruno', 'Oliveira', '2003-12-30', '82591901301', 'M', '2023-01-01', 2);
-INSERT INTO public.alunos VALUES (224, 'Aline', 'Pereira', '2004-07-05', '14573946300', 'F', '2023-01-01', 2);
-INSERT INTO public.alunos VALUES (225, 'Gabriel', 'Cardoso', '2003-11-22', '86789146342', 'M', '2023-01-01', 2);
-INSERT INTO public.alunos VALUES (226, 'Amanda', 'Gomes', '2004-08-01', '90418776305', 'F', '2023-01-01', 2);
-INSERT INTO public.alunos VALUES (227, 'Pedro', 'Moraes', '2003-12-10', '09273468345', 'M', '2023-01-01', 2);
-INSERT INTO public.alunos VALUES (228, 'Ana', 'Barros', '2004-09-15', '56582017508', 'F', '2023-01-01', 2);
-INSERT INTO public.alunos VALUES (229, 'Rafael', 'Ferreira', '2004-01-25', '48859830393', 'M', '2023-01-01', 2);
-INSERT INTO public.alunos VALUES (230, 'Giovanna', 'Costa', '2003-07-01', '95703403308', 'F', '2023-01-01', 2);
-INSERT INTO public.alunos VALUES (231, 'Vinicius', 'Sousa', '2004-02-12', '03324068382', 'M', '2023-01-01', 2);
-INSERT INTO public.alunos VALUES (233, 'Renato', 'Gonçalves', '2004-03-03', '18842138309', 'M', '2023-01-01', 2);
-INSERT INTO public.alunos VALUES (234, 'Luiza', 'Melo', '2003-09-05', '36622053750', 'F', '2023-01-01', 2);
-INSERT INTO public.alunos VALUES (235, 'Bruno', 'Carvalho', '2004-04-20', '69386163300', 'M', '2023-01-01', 2);
-INSERT INTO public.alunos VALUES (236, 'Fernanda', 'Almeida', '2003-10-10', '04685642345', 'F', '2023-01-01', 2);
-INSERT INTO public.alunos VALUES (262, 'João', 'Nascimento', '2004-01-12', '56702827305', 'M', '2023-07-01', 2);
-INSERT INTO public.alunos VALUES (263, 'Mariana', 'Barbosa', '2003-06-30', '23747958377', 'F', '2023-07-01', 2);
-INSERT INTO public.alunos VALUES (264, 'Carlos', 'Silveira', '2003-02-05', '34092440349', 'M', '2023-07-01', 2);
-INSERT INTO public.alunos VALUES (265, 'Patricia', 'Pinto', '2002-07-20', '81516188360', 'F', '2023-07-01', 2);
-INSERT INTO public.alunos VALUES (266, 'Ricardo', 'Fernandes', '2003-02-25', '60385681333', 'M', '2023-07-01', 2);
-INSERT INTO public.alunos VALUES (267, 'Viviane', 'Rodrigues', '2002-08-12', '71052887305', 'F', '2023-07-01', 2);
-INSERT INTO public.alunos VALUES (268, 'Felipe', 'Santos', '2003-03-18', '88978802371', 'M', '2023-07-01', 2);
-INSERT INTO public.alunos VALUES (269, 'Bruna', 'Lima', '2002-09-20', '18963509380', 'F', '2023-07-01', 2);
-INSERT INTO public.alunos VALUES (270, 'Gabriel', 'Oliveira', '2003-04-05', '44394624366', 'M', '2023-07-01', 2);
-INSERT INTO public.alunos VALUES (271, 'Aline', 'Silva', '2002-10-01', '74293859340', 'F', '2023-07-01', 2);
-INSERT INTO public.alunos VALUES (272, 'Rodrigo', 'Sousa', '2003-05-22', '01757209396', 'M', '2023-07-01', 2);
-INSERT INTO public.alunos VALUES (273, 'Laura', 'Ferreira', '2002-11-12', '27486586309', 'F', '2023-07-01', 2);
-INSERT INTO public.alunos VALUES (274, 'Vinicius', 'Melo', '2003-06-25', '73959331366', 'M', '2023-07-01', 2);
-INSERT INTO public.alunos VALUES (275, 'Mariana', 'Gomes', '2003-01-10', '45780248380', 'F', '2023-07-01', 2);
-INSERT INTO public.alunos VALUES (276, 'Renato', 'Barros', '2002-07-15', '92083422385', 'M', '2023-07-01', 2);
-INSERT INTO public.alunos VALUES (277, 'Juliana', 'Santos', '2003-02-28', '10442701306', 'F', '2023-07-01', 2);
-INSERT INTO public.alunos VALUES (278, 'Lucas', 'Oliveira', '2002-08-10', '87652989382', 'M', '2023-07-01', 2);
-INSERT INTO public.alunos VALUES (279, 'Isabella', 'Silva', '2003-03-05', '40368978347', 'F', '2023-07-01', 2);
-INSERT INTO public.alunos VALUES (280, 'Thiago', 'Pereira', '2002-09-20', '12778207392', 'M', '2023-07-01', 2);
-INSERT INTO public.alunos VALUES (281, 'Julia', 'Santos', '2003-04-15', '68507836306', 'F', '2023-07-01', 2);
-INSERT INTO public.alunos VALUES (282, 'Gabriel', 'Ferreira', '2002-10-30', '29092730393', 'M', '2023-07-01', 2);
-INSERT INTO public.alunos VALUES (283, 'Carolina', 'Gonçalves', '2003-05-01', '15024603306', 'F', '2023-07-01', 2);
-INSERT INTO public.alunos VALUES (284, 'Rafael', 'Moraes', '2002-11-10', '70062217308', 'M', '2023-07-01', 2);
-INSERT INTO public.alunos VALUES (285, 'Mariana', 'Barbosa', '2003-06-20', '08859830393', 'F', '2023-07-01', 2);
-INSERT INTO public.alunos VALUES (232, 'Tatiane', 'Silva', '2003-08-22', '71320508305', 'M', '2023-01-01', 2);
+INSERT INTO public.alunos VALUES (14, 'Leticia', 'de Lima', '2003-05-01', '121.212.121-21', 'F', '2022-01-01', 1);
+INSERT INTO public.alunos VALUES (5, 'Raul', 'Oliveira', '2002-04-20', '333.333.333-33', 'M', '2022-01-01', 1);
+INSERT INTO public.alunos VALUES (17, 'Phil', 'Pinto', '2002-12-30', '151.515.151-51', 'M', '2022-01-01', 1);
+INSERT INTO public.alunos VALUES (7, 'Andreas', 'Iniesta', '2002-07-05', '555.555.555-55', 'M', '2022-01-01', 1);
+INSERT INTO public.alunos VALUES (26, 'Amanda', 'Nunes', '2002-10-30', '202.956.010-91', 'F', '2022-01-01', 1);
+INSERT INTO public.alunos VALUES (16, 'Ana', 'Mendes', '2003-06-20', '141.414.141-41', 'F', '2022-01-01', 1);
+INSERT INTO public.alunos VALUES (3, 'Lucas', 'Silva', '2003-05-10', '111.111.111-11', 'M', '2022-01-01', 1);
+INSERT INTO public.alunos VALUES (23, 'Alisson', 'Becker', '2003-01-17', '427.191.210-83', 'M', '2022-01-01', 1);
+INSERT INTO public.alunos VALUES (4, 'Ana', 'Santos', '2002-08-15', '222.222.222-22', 'F', '2022-01-01', 1);
+INSERT INTO public.alunos VALUES (48, 'Anthony', 'Silveira', '2003-06-30', '217.479.580-77', 'M', '2022-07-01', 1);
+INSERT INTO public.alunos VALUES (30, 'Viviana', 'Santana', '2002-11-10', '584.882.250-55', 'F', '2022-01-01', 1);
+INSERT INTO public.alunos VALUES (58, 'Antonella', 'Ferreira', '2002-11-12', '274.965.860-09', 'F', '2022-07-01', 1);
+INSERT INTO public.alunos VALUES (52, 'Bianca', 'Rodrigues', '2002-08-12', '510.528.870-05', 'F', '2022-07-01', 1);
+INSERT INTO public.alunos VALUES (47, 'Bárbara', 'Fagundes', '2002-11-15', '547.028.270-83', 'F', '2022-07-01', 1);
+INSERT INTO public.alunos VALUES (39, 'Camilli', 'Costa', '2002-07-01', '957.064.030-06', 'F', '2022-07-01', 1);
+INSERT INTO public.alunos VALUES (10, 'Carolina', 'Pereira', '2003-03-25', '888.888.888-88', 'F', '2022-01-01', 1);
+INSERT INTO public.alunos VALUES (20, 'Carolini', 'Cavalcanti', '2002-04-22', '677.211.453-02', 'F', '2022-01-01', 1);
+INSERT INTO public.alunos VALUES (55, 'Darwin', 'Oliveira', '2003-04-05', '463.946.240-66', 'M', '2022-07-01', 1);
+INSERT INTO public.alunos VALUES (6, 'Mariana', 'Rodrigues', '2003-02-28', '444.444.444-44', 'F', '2022-01-01', 1);
+INSERT INTO public.alunos VALUES (11, 'Mateus', 'Martins', '2002-10-31', '999.999.999-99', 'M', '2022-01-01', 1);
+INSERT INTO public.alunos VALUES (15, 'Nathan', 'Rocha', '2002-11-10', '131.313.131-31', 'M', '2022-01-01', 1);
+INSERT INTO public.alunos VALUES (18, 'Luana', 'Sousa', '2003-05-12', '022.778.850-24', 'F', '2022-01-01', 1);
+INSERT INTO public.alunos VALUES (21, 'Leonardo', 'Melo', '2003-03-01', '720.529.617-70', 'M', '2022-01-01', 1);
+INSERT INTO public.alunos VALUES (24, 'Natália', 'Gonçalves', '2002-06-21', '690.933.280-09', 'F', '2022-01-01', 1);
+INSERT INTO public.alunos VALUES (25, 'Vinícius', 'Alves', '2003-04-01', '032.336.430-44', 'M', '2022-01-01', 1);
+INSERT INTO public.alunos VALUES (27, 'Matheus', 'Barbosa', '2003-05-15', '440.850.150-44', 'M', '2022-01-01', 1);
+INSERT INTO public.alunos VALUES (31, 'Diego', 'Fernandez', '2003-06-20', '301.149.880-03', 'M', '2022-01-01', 1);
+INSERT INTO public.alunos VALUES (38, 'Rafaelo', 'Ferreira', '2003-01-25', '488.498.300-93', 'M', '2022-07-01', 1);
+INSERT INTO public.alunos VALUES (46, 'Pedro', 'Oliveira', '2003-05-01', '954.878.930-95', 'M', '2022-07-01', 1);
+INSERT INTO public.alunos VALUES (13, 'Gabriel', 'Lima', '2002-09-22', '111.111.111-12', 'M', '2022-01-01', 1);
+INSERT INTO public.alunos VALUES (33, 'Gabrielli', 'Pereira', '2003-07-05', '145.736.460-00', 'F', '2022-07-01', 1);
+INSERT INTO public.alunos VALUES (49, 'Giovana', 'Pereira', '2003-01-05', '350.924.400-49', 'F', '2022-07-01', 1);
+INSERT INTO public.alunos VALUES (19, 'Guilherme', 'Fernandes', '2002-08-18', '288.987.920-77', 'M', '2022-01-01', 1);
+INSERT INTO public.alunos VALUES (59, 'Adrian', 'Melo', '2003-06-25', '739.503.310-66', 'M', '2022-07-01', 1);
+INSERT INTO public.alunos VALUES (9, 'Jordan', 'Gomes', '2002-06-20', '777.777.777-77', 'M', '2022-01-01', 1);
+INSERT INTO public.alunos VALUES (44, 'Gustavo', 'Carvalho', '2003-04-20', '693.861.130-20', 'M', '2022-07-01', 1);
+INSERT INTO public.alunos VALUES (36, 'Isaac', 'Moraes', '2002-12-10', '092.734.880-45', 'M', '2022-07-01', 1);
+INSERT INTO public.alunos VALUES (8, 'Julia', 'Costa', '2003-01-15', '666.666.666-66', 'F', '2022-01-01', 1);
+INSERT INTO public.alunos VALUES (12, 'Lara', 'Ferreira', '2003-04-15', '101.010.101-01', 'F', '2022-01-01', 1);
+INSERT INTO public.alunos VALUES (37, 'Juliana', 'Alayo', '2003-09-15', '565.820.170-08', 'F', '2022-07-01', 1);
+INSERT INTO public.alunos VALUES (62, 'Aurora', 'Santos', '2003-02-28', '104.327.010-06', 'F', '2022-07-01', 1);
+INSERT INTO public.alunos VALUES (28, 'Ana Clara', 'Valentin', '2002-09-20', '643.761.430-73', 'F', '2022-01-01', 1);
+INSERT INTO public.alunos VALUES (56, 'Emanuely', 'Valentim', '2002-10-01', '742.938.290-40', 'F', '2022-07-01', 1);
+INSERT INTO public.alunos VALUES (45, 'Isabel', 'Almeida', '2002-10-10', '046.876.420-95', 'F', '2022-07-01', 1);
+INSERT INTO public.alunos VALUES (50, 'Pérola', 'Pinto', '2002-07-20', '819.161.880-60', 'F', '2022-07-01', 1);
+INSERT INTO public.alunos VALUES (40, 'Marcos Paulo', 'Sousa', '2003-02-12', '033.280.680-82', 'M', '2022-07-01', 1);
+INSERT INTO public.alunos VALUES (35, 'Hermione', 'Granger', '2003-08-01', '904.187.560-55', 'F', '2022-07-01', 1);
+INSERT INTO public.alunos VALUES (29, 'José', 'Campos', '2003-05-01', '273.918.270-09', 'M', '2022-01-01', 1);
+INSERT INTO public.alunos VALUES (43, 'Júlia', 'Barroso', '2002-09-05', '366.220.530-50', 'F', '2022-07-01', 1);
+INSERT INTO public.alunos VALUES (53, 'Gabriel', 'Jesus', '2003-03-18', '889.738.020-71', 'M', '2022-07-01', 1);
+INSERT INTO public.alunos VALUES (54, 'Serena', 'Willians', '2002-09-20', '189.635.080-80', 'F', '2022-07-01', 1);
+INSERT INTO public.alunos VALUES (22, 'Larissa', 'Lima', '2002-07-07', '783.285.113-38', 'F', '2022-01-01', 1);
+INSERT INTO public.alunos VALUES (34, 'Rafael', 'Cardoso', '2002-11-22', '867.791.460-42', 'M', '2022-07-01', 1);
+INSERT INTO public.alunos VALUES (41, 'Letícia', 'Silva', '2002-08-22', '713.209.080-05', 'F', '2022-07-01', 1);
+INSERT INTO public.alunos VALUES (42, 'Thiago', 'Gonçalves', '2003-03-03', '185.421.380-69', 'M', '2022-07-01', 1);
+INSERT INTO public.alunos VALUES (51, 'Lucas', 'Fernandes', '2003-02-25', '003.856.810-33', 'M', '2022-07-01', 1);
+INSERT INTO public.alunos VALUES (94, 'Ana Luiza', 'Silva', '2003-08-22', '713.209.083-05', 'F', '2023-01-01', 1);
+INSERT INTO public.alunos VALUES (104, 'Francisco', 'Fernandes', '2003-02-25', '003.856.813-33', 'M', '2023-07-01', 1);
+INSERT INTO public.alunos VALUES (116, 'Cauã', 'Oliveira', '2002-08-10', '876.329.893-82', 'M', '2023-07-01', 1);
+INSERT INTO public.alunos VALUES (74, 'Yan', 'Melo', '2003-03-01', '720.529.627-70', 'M', '2023-01-01', 1);
+INSERT INTO public.alunos VALUES (103, 'Elis', 'Pomposo', '2002-07-20', '819.161.883-60', 'F', '2023-07-01', 1);
+INSERT INTO public.alunos VALUES (61, 'Renato', 'Barros', '2002-07-15', '920.864.220-85', 'M', '2022-07-01', 1);
+INSERT INTO public.alunos VALUES (71, 'Maria', 'Silva', '2003-07-12', '880.228.850-24', 'F', '2023-01-01', 1);
+INSERT INTO public.alunos VALUES (72, 'Ricardo', 'Fernandes', '2003-08-18', '158.987.920-77', 'M', '2023-01-01', 1);
+INSERT INTO public.alunos VALUES (93, 'Marcos', 'Sousa Silva', '2004-02-12', '033.280.683-82', 'M', '2023-01-01', 1);
+INSERT INTO public.alunos VALUES (75, 'Mariana', 'Lima', '2003-07-07', '783.285.123-38', 'F', '2023-01-01', 1);
+INSERT INTO public.alunos VALUES (113, 'Mariana', 'Malfoy', '2003-01-10', '457.832.483-80', 'F', '2023-07-01', 1);
+INSERT INTO public.alunos VALUES (88, 'Lavínia', 'Gomes', '2004-08-01', '904.187.563-05', 'F', '2023-01-01', 1);
+INSERT INTO public.alunos VALUES (123, 'Mariana', 'Weasley', '2003-06-20', '088.398.303-93', 'F', '2023-07-01', 1);
+INSERT INTO public.alunos VALUES (76, 'Matheus', 'Rocha', '2003-01-17', '427.191.213-83', 'M', '2023-01-01', 1);
+INSERT INTO public.alunos VALUES (60, 'Alícia', 'Gomes', '2003-01-10', '457.832.480-80', 'F', '2022-07-01', 1);
+INSERT INTO public.alunos VALUES (78, 'Thiago', 'Alves', '2003-04-01', '032.336.434-04', 'M', '2023-01-01', 1);
+INSERT INTO public.alunos VALUES (87, 'Oliver', 'Giroud', '2003-11-22', '867.791.463-42', 'M', '2023-01-01', 1);
+INSERT INTO public.alunos VALUES (102, 'Alice', 'Silveira', '2003-01-05', '350.924.403-49', 'F', '2023-07-01', 1);
+INSERT INTO public.alunos VALUES (85, 'Tatiane', 'Oliveira', '2003-12-30', '825.989.013-01', 'F', '2023-01-01', 1);
+INSERT INTO public.alunos VALUES (122, 'Xabi', 'Alonso', '2002-11-10', '700.620.173-08', 'M', '2023-07-01', 1);
+INSERT INTO public.alunos VALUES (106, 'Ricardo', 'Busquest', '2003-03-18', '889.738.023-71', 'M', '2023-07-01', 1);
+INSERT INTO public.alunos VALUES (32, 'Josué', 'Hass', '2002-12-30', '825.989.010-01', 'M', '2022-01-01', 1);
+INSERT INTO public.alunos VALUES (95, 'Frank', 'Ribbery', '2004-03-03', '185.421.383-09', 'M', '2023-01-01', 1);
+INSERT INTO public.alunos VALUES (57, 'Roberto ', 'Firmino', '2003-05-22', '017.592.090-96', 'M', '2022-07-01', 1);
+INSERT INTO public.alunos VALUES (118, 'Mohamed', 'Salah', '2002-09-20', '127.682.073-92', 'M', '2023-07-01', 1);
+INSERT INTO public.alunos VALUES (98, 'Luiza', 'Almeida', '2003-10-10', '046.876.423-45', 'F', '2023-01-01', 1);
+INSERT INTO public.alunos VALUES (107, 'Vanessa', 'Lima', '2002-09-20', '189.635.083-80', 'F', '2023-07-01', 1);
+INSERT INTO public.alunos VALUES (110, 'Thiago', 'Sousa', '2003-05-22', '017.592.093-96', 'M', '2023-07-01', 1);
+INSERT INTO public.alunos VALUES (114, 'Renato', 'Barros', '2002-07-15', '920.864.223-85', 'M', '2023-07-01', 1);
+INSERT INTO public.alunos VALUES (96, 'Ana', 'Melo', '2003-09-05', '366.220.533-50', 'F', '2023-01-01', 1);
+INSERT INTO public.alunos VALUES (148, 'Ana', 'Barros', '2003-09-15', '565.820.110-08', 'F', '2022-01-01', 2);
+INSERT INTO public.alunos VALUES (105, 'Beatriz', 'Rodrigues', '2002-08-12', '510.528.873-05', 'F', '2023-07-01', 1);
+INSERT INTO public.alunos VALUES (186, 'Aline', 'Silva', '2002-10-01', '742.938.299-40', 'F', '2022-07-01', 2);
+INSERT INTO public.alunos VALUES (82, 'José', 'Hass', '2003-05-01', '273.918.274-09', 'M', '2023-01-01', 1);
+INSERT INTO public.alunos VALUES (136, 'Beatriz', 'Alves', '2003-04-01', '032.338.430-44', 'F', '2022-01-01', 2);
+INSERT INTO public.alunos VALUES (119, 'Júlia Gabriela', 'Santos', '2003-04-15', '685.072.363-06', 'F', '2023-07-01', 1);
+INSERT INTO public.alunos VALUES (83, 'Bianca', 'Santana', '2003-11-10', '584.882.253-05', 'F', '2023-01-01', 1);
+INSERT INTO public.alunos VALUES (130, 'Patricia', 'Fernandes', '2002-08-18', '288.987.920-71', 'F', '2022-01-01', 2);
+INSERT INTO public.alunos VALUES (131, 'Raul', 'Cavalcanti', '2002-04-22', '627.211.453-02', 'M', '2022-01-01', 2);
+INSERT INTO public.alunos VALUES (90, 'Esther', 'Barros', '2004-09-15', '565.820.173-08', 'F', '2023-01-01', 1);
+INSERT INTO public.alunos VALUES (115, 'Juliana', 'Rócio', '2003-02-28', '104.327.013-06', 'F', '2023-07-01', 1);
+INSERT INTO public.alunos VALUES (109, 'Jade', 'Silva', '2002-10-01', '742.938.293-40', 'F', '2023-07-01', 1);
+INSERT INTO public.alunos VALUES (132, 'Luciana', 'Melo', '2003-02-28', '720.549.617-70', 'F', '2022-01-01', 2);
+INSERT INTO public.alunos VALUES (133, 'Marcelo', 'Lima', '2002-07-07', '783.255.113-38', 'M', '2022-01-01', 2);
+INSERT INTO public.alunos VALUES (215, 'Otávio', 'Gonçalves', '2003-06-21', '690.733.283-09', 'M', '2023-01-01', 2);
+INSERT INTO public.alunos VALUES (193, 'Oliver', 'da Costa Silveira', '2002-08-10', '876.328.890-82', 'M', '2022-07-01', 2);
+INSERT INTO public.alunos VALUES (141, 'Kael', 'Santana', '2002-11-10', '584.883.250-55', 'M', '2022-01-01', 2);
+INSERT INTO public.alunos VALUES (144, 'Isadora', 'Pereira', '2003-07-05', '147.736.460-00', 'F', '2022-01-01', 2);
+INSERT INTO public.alunos VALUES (190, 'Gina', 'Gomes', '2003-01-10', '457.832.580-80', 'F', '2022-07-01', 2);
+INSERT INTO public.alunos VALUES (134, 'Patrícia', 'Rocha', '2003-01-17', '426.191.210-83', 'F', '2022-01-01', 2);
+INSERT INTO public.alunos VALUES (135, 'Ricardo', 'Gonçalves', '2002-06-21', '670.933.280-09', 'M', '2022-01-01', 2);
+INSERT INTO public.alunos VALUES (139, 'Renan', 'Correia', '2002-09-20', '643.711.430-73', 'M', '2022-01-01', 2);
+INSERT INTO public.alunos VALUES (147, 'Pedro', 'Moraes', '2002-12-10', '092.730.880-45', 'M', '2022-01-01', 2);
+INSERT INTO public.alunos VALUES (149, 'Rafaela', 'Ferreira', '2003-01-25', '428.498.300-93', 'F', '2022-01-01', 2);
+INSERT INTO public.alunos VALUES (152, 'Thiago', 'Silva', '2002-08-22', '713.205.080-05', 'M', '2022-01-01', 2);
+INSERT INTO public.alunos VALUES (155, 'Bruna', 'Carvalho', '2003-04-20', '693.881.130-20', 'F', '2022-01-01', 2);
+INSERT INTO public.alunos VALUES (80, 'Bruno', 'Barbosa', '2003-05-15', '440.850.154.04', 'M', '2023-01-01', 1);
+INSERT INTO public.alunos VALUES (100, 'Bárbara', 'Nascimento', '2004-01-12', '547.028.273-05', 'F', '2023-07-01', 1);
+INSERT INTO public.alunos VALUES (138, 'Camila', 'Dias', '2003-05-15', '440.800.150-44', 'F', '2022-01-01', 2);
+INSERT INTO public.alunos VALUES (92, 'Camila', 'Costa', '2003-07-01', '957.064.033-08', 'F', '2023-01-01', 1);
+INSERT INTO public.alunos VALUES (157, 'Carla', 'Vasconcellos', '2003-05-01', '954.808.930-95', 'F', '2022-01-01', 2);
+INSERT INTO public.alunos VALUES (128, 'Carlos', 'Silva', '2003-05-12', '052.778.850-24', 'M', '2022-01-01', 2);
+INSERT INTO public.alunos VALUES (121, 'Carolina', 'Gonçalves', '2003-05-01', '950.246.033-06', 'F', '2023-07-01', 1);
+INSERT INTO public.alunos VALUES (111, 'Caroline', 'Ferreira', '2002-11-12', '274.965.863-09', 'F', '2023-07-01', 1);
+INSERT INTO public.alunos VALUES (99, 'Cristian', 'Oliveira', '2004-05-01', '954.878.933-00', 'M', '2023-01-01', 1);
+INSERT INTO public.alunos VALUES (101, 'Eduardo', 'Barbosa', '2003-06-30', '217.479.583-77', 'M', '2023-07-01', 1);
+INSERT INTO public.alunos VALUES (142, 'Elisa', 'Cruz', '2003-06-20', '301.159.880-03', 'F', '2022-01-01', 2);
+INSERT INTO public.alunos VALUES (137, 'João Miguel', 'Nunes', '2002-10-30', '202.956.910-91', 'M', '2022-01-01', 2);
+INSERT INTO public.alunos VALUES (143, 'Felipo', 'Cardoso', '2002-12-30', '825.689.010-01', 'M', '2022-01-01', 2);
+INSERT INTO public.alunos VALUES (91, 'Fernando', 'Ferreira', '2004-01-25', '488.498.303-93', 'M', '2023-01-01', 1);
+INSERT INTO public.alunos VALUES (120, 'Gabriel', 'Ferreira', '2002-10-30', '230.927.303-93', 'M', '2023-07-01', 1);
+INSERT INTO public.alunos VALUES (89, 'Ravi', 'Moraes', '2003-12-10', '092.734.883-45', 'M', '2023-01-01', 1);
+INSERT INTO public.alunos VALUES (153, 'Vita', 'Gonçalves', '2003-03-03', '685.421.380-69', 'F', '2022-01-01', 2);
+INSERT INTO public.alunos VALUES (86, 'Gabriela', 'Gonçalves', '2004-07-05', '145.736.463-00', 'F', '2023-01-01', 1);
+INSERT INTO public.alunos VALUES (77, 'Maitê', 'Gonçalves', '2003-06-21', '690.933.283-09', 'F', '2023-01-01', 1);
+INSERT INTO public.alunos VALUES (150, 'Giovanni', 'Costa', '2002-07-01', '957.364.030-06', 'M', '2022-01-01', 2);
+INSERT INTO public.alunos VALUES (112, 'Bryan', 'Melo', '2003-06-25', '739.503.313-66', 'M', '2023-07-01', 1);
+INSERT INTO public.alunos VALUES (84, 'Théo', 'Cruz', '2003-06-20', '301.149.883-03', 'M', '2023-01-01', 1);
+INSERT INTO public.alunos VALUES (156, 'Noah', 'Almeida', '2002-10-10', '046.879.420-95', 'M', '2022-01-01', 2);
+INSERT INTO public.alunos VALUES (108, 'Samuel', 'Oliveira', '2003-04-05', '463.946.243-66', 'M', '2023-07-01', 1);
+INSERT INTO public.alunos VALUES (97, 'Gustavo', 'Torres', '2004-04-20', '693.861.133-00', 'M', '2023-01-01', 1);
+INSERT INTO public.alunos VALUES (73, 'Isabela', 'Cavalcanti', '2003-04-22', '677.211.483-02', 'F', '2023-01-01', 1);
+INSERT INTO public.alunos VALUES (117, 'Isabella', 'Silva', '2003-03-05', '403.789.783-47', 'F', '2023-07-01', 1);
+INSERT INTO public.alunos VALUES (146, 'Laura', 'Gomes', '2003-08-01', '904.187.960-55', 'F', '2022-01-01', 2);
+INSERT INTO public.alunos VALUES (81, 'Laura', 'Correia', '2003-09-20', '643.761.434-73', 'F', '2023-01-01', 1);
+INSERT INTO public.alunos VALUES (224, 'Aline', 'Pereira', '2004-07-05', '145.739.463-00', 'F', '2023-01-01', 2);
+INSERT INTO public.alunos VALUES (226, 'Amanda', 'Gomes', '2004-08-01', '904.187.763-05', 'F', '2023-01-01', 2);
+INSERT INTO public.alunos VALUES (180, 'Viviane', 'Pinto', '2002-07-20', '819.161.280-60', 'F', '2022-07-01', 2);
+INSERT INTO public.alunos VALUES (187, 'Rodrigo', 'Sousa', '2003-05-22', '017.592.190-96', 'M', '2022-07-01', 2);
+INSERT INTO public.alunos VALUES (200, 'Mariana', 'Barbosa', '2003-06-20', '088.368.300-93', 'F', '2022-07-01', 2);
+INSERT INTO public.alunos VALUES (214, 'Ana', 'Rocha', '2003-01-17', '427.191.213-13', 'F', '2023-01-01', 2);
+INSERT INTO public.alunos VALUES (177, 'André', 'Nascimento', '2003-01-12', '547.628.270-83', 'M', '2022-07-01', 2);
+INSERT INTO public.alunos VALUES (235, 'Benjamin', 'Constant', '2004-04-20', '693.861.633-00', 'M', '2023-01-01', 2);
+INSERT INTO public.alunos VALUES (211, 'Bernardo', 'Cavalcanti', '2003-04-22', '647.211.483-02', 'M', '2023-01-01', 2);
+INSERT INTO public.alunos VALUES (271, 'Brenda', 'da Silva', '2002-10-01', '742.938.593-40', 'F', '2023-07-01', 2);
+INSERT INTO public.alunos VALUES (182, 'Bruna', 'Rodrigues', '2002-08-12', '510.558.870-05', 'F', '2022-07-01', 2);
+INSERT INTO public.alunos VALUES (223, 'Bruno', 'Oliveira', '2003-12-30', '825.919.013-01', 'M', '2023-01-01', 2);
+INSERT INTO public.alunos VALUES (228, 'Carol', 'Silveira', '2004-09-15', '565.820.175-08', 'F', '2023-01-01', 2);
+INSERT INTO public.alunos VALUES (210, 'Mariana', 'Fernandes', '2003-08-18', '188.987.920-77', 'F', '2023-01-01', 2);
+INSERT INTO public.alunos VALUES (213, 'Raul', 'Lima', '2003-07-07', '783.285.123-28', 'M', '2023-01-01', 2);
+INSERT INTO public.alunos VALUES (217, 'Vitor', 'Nunes', '2003-10-30', '202.956.073-91', 'M', '2023-01-01', 2);
+INSERT INTO public.alunos VALUES (219, 'Rodrigo', 'Correia', '2003-09-20', '643.561.434-73', 'M', '2023-01-01', 2);
+INSERT INTO public.alunos VALUES (220, 'Nathalia', 'Campos', '2003-05-01', '273.418.274-09', 'F', '2023-01-01', 2);
+INSERT INTO public.alunos VALUES (221, 'Luiz', 'Santana', '2003-11-10', '584.882.353-05', 'M', '2023-01-01', 2);
+INSERT INTO public.alunos VALUES (222, 'Cristina', 'Cruz', '2003-06-20', '301.142.883-03', 'F', '2023-01-01', 2);
+INSERT INTO public.alunos VALUES (233, 'Renato', 'Gonçalves', '2004-03-03', '188.421.383-09', 'M', '2023-01-01', 2);
+INSERT INTO public.alunos VALUES (234, 'Luiza', 'Melo', '2003-09-05', '366.220.537-50', 'F', '2023-01-01', 2);
+INSERT INTO public.alunos VALUES (216, 'Anna', 'Abbot', '2003-04-01', '032.336.834-04', 'F', '2023-01-01', 2);
+INSERT INTO public.alunos VALUES (140, 'Natasha', 'Romanoff', '2003-05-01', '272.918.270-09', 'F', '2022-01-01', 2);
+INSERT INTO public.alunos VALUES (212, 'Patricia', 'Rodrigo', '2003-03-01', '720.523.627-70', 'F', '2023-01-01', 2);
+INSERT INTO public.alunos VALUES (227, 'Ronaldo', 'Moraes', '2003-12-10', '092.734.683-45', 'M', '2023-01-01', 2);
+INSERT INTO public.alunos VALUES (229, 'Manuel', 'Neuer', '2004-01-25', '488.598.303-93', 'M', '2023-01-01', 2);
+INSERT INTO public.alunos VALUES (199, 'Alexandre', 'Francisco', '2002-11-10', '700.620.570-08', 'M', '2022-07-01', 2);
+INSERT INTO public.alunos VALUES (154, 'Sergio', 'Ramos', '2002-09-05', '366.220.530-70', 'M', '2022-01-01', 2);
+INSERT INTO public.alunos VALUES (191, 'Marcelo', 'Júnior', '2002-07-15', '920.864.620-85', 'M', '2022-07-01', 2);
+INSERT INTO public.alunos VALUES (179, 'Declan', 'Rice', '2003-02-05', '350.824.400-49', 'M', '2022-07-01', 2);
+INSERT INTO public.alunos VALUES (195, 'Joshua', 'Kimmich', '2002-09-20', '127.681.070-92', 'M', '2022-07-01', 2);
+INSERT INTO public.alunos VALUES (145, 'Arjen ', 'Robben', '2002-11-22', '867.891.460-42', 'M', '2022-01-01', 2);
+INSERT INTO public.alunos VALUES (151, 'Selena', 'Gomez', '2003-02-12', '033.240.680-82', 'F', '2022-01-01', 2);
+INSERT INTO public.alunos VALUES (231, 'Vinicius', 'Júnior', '2004-02-12', '033.240.683-82', 'M', '2023-01-01', 2);
+INSERT INTO public.alunos VALUES (189, 'Valdemir', 'Melo', '2003-06-25', '739.503.410-66', 'M', '2022-07-01', 2);
+INSERT INTO public.alunos VALUES (183, 'Daniel', 'Santos', '2003-03-18', '889.738.620-71', 'M', '2022-07-01', 2);
+INSERT INTO public.alunos VALUES (264, 'Davi', 'Silveira', '2003-02-05', '340.924.403-49', 'M', '2023-07-01', 2);
+INSERT INTO public.alunos VALUES (269, 'Eloá', 'Costa', '2002-09-20', '189.635.093-80', 'F', '2023-07-01', 2);
+INSERT INTO public.alunos VALUES (218, 'Evelin', 'Barbosa', '2003-05-15', '446.850.154-04', 'F', '2023-01-01', 2);
+INSERT INTO public.alunos VALUES (181, 'Henry', 'Fernandes', '2003-02-25', '003.456.810-33', 'M', '2022-07-01', 2);
+INSERT INTO public.alunos VALUES (268, 'Felipe', 'Santos', '2003-03-18', '889.788.023-71', 'M', '2023-07-01', 2);
+INSERT INTO public.alunos VALUES (236, 'Fernanda', 'Almeida', '2003-10-10', '046.856.423-45', 'F', '2023-01-01', 2);
+INSERT INTO public.alunos VALUES (197, 'Davi', 'Ferreira', '2002-10-30', '230.327.300-93', 'M', '2022-07-01', 2);
+INSERT INTO public.alunos VALUES (270, 'Matteo', 'Oliveira', '2003-04-05', '443.946.243-66', 'M', '2023-07-01', 2);
+INSERT INTO public.alunos VALUES (185, 'Vicente', 'Oliveira', '2003-04-05', '463.846.240-66', 'M', '2022-07-01', 2);
+INSERT INTO public.alunos VALUES (225, 'Murilo', 'Cardoso', '2003-11-22', '867.891.463-42', 'M', '2023-01-01', 2);
+INSERT INTO public.alunos VALUES (230, 'Giovanna', 'Costa', '2003-07-01', '957.034.033-08', 'F', '2023-01-01', 2);
+INSERT INTO public.alunos VALUES (198, 'Isis', 'Gonçalves', '2003-05-01', '940.246.030-06', 'F', '2022-07-01', 2);
+INSERT INTO public.alunos VALUES (262, 'João', 'Nascimento', '2004-01-12', '567.028.273-05', 'M', '2023-07-01', 2);
+INSERT INTO public.alunos VALUES (209, 'João', 'Silva', '2003-07-12', '880.228.857-24', 'M', '2023-01-01', 2);
+INSERT INTO public.alunos VALUES (192, 'Juliana', 'Santos', '2003-02-28', '104.327.016-06', 'F', '2022-07-01', 2);
+INSERT INTO public.alunos VALUES (267, 'Viviane', 'Rodrigues', '2002-08-12', '710.528.873-05', 'F', '2023-07-01', 2);
+INSERT INTO public.alunos VALUES (278, 'Lucas', 'Oliveira', '2002-08-10', '876.529.893-82', 'M', '2023-07-01', 2);
+INSERT INTO public.alunos VALUES (79, 'Fernanda', 'Oliveira', '2003-10-30', '202.956.013-91', 'F', '2023-01-01', 1);
+INSERT INTO public.alunos VALUES (282, 'Bento', 'Ferreira', '2002-10-30', '290.927.303-93', 'M', '2023-07-01', 2);
+INSERT INTO public.alunos VALUES (283, 'Heloisa', 'Gonçalves', '2003-05-01', '150.246.033-06', 'F', '2023-07-01', 2);
+INSERT INTO public.alunos VALUES (281, 'Julia', 'Santos', '2003-04-15', '685.078.363-06', 'F', '2023-07-01', 2);
+INSERT INTO public.alunos VALUES (184, 'Sarah', 'Lima', '2002-09-20', '189.635.070-80', 'F', '2022-07-01', 2);
+INSERT INTO public.alunos VALUES (279, 'Maria Cecília', 'Novara', '2003-03-05', '403.689.783-47', 'F', '2023-07-01', 2);
+INSERT INTO public.alunos VALUES (194, 'Isabella', 'Bernardi', '2003-03-05', '403.789.780-47', 'F', '2022-07-01', 2);
+INSERT INTO public.alunos VALUES (196, 'Julia', 'Camavinga', '2003-04-15', '685.072.320-06', 'F', '2022-07-01', 2);
+INSERT INTO public.alunos VALUES (277, 'Juliana', 'Hidalgo', '2003-02-28', '104.427.013-06', 'F', '2023-07-01', 2);
+INSERT INTO public.alunos VALUES (188, 'Clara', 'Ferreira', '2002-11-12', '274.963.860.09', 'F', '2022-07-01', 2);
+INSERT INTO public.alunos VALUES (273, 'Marina', 'Ferreira', '2002-11-12', '274.865.863-09', 'F', '2023-07-01', 2);
+INSERT INTO public.alunos VALUES (178, 'Maria Luísa', 'Rogers', '2002-06-30', '217.779.580-77', 'F', '2022-07-01', 2);
+INSERT INTO public.alunos VALUES (263, 'Lauana', 'Stark', '2003-06-30', '237.479.583-77', 'F', '2023-07-01', 2);
+INSERT INTO public.alunos VALUES (275, 'Olívia', 'Gomes', '2003-01-10', '457.802.483-80', 'F', '2023-07-01', 2);
+INSERT INTO public.alunos VALUES (285, 'Luna', 'Barbosa', '2003-06-20', '088.598.303-93', 'F', '2023-07-01', 2);
+INSERT INTO public.alunos VALUES (265, 'Sasha', 'Pinto', '2002-07-20', '815.161.883-60', 'F', '2023-07-01', 2);
+INSERT INTO public.alunos VALUES (284, 'Raphael', 'Assis', '2002-11-10', '700.622.173-08', 'M', '2023-07-01', 2);
+INSERT INTO public.alunos VALUES (276, 'Renan', 'Cardoso', '2002-07-15', '920.834.223-85', 'M', '2023-07-01', 2);
+INSERT INTO public.alunos VALUES (266, 'Chico', 'Guardiola', '2003-02-25', '603.856.813-33', 'M', '2023-07-01', 2);
+INSERT INTO public.alunos VALUES (272, 'Gabriel', 'Magalhães', '2003-05-22', '017.572.093-96', 'M', '2023-07-01', 2);
+INSERT INTO public.alunos VALUES (232, 'Tathianna', 'Silva', '2003-08-22', '713.205.083-05', 'M', '2023-01-01', 2);
+INSERT INTO public.alunos VALUES (280, 'Thiago', 'Alcantara', '2002-09-20', '127.782.073-92', 'M', '2023-07-01', 2);
+INSERT INTO public.alunos VALUES (274, 'Valdecir', 'Melo', '2003-06-25', '739.593.313-66', 'M', '2023-07-01', 2);
 
 
 --
--- TOC entry 4941 (class 0 OID 16666)
+-- TOC entry 4950 (class 0 OID 16666)
 -- Dependencies: 232
 -- Data for Name: atividade_aluno; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 INSERT INTO public.atividade_aluno VALUES (5, 209, 7.0);
 INSERT INTO public.atividade_aluno VALUES (5, 210, 6.5);
-INSERT INTO public.atividade_aluno VALUES (5, 211, 8.0);
-INSERT INTO public.atividade_aluno VALUES (5, 212, 7.5);
-INSERT INTO public.atividade_aluno VALUES (5, 213, 9.0);
-INSERT INTO public.atividade_aluno VALUES (5, 214, 8.5);
-INSERT INTO public.atividade_aluno VALUES (5, 215, 6.0);
 INSERT INTO public.atividade_aluno VALUES (5, 216, 7.0);
-INSERT INTO public.atividade_aluno VALUES (5, 217, 8.0);
-INSERT INTO public.atividade_aluno VALUES (5, 218, 7.5);
 INSERT INTO public.atividade_aluno VALUES (5, 219, 6.5);
 INSERT INTO public.atividade_aluno VALUES (5, 220, 8.5);
-INSERT INTO public.atividade_aluno VALUES (5, 221, 9.0);
 INSERT INTO public.atividade_aluno VALUES (5, 222, 7.0);
 INSERT INTO public.atividade_aluno VALUES (5, 223, 6.0);
-INSERT INTO public.atividade_aluno VALUES (5, 224, 8.0);
 INSERT INTO public.atividade_aluno VALUES (5, 225, 9.0);
 INSERT INTO public.atividade_aluno VALUES (5, 226, 7.5);
 INSERT INTO public.atividade_aluno VALUES (5, 227, 8.5);
 INSERT INTO public.atividade_aluno VALUES (5, 228, 6.5);
 INSERT INTO public.atividade_aluno VALUES (5, 229, 8.0);
-INSERT INTO public.atividade_aluno VALUES (5, 230, 7.0);
 INSERT INTO public.atividade_aluno VALUES (5, 231, 9.5);
 INSERT INTO public.atividade_aluno VALUES (5, 232, 6.0);
 INSERT INTO public.atividade_aluno VALUES (5, 233, 7.5);
 INSERT INTO public.atividade_aluno VALUES (5, 234, 8.5);
-INSERT INTO public.atividade_aluno VALUES (5, 235, 9.0);
 INSERT INTO public.atividade_aluno VALUES (5, 236, 7.0);
 INSERT INTO public.atividade_aluno VALUES (1, 209, 8.5);
-INSERT INTO public.atividade_aluno VALUES (1, 210, 7.0);
-INSERT INTO public.atividade_aluno VALUES (1, 211, 9.0);
-INSERT INTO public.atividade_aluno VALUES (1, 212, 6.5);
-INSERT INTO public.atividade_aluno VALUES (1, 213, 8.0);
-INSERT INTO public.atividade_aluno VALUES (1, 214, 7.5);
-INSERT INTO public.atividade_aluno VALUES (1, 215, 9.5);
 INSERT INTO public.atividade_aluno VALUES (1, 216, 8.0);
-INSERT INTO public.atividade_aluno VALUES (1, 217, 7.0);
-INSERT INTO public.atividade_aluno VALUES (1, 218, 8.5);
 INSERT INTO public.atividade_aluno VALUES (1, 219, 9.0);
 INSERT INTO public.atividade_aluno VALUES (1, 220, 7.5);
 INSERT INTO public.atividade_aluno VALUES (1, 221, 8.0);
 INSERT INTO public.atividade_aluno VALUES (1, 222, 6.0);
 INSERT INTO public.atividade_aluno VALUES (1, 223, 8.5);
 INSERT INTO public.atividade_aluno VALUES (1, 224, 7.0);
-INSERT INTO public.atividade_aluno VALUES (1, 225, 8.0);
 INSERT INTO public.atividade_aluno VALUES (1, 226, 7.5);
 INSERT INTO public.atividade_aluno VALUES (1, 227, 8.5);
-INSERT INTO public.atividade_aluno VALUES (1, 228, 6.5);
 INSERT INTO public.atividade_aluno VALUES (1, 229, 9.0);
 INSERT INTO public.atividade_aluno VALUES (1, 230, 8.0);
-INSERT INTO public.atividade_aluno VALUES (1, 231, 7.0);
 INSERT INTO public.atividade_aluno VALUES (1, 232, 8.5);
 INSERT INTO public.atividade_aluno VALUES (1, 233, 9.5);
-INSERT INTO public.atividade_aluno VALUES (1, 234, 7.5);
 INSERT INTO public.atividade_aluno VALUES (1, 235, 8.0);
-INSERT INTO public.atividade_aluno VALUES (1, 236, 6.5);
-INSERT INTO public.atividade_aluno VALUES (2, 209, 7.0);
 INSERT INTO public.atividade_aluno VALUES (2, 210, 6.5);
-INSERT INTO public.atividade_aluno VALUES (2, 211, 8.0);
 INSERT INTO public.atividade_aluno VALUES (2, 212, 7.5);
-INSERT INTO public.atividade_aluno VALUES (2, 213, 9.0);
-INSERT INTO public.atividade_aluno VALUES (2, 214, 8.5);
 INSERT INTO public.atividade_aluno VALUES (2, 215, 6.0);
-INSERT INTO public.atividade_aluno VALUES (2, 216, 7.0);
-INSERT INTO public.atividade_aluno VALUES (2, 217, 8.0);
 INSERT INTO public.atividade_aluno VALUES (2, 218, 7.5);
 INSERT INTO public.atividade_aluno VALUES (2, 219, 6.5);
-INSERT INTO public.atividade_aluno VALUES (2, 220, 8.5);
 INSERT INTO public.atividade_aluno VALUES (2, 221, 9.0);
-INSERT INTO public.atividade_aluno VALUES (2, 222, 7.0);
 INSERT INTO public.atividade_aluno VALUES (2, 223, 6.0);
 INSERT INTO public.atividade_aluno VALUES (2, 224, 8.0);
 INSERT INTO public.atividade_aluno VALUES (2, 225, 9.0);
@@ -751,41 +765,23 @@ INSERT INTO public.atividade_aluno VALUES (2, 231, 9.5);
 INSERT INTO public.atividade_aluno VALUES (2, 232, 6.0);
 INSERT INTO public.atividade_aluno VALUES (2, 233, 7.5);
 INSERT INTO public.atividade_aluno VALUES (2, 234, 8.5);
-INSERT INTO public.atividade_aluno VALUES (2, 235, 9.0);
 INSERT INTO public.atividade_aluno VALUES (2, 236, 7.0);
 INSERT INTO public.atividade_aluno VALUES (3, 209, 8.5);
-INSERT INTO public.atividade_aluno VALUES (3, 210, 9.0);
-INSERT INTO public.atividade_aluno VALUES (3, 211, 7.0);
-INSERT INTO public.atividade_aluno VALUES (3, 212, 8.0);
-INSERT INTO public.atividade_aluno VALUES (3, 213, 9.5);
-INSERT INTO public.atividade_aluno VALUES (3, 214, 7.5);
-INSERT INTO public.atividade_aluno VALUES (3, 215, 8.5);
 INSERT INTO public.atividade_aluno VALUES (3, 216, 9.0);
-INSERT INTO public.atividade_aluno VALUES (3, 217, 7.0);
-INSERT INTO public.atividade_aluno VALUES (3, 218, 8.0);
 INSERT INTO public.atividade_aluno VALUES (3, 219, 9.5);
 INSERT INTO public.atividade_aluno VALUES (3, 220, 7.5);
 INSERT INTO public.atividade_aluno VALUES (3, 221, 8.5);
-INSERT INTO public.atividade_aluno VALUES (3, 222, 9.0);
 INSERT INTO public.atividade_aluno VALUES (3, 223, 7.0);
 INSERT INTO public.atividade_aluno VALUES (3, 224, 8.0);
-INSERT INTO public.atividade_aluno VALUES (3, 225, 9.5);
 INSERT INTO public.atividade_aluno VALUES (3, 226, 7.5);
 INSERT INTO public.atividade_aluno VALUES (3, 227, 8.5);
-INSERT INTO public.atividade_aluno VALUES (3, 228, 9.0);
 INSERT INTO public.atividade_aluno VALUES (3, 229, 7.0);
-INSERT INTO public.atividade_aluno VALUES (3, 230, 8.0);
 INSERT INTO public.atividade_aluno VALUES (3, 231, 9.5);
-INSERT INTO public.atividade_aluno VALUES (3, 232, 7.5);
 INSERT INTO public.atividade_aluno VALUES (3, 233, 8.5);
 INSERT INTO public.atividade_aluno VALUES (3, 234, 9.0);
-INSERT INTO public.atividade_aluno VALUES (3, 235, 7.0);
 INSERT INTO public.atividade_aluno VALUES (3, 236, 8.0);
-INSERT INTO public.atividade_aluno VALUES (6, 209, 8.5);
-INSERT INTO public.atividade_aluno VALUES (6, 210, 9.0);
 INSERT INTO public.atividade_aluno VALUES (6, 211, 7.0);
 INSERT INTO public.atividade_aluno VALUES (6, 212, 8.0);
-INSERT INTO public.atividade_aluno VALUES (6, 213, 9.5);
 INSERT INTO public.atividade_aluno VALUES (6, 214, 7.5);
 INSERT INTO public.atividade_aluno VALUES (6, 215, 8.5);
 INSERT INTO public.atividade_aluno VALUES (6, 216, 9.0);
@@ -816,52 +812,93 @@ INSERT INTO public.atividade_aluno VALUES (4, 211, 9.0);
 INSERT INTO public.atividade_aluno VALUES (7, 210, 7.0);
 INSERT INTO public.atividade_aluno VALUES (7, 211, 9.0);
 INSERT INTO public.atividade_aluno VALUES (7, 212, 6.5);
-INSERT INTO public.atividade_aluno VALUES (7, 213, 8.0);
-INSERT INTO public.atividade_aluno VALUES (7, 214, 7.5);
 INSERT INTO public.atividade_aluno VALUES (7, 215, 9.5);
 INSERT INTO public.atividade_aluno VALUES (7, 216, 8.0);
-INSERT INTO public.atividade_aluno VALUES (7, 217, 7.0);
 INSERT INTO public.atividade_aluno VALUES (7, 218, 8.5);
-INSERT INTO public.atividade_aluno VALUES (7, 219, 9.0);
 INSERT INTO public.atividade_aluno VALUES (7, 220, 7.5);
 INSERT INTO public.atividade_aluno VALUES (7, 221, 8.0);
 INSERT INTO public.atividade_aluno VALUES (7, 222, 6.0);
 INSERT INTO public.atividade_aluno VALUES (7, 223, 8.5);
 INSERT INTO public.atividade_aluno VALUES (7, 224, 7.0);
-INSERT INTO public.atividade_aluno VALUES (7, 225, 8.0);
 INSERT INTO public.atividade_aluno VALUES (7, 226, 7.5);
 INSERT INTO public.atividade_aluno VALUES (7, 227, 8.5);
 INSERT INTO public.atividade_aluno VALUES (7, 228, 6.5);
-INSERT INTO public.atividade_aluno VALUES (7, 229, 9.0);
-INSERT INTO public.atividade_aluno VALUES (7, 230, 8.0);
 INSERT INTO public.atividade_aluno VALUES (7, 231, 7.0);
 INSERT INTO public.atividade_aluno VALUES (7, 232, 8.5);
 INSERT INTO public.atividade_aluno VALUES (7, 233, 9.5);
-INSERT INTO public.atividade_aluno VALUES (7, 234, 7.5);
 INSERT INTO public.atividade_aluno VALUES (7, 235, 8.0);
 INSERT INTO public.atividade_aluno VALUES (4, 236, 6.5);
 INSERT INTO public.atividade_aluno VALUES (7, 236, 6.5);
-INSERT INTO public.atividade_aluno VALUES (8, 209, 7.0);
-INSERT INTO public.atividade_aluno VALUES (8, 210, 6.5);
-INSERT INTO public.atividade_aluno VALUES (8, 211, 8.0);
 INSERT INTO public.atividade_aluno VALUES (8, 212, 7.5);
-INSERT INTO public.atividade_aluno VALUES (8, 213, 9.0);
 INSERT INTO public.atividade_aluno VALUES (8, 214, 8.5);
 INSERT INTO public.atividade_aluno VALUES (8, 215, 6.0);
 INSERT INTO public.atividade_aluno VALUES (8, 216, 7.0);
 INSERT INTO public.atividade_aluno VALUES (8, 217, 8.0);
-INSERT INTO public.atividade_aluno VALUES (8, 218, 7.5);
 INSERT INTO public.atividade_aluno VALUES (8, 219, 6.5);
 INSERT INTO public.atividade_aluno VALUES (8, 220, 8.5);
 INSERT INTO public.atividade_aluno VALUES (8, 221, 9.0);
+INSERT INTO public.atividade_aluno VALUES (2, 220, 4.5);
+INSERT INTO public.atividade_aluno VALUES (2, 213, 7);
+INSERT INTO public.atividade_aluno VALUES (5, 215, 8.8);
+INSERT INTO public.atividade_aluno VALUES (5, 217, 4);
+INSERT INTO public.atividade_aluno VALUES (5, 221, 1);
+INSERT INTO public.atividade_aluno VALUES (5, 224, 4);
+INSERT INTO public.atividade_aluno VALUES (5, 230, 4.65);
+INSERT INTO public.atividade_aluno VALUES (1, 213, 6.9);
+INSERT INTO public.atividade_aluno VALUES (1, 215, 4.28);
+INSERT INTO public.atividade_aluno VALUES (1, 218, 5.89);
+INSERT INTO public.atividade_aluno VALUES (1, 225, 5.7);
+INSERT INTO public.atividade_aluno VALUES (1, 228, 3.7);
+INSERT INTO public.atividade_aluno VALUES (1, 231, 2.3);
+INSERT INTO public.atividade_aluno VALUES (1, 234, 9.8);
+INSERT INTO public.atividade_aluno VALUES (1, 236, 8.8);
+INSERT INTO public.atividade_aluno VALUES (2, 209, 7.8);
+INSERT INTO public.atividade_aluno VALUES (2, 214, 2);
+INSERT INTO public.atividade_aluno VALUES (2, 216, 8.3);
+INSERT INTO public.atividade_aluno VALUES (2, 217, 4);
+INSERT INTO public.atividade_aluno VALUES (2, 222, 7.8);
+INSERT INTO public.atividade_aluno VALUES (2, 235, 4.5);
+INSERT INTO public.atividade_aluno VALUES (3, 210, 9.9);
+INSERT INTO public.atividade_aluno VALUES (1, 214, 5.6);
+INSERT INTO public.atividade_aluno VALUES (3, 215, 7.7);
+INSERT INTO public.atividade_aluno VALUES (3, 218, 4.5);
+INSERT INTO public.atividade_aluno VALUES (3, 222, 6.7);
+INSERT INTO public.atividade_aluno VALUES (3, 228, 10);
+INSERT INTO public.atividade_aluno VALUES (3, 230, 8.8);
+INSERT INTO public.atividade_aluno VALUES (3, 232, 4.6);
+INSERT INTO public.atividade_aluno VALUES (3, 235, 10);
+INSERT INTO public.atividade_aluno VALUES (6, 209, 8);
+INSERT INTO public.atividade_aluno VALUES (6, 210, 7);
+INSERT INTO public.atividade_aluno VALUES (6, 213, 3.3);
+INSERT INTO public.atividade_aluno VALUES (5, 213, 4.3);
+INSERT INTO public.atividade_aluno VALUES (7, 217, 8.9);
+INSERT INTO public.atividade_aluno VALUES (7, 219, 9.6);
+INSERT INTO public.atividade_aluno VALUES (7, 229, 6.5);
+INSERT INTO public.atividade_aluno VALUES (7, 230, 8);
+INSERT INTO public.atividade_aluno VALUES (7, 234, 4.79);
+INSERT INTO public.atividade_aluno VALUES (8, 209, 8.5);
+INSERT INTO public.atividade_aluno VALUES (5, 218, 4);
+INSERT INTO public.atividade_aluno VALUES (8, 218, 9.0);
+INSERT INTO public.atividade_aluno VALUES (1, 217, 7.8);
+INSERT INTO public.atividade_aluno VALUES (3, 217, 6.7);
+INSERT INTO public.atividade_aluno VALUES (3, 214, 2.3);
+INSERT INTO public.atividade_aluno VALUES (7, 214, 8.9);
+INSERT INTO public.atividade_aluno VALUES (3, 213, 7.8);
+INSERT INTO public.atividade_aluno VALUES (8, 213, 4);
+INSERT INTO public.atividade_aluno VALUES (7, 213, 5.6);
+INSERT INTO public.atividade_aluno VALUES (3, 212, 5);
+INSERT INTO public.atividade_aluno VALUES (1, 212, 4);
+INSERT INTO public.atividade_aluno VALUES (5, 211, 1);
+INSERT INTO public.atividade_aluno VALUES (1, 211, 3);
+INSERT INTO public.atividade_aluno VALUES (8, 211, 5);
+INSERT INTO public.atividade_aluno VALUES (3, 211, 4);
+INSERT INTO public.atividade_aluno VALUES (8, 210, 3);
 INSERT INTO public.atividade_aluno VALUES (8, 222, 7.0);
-INSERT INTO public.atividade_aluno VALUES (8, 223, 6.0);
 INSERT INTO public.atividade_aluno VALUES (8, 224, 8.0);
 INSERT INTO public.atividade_aluno VALUES (8, 225, 9.0);
 INSERT INTO public.atividade_aluno VALUES (8, 226, 7.5);
 INSERT INTO public.atividade_aluno VALUES (8, 227, 8.5);
 INSERT INTO public.atividade_aluno VALUES (8, 228, 6.5);
-INSERT INTO public.atividade_aluno VALUES (8, 229, 8.0);
 INSERT INTO public.atividade_aluno VALUES (8, 230, 7.0);
 INSERT INTO public.atividade_aluno VALUES (8, 231, 9.5);
 INSERT INTO public.atividade_aluno VALUES (8, 232, 6.0);
@@ -877,7 +914,6 @@ INSERT INTO public.atividade_aluno VALUES (9, 213, 9.5);
 INSERT INTO public.atividade_aluno VALUES (9, 214, 7.5);
 INSERT INTO public.atividade_aluno VALUES (9, 215, 8.5);
 INSERT INTO public.atividade_aluno VALUES (9, 216, 9.0);
-INSERT INTO public.atividade_aluno VALUES (9, 217, 7.0);
 INSERT INTO public.atividade_aluno VALUES (9, 218, 8.0);
 INSERT INTO public.atividade_aluno VALUES (9, 219, 9.5);
 INSERT INTO public.atividade_aluno VALUES (9, 220, 7.5);
@@ -897,15 +933,9 @@ INSERT INTO public.atividade_aluno VALUES (9, 233, 8.5);
 INSERT INTO public.atividade_aluno VALUES (9, 234, 9.0);
 INSERT INTO public.atividade_aluno VALUES (9, 235, 7.0);
 INSERT INTO public.atividade_aluno VALUES (9, 236, 8.0);
-INSERT INTO public.atividade_aluno VALUES (10, 209, 8.5);
 INSERT INTO public.atividade_aluno VALUES (10, 210, 7.0);
-INSERT INTO public.atividade_aluno VALUES (10, 211, 9.0);
 INSERT INTO public.atividade_aluno VALUES (10, 212, 6.5);
-INSERT INTO public.atividade_aluno VALUES (10, 213, 8.0);
 INSERT INTO public.atividade_aluno VALUES (10, 214, 7.5);
-INSERT INTO public.atividade_aluno VALUES (10, 215, 9.5);
-INSERT INTO public.atividade_aluno VALUES (10, 216, 8.0);
-INSERT INTO public.atividade_aluno VALUES (10, 217, 7.0);
 INSERT INTO public.atividade_aluno VALUES (10, 218, 8.5);
 INSERT INTO public.atividade_aluno VALUES (10, 219, 9.0);
 INSERT INTO public.atividade_aluno VALUES (10, 220, 7.5);
@@ -958,9 +988,7 @@ INSERT INTO public.atividade_aluno VALUES (12, 210, 9.0);
 INSERT INTO public.atividade_aluno VALUES (12, 211, 7.0);
 INSERT INTO public.atividade_aluno VALUES (12, 212, 8.0);
 INSERT INTO public.atividade_aluno VALUES (12, 213, 9.5);
-INSERT INTO public.atividade_aluno VALUES (12, 214, 7.5);
 INSERT INTO public.atividade_aluno VALUES (12, 215, 8.5);
-INSERT INTO public.atividade_aluno VALUES (12, 216, 9.0);
 INSERT INTO public.atividade_aluno VALUES (12, 217, 7.0);
 INSERT INTO public.atividade_aluno VALUES (12, 218, 8.0);
 INSERT INTO public.atividade_aluno VALUES (12, 219, 9.5);
@@ -981,16 +1009,13 @@ INSERT INTO public.atividade_aluno VALUES (12, 233, 8.5);
 INSERT INTO public.atividade_aluno VALUES (12, 234, 9.0);
 INSERT INTO public.atividade_aluno VALUES (12, 235, 7.0);
 INSERT INTO public.atividade_aluno VALUES (12, 236, 8.0);
-INSERT INTO public.atividade_aluno VALUES (13, 209, 8.5);
 INSERT INTO public.atividade_aluno VALUES (13, 210, 7.0);
 INSERT INTO public.atividade_aluno VALUES (13, 211, 9.0);
-INSERT INTO public.atividade_aluno VALUES (13, 212, 6.5);
 INSERT INTO public.atividade_aluno VALUES (13, 213, 8.0);
 INSERT INTO public.atividade_aluno VALUES (13, 214, 7.5);
 INSERT INTO public.atividade_aluno VALUES (13, 215, 9.5);
 INSERT INTO public.atividade_aluno VALUES (13, 216, 8.0);
 INSERT INTO public.atividade_aluno VALUES (13, 217, 7.0);
-INSERT INTO public.atividade_aluno VALUES (13, 218, 8.5);
 INSERT INTO public.atividade_aluno VALUES (13, 219, 9.0);
 INSERT INTO public.atividade_aluno VALUES (13, 220, 7.5);
 INSERT INTO public.atividade_aluno VALUES (13, 221, 8.0);
@@ -1013,14 +1038,10 @@ INSERT INTO public.atividade_aluno VALUES (14, 209, 8.5);
 INSERT INTO public.atividade_aluno VALUES (14, 210, 9.0);
 INSERT INTO public.atividade_aluno VALUES (14, 211, 7.0);
 INSERT INTO public.atividade_aluno VALUES (14, 212, 8.0);
-INSERT INTO public.atividade_aluno VALUES (14, 213, 9.5);
-INSERT INTO public.atividade_aluno VALUES (14, 214, 7.5);
-INSERT INTO public.atividade_aluno VALUES (14, 215, 8.5);
 INSERT INTO public.atividade_aluno VALUES (14, 216, 9.0);
 INSERT INTO public.atividade_aluno VALUES (14, 217, 7.0);
 INSERT INTO public.atividade_aluno VALUES (14, 218, 8.0);
 INSERT INTO public.atividade_aluno VALUES (14, 219, 9.5);
-INSERT INTO public.atividade_aluno VALUES (14, 220, 7.5);
 INSERT INTO public.atividade_aluno VALUES (14, 221, 8.5);
 INSERT INTO public.atividade_aluno VALUES (14, 222, 9.0);
 INSERT INTO public.atividade_aluno VALUES (14, 223, 7.0);
@@ -1038,17 +1059,31 @@ INSERT INTO public.atividade_aluno VALUES (14, 234, 9.0);
 INSERT INTO public.atividade_aluno VALUES (14, 235, 7.0);
 INSERT INTO public.atividade_aluno VALUES (14, 236, 8.0);
 INSERT INTO public.atividade_aluno VALUES (15, 209, 7.0);
-INSERT INTO public.atividade_aluno VALUES (15, 210, 6.5);
+INSERT INTO public.atividade_aluno VALUES (14, 220, 7);
+INSERT INTO public.atividade_aluno VALUES (8, 229, 4);
+INSERT INTO public.atividade_aluno VALUES (13, 218, 5.6);
+INSERT INTO public.atividade_aluno VALUES (9, 217, 1.2);
+INSERT INTO public.atividade_aluno VALUES (10, 217, 7.8);
+INSERT INTO public.atividade_aluno VALUES (10, 216, 3.2);
+INSERT INTO public.atividade_aluno VALUES (12, 216, 4.5);
+INSERT INTO public.atividade_aluno VALUES (14, 215, 3.4);
+INSERT INTO public.atividade_aluno VALUES (12, 214, 4.5);
+INSERT INTO public.atividade_aluno VALUES (14, 214, 1.3);
+INSERT INTO public.atividade_aluno VALUES (14, 213, 5.6);
+INSERT INTO public.atividade_aluno VALUES (10, 213, 4);
+INSERT INTO public.atividade_aluno VALUES (13, 212, 3);
+INSERT INTO public.atividade_aluno VALUES (10, 211, 8);
+INSERT INTO public.atividade_aluno VALUES (15, 210, 4);
+INSERT INTO public.atividade_aluno VALUES (13, 209, 6.5);
+INSERT INTO public.atividade_aluno VALUES (10, 209, 4);
 INSERT INTO public.atividade_aluno VALUES (15, 211, 8.0);
 INSERT INTO public.atividade_aluno VALUES (15, 212, 7.5);
 INSERT INTO public.atividade_aluno VALUES (15, 213, 9.0);
 INSERT INTO public.atividade_aluno VALUES (15, 214, 8.5);
 INSERT INTO public.atividade_aluno VALUES (15, 215, 6.0);
-INSERT INTO public.atividade_aluno VALUES (15, 216, 7.0);
 INSERT INTO public.atividade_aluno VALUES (15, 217, 8.0);
 INSERT INTO public.atividade_aluno VALUES (15, 218, 7.5);
 INSERT INTO public.atividade_aluno VALUES (15, 219, 6.5);
-INSERT INTO public.atividade_aluno VALUES (15, 220, 8.5);
 INSERT INTO public.atividade_aluno VALUES (15, 221, 9.0);
 INSERT INTO public.atividade_aluno VALUES (15, 222, 7.0);
 INSERT INTO public.atividade_aluno VALUES (15, 223, 6.0);
@@ -1065,33 +1100,44 @@ INSERT INTO public.atividade_aluno VALUES (15, 233, 7.5);
 INSERT INTO public.atividade_aluno VALUES (15, 234, 8.5);
 INSERT INTO public.atividade_aluno VALUES (15, 235, 9.0);
 INSERT INTO public.atividade_aluno VALUES (15, 236, 7.0);
+INSERT INTO public.atividade_aluno VALUES (5, 212, 4.5);
+INSERT INTO public.atividade_aluno VALUES (5, 235, 10);
+INSERT INTO public.atividade_aluno VALUES (2, 211, 5.3);
+INSERT INTO public.atividade_aluno VALUES (3, 225, 4.5);
+INSERT INTO public.atividade_aluno VALUES (7, 225, 4.9);
+INSERT INTO public.atividade_aluno VALUES (8, 223, 4);
+INSERT INTO public.atividade_aluno VALUES (15, 220, 6.7);
+INSERT INTO public.atividade_aluno VALUES (15, 216, 5.6);
+INSERT INTO public.atividade_aluno VALUES (10, 215, 5.6);
+INSERT INTO public.atividade_aluno VALUES (5, 214, 3.7);
+INSERT INTO public.atividade_aluno VALUES (1, 210, 1);
 
 
 --
--- TOC entry 4937 (class 0 OID 16593)
+-- TOC entry 4946 (class 0 OID 16593)
 -- Dependencies: 228
 -- Data for Name: atividades; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.atividades VALUES (1, 'Trabalho', 'Trabalho de pesquisa sobre a história da computação', '2023-04-15', 15, 3);
-INSERT INTO public.atividades VALUES (2, 'Prova', 'Prova teórica sobre conceitos básicos de computação', '2023-05-10', 15, 3);
-INSERT INTO public.atividades VALUES (3, 'Trabalho', 'Desenvolvimento de um trabalho prático utilizando algoritmos simples', '2023-06-05', 15, 3);
-INSERT INTO public.atividades VALUES (4, 'Trabalho', 'Desenvolvimento de um site estático utilizando HTML, CSS e JavaScrip', '2023-04-20', 13, 2);
-INSERT INTO public.atividades VALUES (6, 'Trabalho', 'Desenvolvimento de um blog dinâmico com CRUD em PHP e MySQL', '2023-06-10', 13, 2);
-INSERT INTO public.atividades VALUES (5, 'Trabalho', 'Implementação de um sistema de login utilizando Node.js e Express', '2023-05-15', 13, 2);
-INSERT INTO public.atividades VALUES (7, 'Prova', 'TProva sobre conjuntos, relações e funções', '2023-05-01', 2, 4);
-INSERT INTO public.atividades VALUES (8, 'Trabalho', 'Trabalho sobre álgebra booleana e circuitos lógico', '2023-05-25', 2, 4);
-INSERT INTO public.atividades VALUES (9, 'Trabalho', 'Apresentação sobre grafos e suas aplicações', '2023-06-20', 2, 4);
-INSERT INTO public.atividades VALUES (10, 'Prova', 'Prova sobre limites e derivadas', '2023-05-05', 8, 5);
-INSERT INTO public.atividades VALUES (11, 'Prova', 'Prova sobre integrais definidas', '2023-05-30', 8, 5);
-INSERT INTO public.atividades VALUES (12, 'Prova', 'Apresentação sobre aplicações da derivada', '2023-06-25', 8, 5);
-INSERT INTO public.atividades VALUES (13, 'Prova', 'Prova sobre estruturas de controle', '2023-04-05', 2, 1);
-INSERT INTO public.atividades VALUES (14, 'Prova', 'Prova sobre arrays e funções', '2023-05-30', 2, 1);
-INSERT INTO public.atividades VALUES (15, 'Trabalho', 'Trabalho prático de desenvolvimento de algoritmos', '2023-06-25', 2, 1);
+INSERT INTO public.atividades VALUES (1, 'Trabalho de pesquisa sobre a história da computação', '2023-04-15', 15, 3, 2);
+INSERT INTO public.atividades VALUES (3, 'Desenvolvimento de um trabalho prático utilizando algoritmos simples', '2023-06-05', 15, 3, 2);
+INSERT INTO public.atividades VALUES (4, 'Desenvolvimento de um site estático utilizando HTML, CSS e JavaScrip', '2023-04-20', 13, 2, 2);
+INSERT INTO public.atividades VALUES (6, 'Desenvolvimento de um blog dinâmico com CRUD em PHP e MySQL', '2023-06-10', 13, 2, 2);
+INSERT INTO public.atividades VALUES (5, 'Implementação de um sistema de login utilizando Node.js e Express', '2023-05-15', 13, 2, 2);
+INSERT INTO public.atividades VALUES (8, 'Trabalho sobre álgebra booleana e circuitos lógico', '2023-05-25', 2, 4, 2);
+INSERT INTO public.atividades VALUES (9, 'Apresentação sobre grafos e suas aplicações', '2023-06-20', 2, 4, 2);
+INSERT INTO public.atividades VALUES (15, 'Trabalho prático de desenvolvimento de algoritmos', '2023-06-25', 2, 1, 2);
+INSERT INTO public.atividades VALUES (2, 'Prova teórica sobre conceitos básicos de computação', '2023-05-10', 15, 3, 1);
+INSERT INTO public.atividades VALUES (7, 'TProva sobre conjuntos, relações e funções', '2023-05-01', 2, 4, 1);
+INSERT INTO public.atividades VALUES (10, 'Prova sobre limites e derivadas', '2023-05-05', 8, 5, 1);
+INSERT INTO public.atividades VALUES (11, 'Prova sobre integrais definidas', '2023-05-30', 8, 5, 1);
+INSERT INTO public.atividades VALUES (12, 'Apresentação sobre aplicações da derivada', '2023-06-25', 8, 5, 1);
+INSERT INTO public.atividades VALUES (13, 'Prova sobre estruturas de controle', '2023-04-05', 2, 1, 1);
+INSERT INTO public.atividades VALUES (14, 'Prova sobre arrays e funções', '2023-05-30', 2, 1, 1);
 
 
 --
--- TOC entry 4925 (class 0 OID 16532)
+-- TOC entry 4934 (class 0 OID 16532)
 -- Dependencies: 216
 -- Data for Name: cursos; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1101,7 +1147,7 @@ INSERT INTO public.cursos VALUES (2, 'Tecnologia em Análise e Desenvolvimento d
 
 
 --
--- TOC entry 4938 (class 0 OID 16604)
+-- TOC entry 4947 (class 0 OID 16604)
 -- Dependencies: 229
 -- Data for Name: cursos_disciplinas; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1167,7 +1213,7 @@ INSERT INTO public.cursos_disciplinas VALUES (2, 6);
 
 
 --
--- TOC entry 4931 (class 0 OID 16558)
+-- TOC entry 4940 (class 0 OID 16558)
 -- Dependencies: 222
 -- Data for Name: departamentos; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1177,7 +1223,7 @@ INSERT INTO public.departamentos VALUES (1, 'Departamento de Ciência da Computa
 
 
 --
--- TOC entry 4927 (class 0 OID 16539)
+-- TOC entry 4936 (class 0 OID 16539)
 -- Dependencies: 218
 -- Data for Name: disciplinas; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1225,7 +1271,7 @@ INSERT INTO public.disciplinas VALUES (40, 'Seminários em Computação', 60);
 
 
 --
--- TOC entry 4933 (class 0 OID 16565)
+-- TOC entry 4942 (class 0 OID 16565)
 -- Dependencies: 224
 -- Data for Name: professores; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1248,7 +1294,17 @@ INSERT INTO public.professores VALUES (15, 'Marcelo', 'Lima', '1974-09-18', '468
 
 
 --
--- TOC entry 4939 (class 0 OID 16619)
+-- TOC entry 4952 (class 0 OID 16922)
+-- Dependencies: 234
+-- Data for Name: tipo_atividade; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.tipo_atividade VALUES (1, 'Prova');
+INSERT INTO public.tipo_atividade VALUES (2, 'Trabalho');
+
+
+--
+-- TOC entry 4948 (class 0 OID 16619)
 -- Dependencies: 230
 -- Data for Name: turma_aluno; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1396,7 +1452,7 @@ INSERT INTO public.turma_aluno VALUES (5, 236);
 
 
 --
--- TOC entry 4940 (class 0 OID 16634)
+-- TOC entry 4949 (class 0 OID 16634)
 -- Dependencies: 231
 -- Data for Name: turma_professor; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1409,7 +1465,7 @@ INSERT INTO public.turma_professor VALUES (5, 8);
 
 
 --
--- TOC entry 4929 (class 0 OID 16546)
+-- TOC entry 4938 (class 0 OID 16546)
 -- Dependencies: 220
 -- Data for Name: turmas; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -1422,7 +1478,7 @@ INSERT INTO public.turmas VALUES (5, '2023/1', 'F201', 14);
 
 
 --
--- TOC entry 4956 (class 0 OID 0)
+-- TOC entry 4968 (class 0 OID 0)
 -- Dependencies: 225
 -- Name: alunos_id_aluno_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -1431,7 +1487,7 @@ SELECT pg_catalog.setval('public.alunos_id_aluno_seq', 285, true);
 
 
 --
--- TOC entry 4957 (class 0 OID 0)
+-- TOC entry 4969 (class 0 OID 0)
 -- Dependencies: 227
 -- Name: atividades_id_atividade_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -1440,7 +1496,7 @@ SELECT pg_catalog.setval('public.atividades_id_atividade_seq', 15, true);
 
 
 --
--- TOC entry 4958 (class 0 OID 0)
+-- TOC entry 4970 (class 0 OID 0)
 -- Dependencies: 215
 -- Name: cursos_id_curso_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -1449,7 +1505,7 @@ SELECT pg_catalog.setval('public.cursos_id_curso_seq', 2, true);
 
 
 --
--- TOC entry 4959 (class 0 OID 0)
+-- TOC entry 4971 (class 0 OID 0)
 -- Dependencies: 221
 -- Name: departamentos_id_departamento_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -1458,7 +1514,7 @@ SELECT pg_catalog.setval('public.departamentos_id_departamento_seq', 2, true);
 
 
 --
--- TOC entry 4960 (class 0 OID 0)
+-- TOC entry 4972 (class 0 OID 0)
 -- Dependencies: 217
 -- Name: disciplinas_id_disciplina_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -1467,7 +1523,7 @@ SELECT pg_catalog.setval('public.disciplinas_id_disciplina_seq', 40, true);
 
 
 --
--- TOC entry 4961 (class 0 OID 0)
+-- TOC entry 4973 (class 0 OID 0)
 -- Dependencies: 223
 -- Name: professores_id_professor_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -1476,7 +1532,16 @@ SELECT pg_catalog.setval('public.professores_id_professor_seq', 15, true);
 
 
 --
--- TOC entry 4962 (class 0 OID 0)
+-- TOC entry 4974 (class 0 OID 0)
+-- Dependencies: 233
+-- Name: tipo_atividade_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.tipo_atividade_id_seq', 2, true);
+
+
+--
+-- TOC entry 4975 (class 0 OID 0)
 -- Dependencies: 219
 -- Name: turmas_id_turma_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -1485,7 +1550,7 @@ SELECT pg_catalog.setval('public.turmas_id_turma_seq', 6, true);
 
 
 --
--- TOC entry 4755 (class 2606 OID 16586)
+-- TOC entry 4761 (class 2606 OID 16586)
 -- Name: alunos alunos_cpf_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1494,7 +1559,7 @@ ALTER TABLE ONLY public.alunos
 
 
 --
--- TOC entry 4757 (class 2606 OID 16584)
+-- TOC entry 4763 (class 2606 OID 16584)
 -- Name: alunos alunos_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1503,7 +1568,7 @@ ALTER TABLE ONLY public.alunos
 
 
 --
--- TOC entry 4767 (class 2606 OID 16672)
+-- TOC entry 4773 (class 2606 OID 16672)
 -- Name: atividade_aluno atividade_aluno_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1512,7 +1577,7 @@ ALTER TABLE ONLY public.atividade_aluno
 
 
 --
--- TOC entry 4759 (class 2606 OID 16598)
+-- TOC entry 4765 (class 2606 OID 16598)
 -- Name: atividades atividades_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1521,7 +1586,7 @@ ALTER TABLE ONLY public.atividades
 
 
 --
--- TOC entry 4761 (class 2606 OID 16608)
+-- TOC entry 4767 (class 2606 OID 16608)
 -- Name: cursos_disciplinas cursos_disciplinas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1530,7 +1595,7 @@ ALTER TABLE ONLY public.cursos_disciplinas
 
 
 --
--- TOC entry 4743 (class 2606 OID 16537)
+-- TOC entry 4749 (class 2606 OID 16537)
 -- Name: cursos cursos_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1539,7 +1604,7 @@ ALTER TABLE ONLY public.cursos
 
 
 --
--- TOC entry 4749 (class 2606 OID 16563)
+-- TOC entry 4755 (class 2606 OID 16563)
 -- Name: departamentos departamentos_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1548,7 +1613,7 @@ ALTER TABLE ONLY public.departamentos
 
 
 --
--- TOC entry 4745 (class 2606 OID 16544)
+-- TOC entry 4751 (class 2606 OID 16544)
 -- Name: disciplinas disciplinas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1557,7 +1622,7 @@ ALTER TABLE ONLY public.disciplinas
 
 
 --
--- TOC entry 4751 (class 2606 OID 16572)
+-- TOC entry 4757 (class 2606 OID 16572)
 -- Name: professores professores_cpf_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1566,7 +1631,7 @@ ALTER TABLE ONLY public.professores
 
 
 --
--- TOC entry 4753 (class 2606 OID 16570)
+-- TOC entry 4759 (class 2606 OID 16570)
 -- Name: professores professores_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1575,7 +1640,16 @@ ALTER TABLE ONLY public.professores
 
 
 --
--- TOC entry 4763 (class 2606 OID 16623)
+-- TOC entry 4775 (class 2606 OID 16929)
+-- Name: tipo_atividade tipo_atividade_pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tipo_atividade
+    ADD CONSTRAINT tipo_atividade_pk PRIMARY KEY (id_atividade);
+
+
+--
+-- TOC entry 4769 (class 2606 OID 16623)
 -- Name: turma_aluno turma_aluno_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1584,7 +1658,7 @@ ALTER TABLE ONLY public.turma_aluno
 
 
 --
--- TOC entry 4765 (class 2606 OID 16638)
+-- TOC entry 4771 (class 2606 OID 16638)
 -- Name: turma_professor turma_professor_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1593,7 +1667,7 @@ ALTER TABLE ONLY public.turma_professor
 
 
 --
--- TOC entry 4747 (class 2606 OID 16551)
+-- TOC entry 4753 (class 2606 OID 16551)
 -- Name: turmas turmas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1602,7 +1676,7 @@ ALTER TABLE ONLY public.turmas
 
 
 --
--- TOC entry 4770 (class 2606 OID 16587)
+-- TOC entry 4778 (class 2606 OID 16587)
 -- Name: alunos alunos_fk_curso_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1611,7 +1685,7 @@ ALTER TABLE ONLY public.alunos
 
 
 --
--- TOC entry 4779 (class 2606 OID 16749)
+-- TOC entry 4788 (class 2606 OID 16749)
 -- Name: atividade_aluno atividade_aluno_id_aluno_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1620,7 +1694,7 @@ ALTER TABLE ONLY public.atividade_aluno
 
 
 --
--- TOC entry 4780 (class 2606 OID 16754)
+-- TOC entry 4789 (class 2606 OID 16754)
 -- Name: atividade_aluno atividade_aluno_id_atividade_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1629,7 +1703,7 @@ ALTER TABLE ONLY public.atividade_aluno
 
 
 --
--- TOC entry 4771 (class 2606 OID 16599)
+-- TOC entry 4779 (class 2606 OID 16599)
 -- Name: atividades atividades_fk_professor_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1638,7 +1712,16 @@ ALTER TABLE ONLY public.atividades
 
 
 --
--- TOC entry 4772 (class 2606 OID 16694)
+-- TOC entry 4780 (class 2606 OID 16930)
+-- Name: atividades atividades_tipo_atividade_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.atividades
+    ADD CONSTRAINT atividades_tipo_atividade_fk FOREIGN KEY (fk_tipo_atividade) REFERENCES public.tipo_atividade(id_atividade);
+
+
+--
+-- TOC entry 4781 (class 2606 OID 16694)
 -- Name: atividades atividades_turmas_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1647,7 +1730,7 @@ ALTER TABLE ONLY public.atividades
 
 
 --
--- TOC entry 4773 (class 2606 OID 16609)
+-- TOC entry 4782 (class 2606 OID 16609)
 -- Name: cursos_disciplinas cursos_disciplinas_id_curso_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1656,7 +1739,7 @@ ALTER TABLE ONLY public.cursos_disciplinas
 
 
 --
--- TOC entry 4774 (class 2606 OID 16614)
+-- TOC entry 4783 (class 2606 OID 16614)
 -- Name: cursos_disciplinas cursos_disciplinas_id_disciplina_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1665,7 +1748,7 @@ ALTER TABLE ONLY public.cursos_disciplinas
 
 
 --
--- TOC entry 4769 (class 2606 OID 16573)
+-- TOC entry 4777 (class 2606 OID 16573)
 -- Name: professores professores_fk_departamento_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1674,7 +1757,7 @@ ALTER TABLE ONLY public.professores
 
 
 --
--- TOC entry 4775 (class 2606 OID 16759)
+-- TOC entry 4784 (class 2606 OID 16759)
 -- Name: turma_aluno turma_aluno_id_aluno_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1683,7 +1766,7 @@ ALTER TABLE ONLY public.turma_aluno
 
 
 --
--- TOC entry 4776 (class 2606 OID 16764)
+-- TOC entry 4785 (class 2606 OID 16764)
 -- Name: turma_aluno turma_aluno_id_turma_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1692,7 +1775,7 @@ ALTER TABLE ONLY public.turma_aluno
 
 
 --
--- TOC entry 4777 (class 2606 OID 16769)
+-- TOC entry 4786 (class 2606 OID 16769)
 -- Name: turma_professor turma_professor_id_professor_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1701,7 +1784,7 @@ ALTER TABLE ONLY public.turma_professor
 
 
 --
--- TOC entry 4778 (class 2606 OID 16774)
+-- TOC entry 4787 (class 2606 OID 16774)
 -- Name: turma_professor turma_professor_id_turma_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1710,7 +1793,7 @@ ALTER TABLE ONLY public.turma_professor
 
 
 --
--- TOC entry 4768 (class 2606 OID 16552)
+-- TOC entry 4776 (class 2606 OID 16552)
 -- Name: turmas turmas_fk_disciplina_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1718,7 +1801,7 @@ ALTER TABLE ONLY public.turmas
     ADD CONSTRAINT turmas_fk_disciplina_fkey FOREIGN KEY (fk_disciplina) REFERENCES public.disciplinas(id_disciplina);
 
 
--- Completed on 2024-04-13 23:04:20
+-- Completed on 2024-04-14 19:25:34
 
 --
 -- PostgreSQL database dump complete
