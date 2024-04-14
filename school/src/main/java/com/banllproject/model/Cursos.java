@@ -80,6 +80,8 @@ public class Cursos {
     }
 
     public void imprimeCurso() {
+        if (this.getIdCurso() == 0)
+            return;
         System.out.println(
                 String.format(
                         "\nInformações do curso:\nID: %d\nNome: %s\nSigla: %s\nDuração Mínima: %d semestres\nDuração Máxima: %d semestres",
@@ -101,7 +103,7 @@ public class Cursos {
                     result.getString("sigla"));
         } else {
             System.out.println("Curso não encontrado com esse ID!");
-            return null;
+            return new Cursos();
         }
     }
 

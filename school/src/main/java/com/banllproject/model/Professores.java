@@ -122,6 +122,8 @@ public class Professores {
     }
 
     public void imprimeProfessor() {
+        if (this.getIdProfessor() == 0)
+            return;
         System.out.println(
                 String.format(
                         "\nInformações do professor:\nID: %d\nNome Completo: %s %s\nSexo: %s\nCPF: %s\nData de nascimento: %s",
@@ -158,7 +160,7 @@ public class Professores {
                     departamentos);
         } else {
             System.out.println("Professor não encontrado com esse ID!");
-            return null;
+            return new Professores();
         }
     }
 

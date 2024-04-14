@@ -130,6 +130,9 @@ public class Alunos {
     }
 
     public void imprimeAluno() {
+        if (this.getIdAluno() == 0) {
+            return;
+        }
         System.out.println(
                 String.format(
                         "\nInformações do aluno:\nID: %d\nNome: %s %s\nSexo: %s\nCPF: %s\nData de nascimento: %s\nData de Ingresso: %s",
@@ -181,7 +184,7 @@ public class Alunos {
                     cursos);
         } else {
             System.out.println("Aluno não encontrado com esse ID!");
-            return null;
+            return new Alunos();
         }
     }
 

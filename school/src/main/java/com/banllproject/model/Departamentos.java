@@ -57,6 +57,8 @@ public class Departamentos {
     }
 
     public void imprimeDepartamento() {
+        if (this.getIdDepartamento() == 0)
+            return;
         System.out.println(
                 String.format("\nInformações do departamento:\nID: %d\nNome: %s\nSigla: %s", this.getIdDepartamento(),
                         this.getNome(), this.getSigla()));
@@ -74,7 +76,7 @@ public class Departamentos {
                     result.getString("sigla"));
         } else {
             System.out.println("Departamento não encontrado com esse ID!");
-            return null;
+            return new Departamentos();
         }
     }
 

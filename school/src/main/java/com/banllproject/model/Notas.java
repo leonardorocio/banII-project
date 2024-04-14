@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.banllproject.Conexao;
+import com.banllproject.view.Menu;
 
 public class Notas {
 
@@ -21,6 +22,9 @@ public class Notas {
         this.idAluno = idAluno;
         this.idAtividade = idAtividade;
         this.nota = nota;
+    }
+
+    public Notas() {
     }
 
     public int getIdAluno() {
@@ -48,16 +52,20 @@ public class Notas {
     }
 
     public void imprimeNota() {
+        if (this.getIdAluno() == 0 || this.getIdAtividade() == 0)
+            return;
         try {
             Alunos aluno = Alunos.getById(this.idAluno);
             Atividades atividade = Atividades.getById(this.idAtividade);
     
             System.out.println(
-                    String.format("Aluno: %s\nAtividade: %s\nNota: %.2f",
-                            String.format("%s %s", aluno.getNome(), aluno.getSobrenome(),
-                                    atividade.getDescricaoAtividade(), this.nota)));
+                    String.format("\nAluno: %s\nAtividade: %s\nNota: %.2f",
+                            String.format("%s %s", aluno.getNome(), aluno.getSobrenome()),
+                                    atividade.getDescricaoAtividade(), this.nota));
+            Menu.pausaMenu();
         } catch (SQLException e) {
             System.out.println("Erro ao buscar aluno ou atividade!");
+            e.printStackTrace();
         }
     }
 
@@ -76,7 +84,7 @@ public class Notas {
             );
         } else {
             System.out.println("Não foi encontrada nota para esse aluno e essa atividade");
-            return null;
+            return new Notas();
         }
     }
 

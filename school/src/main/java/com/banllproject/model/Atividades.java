@@ -16,9 +16,11 @@ public class Atividades {
 
     private static Connection conexao = Conexao.getInstance().getConnection();
     private int idAtividade;
-    private String tipoAtividade;
     private String descricaoAtividade;
     private Date dtEntrega;
+
+    private int fkTipoAtividade;
+    private TipoAtividades fkTipoAtividadesObject;
     private int fkProfessores;
     private Professores fkProfessoresObject;
     private int fkTurma;
@@ -27,30 +29,35 @@ public class Atividades {
     // N:N
     private int idAlunoAtividade;
 
-    public Atividades(int idAtividade, String tipoAtividade, String descricaoAtividade, Date dtEntrega) {
+    public Atividades(int idAtividade, String descricaoAtividade, Date dtEntrega) {
         this.idAtividade = idAtividade;
-        this.tipoAtividade = tipoAtividade;
         this.descricaoAtividade = descricaoAtividade;
         this.dtEntrega = dtEntrega;
     }
 
-    public Atividades(String tipoAtividade, String descricaoAtividade, Date dtEntrega, int fkProfessores, int fkTurma) {
-        this.tipoAtividade = tipoAtividade;
+    public Atividades(String descricaoAtividade, Date dtEntrega, int fkProfessores, int fkTurma,
+            int fkTipoAtividade) {
         this.descricaoAtividade = descricaoAtividade;
         this.dtEntrega = dtEntrega;
         this.fkProfessores = fkProfessores;
+        this.fkTipoAtividade = fkTipoAtividade;
     }
 
-    public Atividades(int idAtividade, String tipoAtividade, String descricaoAtividade, Date dtEntrega,
-            int fkProfessores, Professores fkProfessoresObject, int fkTurma, Turmas fkTurmasObject) {
+    public Atividades(int idAtividade, String descricaoAtividade, Date dtEntrega,
+            int fkProfessores, Professores fkProfessoresObject, int fkTurma, Turmas fkTurmasObject, int fkTipoAtividade,
+            TipoAtividades fkTipoAtividadesObject) {
         this.idAtividade = idAtividade;
-        this.tipoAtividade = tipoAtividade;
         this.descricaoAtividade = descricaoAtividade;
         this.dtEntrega = dtEntrega;
         this.fkProfessores = fkProfessores;
         this.fkProfessoresObject = fkProfessoresObject;
         this.fkTurma = fkTurma;
         this.fkTurmasObject = fkTurmasObject;
+        this.fkTipoAtividade = fkTipoAtividade;
+        this.fkTipoAtividadesObject = fkTipoAtividadesObject;
+    }
+
+    public Atividades() {
     }
 
     public int getIdAtividade() {
@@ -59,14 +66,6 @@ public class Atividades {
 
     public void setIdAtividade(int idAtividade) {
         this.idAtividade = idAtividade;
-    }
-
-    public String getTipoAtividade() {
-        return tipoAtividade;
-    }
-
-    public void setTipoAtividade(String tipoAtividade) {
-        this.tipoAtividade = tipoAtividade;
     }
 
     public String getDescricaoAtividade() {
@@ -125,19 +124,41 @@ public class Atividades {
         this.fkTurmasObject = fkTurmasObject;
     }
 
+    public int getFkTipoAtividade() {
+        return fkTipoAtividade;
+    }
+
+    public void setFkTipoAtividade(int fkTipoAtividade) {
+        this.fkTipoAtividade = fkTipoAtividade;
+    }
+
+    public TipoAtividades getFkTipoAtividadesObject() {
+        return fkTipoAtividadesObject;
+    }
+
+    public void setFkTipoAtividadesObject(TipoAtividades fkTipoAtividadesObject) {
+        this.fkTipoAtividadesObject = fkTipoAtividadesObject;
+    }
+
     public void imprimeAtividade() {
+        if (this.getIdAtividade() == 0)
+            return;
         System.out.println(
                 String.format(
-                        "\nInformações da atividade:\nID: %d\nTipo: %s\nDescrição: %s\nData de Entrega: %s",
-                        this.getIdAtividade(), this.getTipoAtividade(), this.getDescricaoAtividade(),
+                        "\nInformações da atividade:\nID: %d\nDescrição: %s\nData de Entrega: %s",
+                        this.getIdAtividade(), this.getDescricaoAtividade(),
                         this.getDtEntrega().toString()));
         if (this.getFkProfessoresObject() != null) {
             this.getFkProfessoresObject().imprimeProfessor();
-        } 
+        }
         if (this.getFkTurmasObject() != null) {
             this.getFkTurmasObject().imprimeTurma();
         }
-        if (this.getFkProfessoresObject() == null && this.getFkTurmasObject() == null) {
+        if (this.getFkTipoAtividadesObject() != null) {
+            this.getFkTipoAtividadesObject().imprimeTipoAtividade();
+        }
+        if (this.getFkProfessoresObject() == null && this.getFkTurmasObject() == null
+                && this.getFkTipoAtividadesObject() == null) {
             Menu.pausaMenu();
         }
     }
@@ -158,23 +179,29 @@ public class Atividades {
             if (fk_turma != 0) {
                 turmas = Turmas.getById(fk_turma);
             }
+            int fk_tipo = result.getInt("fk_tipo_atividade");
+            TipoAtividades tipo = new TipoAtividades();
+            if (fk_tipo != 0) {
+                tipo = TipoAtividades.getById(fk_tipo);
+            }
             return new Atividades(
                     result.getInt("id_atividade"),
-                    result.getString("tipo_atividade"),
                     result.getString("descricao_atividade"),
                     result.getDate("dt_entrega"),
                     fk_professor,
                     professores,
                     fk_turma,
-                    turmas);
+                    turmas,
+                    fk_tipo,
+                    tipo);
         } else {
             System.out.println("Atividade não encontrada com esse ID!");
-            return null;
+            return new Atividades();
         }
     }
 
     private static void createManyToManyRelation(Atividades atividades) throws SQLException {
-        String sql = "INSERT INTO atividade_aluno (id_turma, id_aluno, nota) VALUES (?, ?)";
+        String sql = "INSERT INTO atividade_aluno (id_turma, id_aluno) VALUES (?, ?)";
         PreparedStatement preparedStatement = conexao.prepareStatement(sql);
         preparedStatement.setInt(1, atividades.getIdAtividade());
         preparedStatement.setInt(2, atividades.getIdAlunoAtividade());
@@ -183,12 +210,13 @@ public class Atividades {
     }
 
     public static void create(Atividades atividade) throws SQLException {
-        String sql = "INSERT INTO atividades (tipo_atividade, descricao_atividade, dt_entrega, fk_professor) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO atividades (descricao_atividade, dt_entrega, fk_professor, fk_turma, fk_tipo_atividade) VALUES (?, ?, ?, ?, ?)";
         PreparedStatement preparedStatement = conexao.prepareStatement(sql);
-        preparedStatement.setString(1, atividade.getTipoAtividade());
-        preparedStatement.setString(2, atividade.getDescricaoAtividade());
-        preparedStatement.setDate(3, atividade.getDtEntrega());
-        preparedStatement.setInt(4, atividade.getFkProfessores());
+        preparedStatement.setString(1, atividade.getDescricaoAtividade());
+        preparedStatement.setDate(2, atividade.getDtEntrega());
+        preparedStatement.setInt(3, atividade.getFkProfessores());
+        preparedStatement.setInt(4, atividade.getFkTurma());
+        preparedStatement.setInt(5, atividade.getFkTipoAtividade());
         preparedStatement.execute();
         preparedStatement.close();
 
@@ -207,9 +235,6 @@ public class Atividades {
         PreparedStatement preparedStatement = conexao.prepareStatement(sql);
         int i;
         for (i = 1; i <= updatedFields.size(); i++) {
-            if (updatedFields.get(i - 1).equals("tipo_atividade")) {
-                preparedStatement.setString(i, atividade.getTipoAtividade());
-            }
             if (updatedFields.get(i - 1).equals("descricao_atividade")) {
                 preparedStatement.setString(i, atividade.getDescricaoAtividade());
             }
@@ -246,17 +271,23 @@ public class Atividades {
             if (fk_turma != 0) {
                 turmas = Turmas.getById(fk_turma);
             }
-            atividades.add(
-                    new Atividades(
-                            resultList.getInt("id_atividade"),
-                            resultList.getString("tipo_atividade"),
-                            resultList.getString("descricao_atividade"),
-                            resultList.getDate("dt_entrega"),
-                            fk_professor,
-                            professores,
-                            fk_turma,
-                            turmas));
+            int fk_tipo = resultList.getInt("fk_tipo_atividade");
+            TipoAtividades tipo = new TipoAtividades();
+            if (fk_tipo != 0) {
+                tipo = TipoAtividades.getById(fk_tipo);
+            }
+            atividades.add(new Atividades(
+                    resultList.getInt("id_atividade"),
+                    resultList.getString("descricao_atividade"),
+                    resultList.getDate("dt_entrega"),
+                    fk_professor,
+                    professores,
+                    fk_turma,
+                    turmas,
+                    fk_tipo,
+                    tipo));
         }
         return atividades;
     }
+
 }

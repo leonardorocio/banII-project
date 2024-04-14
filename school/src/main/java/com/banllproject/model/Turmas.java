@@ -96,6 +96,8 @@ public class Turmas {
     }
 
     public void imprimeTurma() {
+        if (this.getIdTurma() == 0)
+            return;
         System.out.println(
                 String.format("\nInformações da turma:\nID: %d\nAno/Semestre: %s\nLocal de aula: %s", this.getIdTurma(),
                         this.getAnoSemestre(), this.getLocalAula()));
@@ -125,7 +127,7 @@ public class Turmas {
                     disciplinas);
         } else {
             System.out.println("Turma não encontrada com esse ID!");
-            return null;
+            return new Turmas();
         }
     }
 

@@ -65,6 +65,8 @@ public class Disciplinas {
     }
 
     public void imprimeDisciplina() {
+        if (this.getIdDisciplina() == 0)
+            return;
         System.out.println(
                 String.format("\nInformações da disciplina:\nID: %d\nNome: %s\nCarga Horária: %d",
                         this.getIdDisciplina(),
@@ -92,7 +94,7 @@ public class Disciplinas {
                     result.getInt("carga_horaria"));
         } else {
             System.out.println("Disciplina não encontrada com este ID!");
-            return null;
+            return new Disciplinas();
         }
     }
 

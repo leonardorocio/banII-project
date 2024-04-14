@@ -12,6 +12,7 @@ import com.banllproject.controller.DisciplinasController;
 import com.banllproject.controller.NotasController;
 import com.banllproject.controller.OperacoesController;
 import com.banllproject.controller.ProfessoresController;
+import com.banllproject.controller.TipoAtividadesController;
 import com.banllproject.controller.TurmasController;
 
 public class Menu {
@@ -137,7 +138,7 @@ public class Menu {
                     Menu.menuEntidade(new NotasController(), "Notas das atividades");
                     break;
                 case 9:
-                    Menu.menuEntidade(new AtividadesController(), "Tipos de Atividade");
+                    Menu.menuEntidade(new TipoAtividadesController(), "Tipos de Atividade");
                     break;
                 case 10:
                     break;
@@ -145,7 +146,7 @@ public class Menu {
         } while (option != 10);
     }
 
-    public static void menuEntidade(Controller controller, String entidade) {
+    public static int menuEntidade(Controller controller, String entidade) {
         int option;
         do {
             System.out.println("\nEscolha uma das ações na entidade " + entidade + ": ");
@@ -174,12 +175,14 @@ public class Menu {
                 }
             } catch (Exception e) {
                 System.out.println("Erro: " + e.getMessage());
-                Menu.menuEntidade(controller, entidade);
+                e.printStackTrace();
+                return Menu.menuEntidade(controller, entidade);
             }
         } while (option != 6);
+        return option;
     }
 
-    public static void menuOutrasConsultas() {
+    public static int menuOutrasConsultas() {
 
         int option;
         OperacoesController operacoes = new OperacoesController();
@@ -247,9 +250,10 @@ public class Menu {
                 }
             } catch (Exception e) {
                 System.out.println("Erro: " + e.getMessage());
-                Menu.menuOutrasConsultas();
+                return Menu.menuOutrasConsultas();
             }
         } while (option != 14);
+        return option;
     }
 
 }
