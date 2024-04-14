@@ -79,7 +79,7 @@ public class Menu {
     public static void criaMenu() {
         int option;
         do {
-            System.out.println("---------------------------------------------------");
+            System.out.println("\n---------------------------------------------------");
             System.out.println("Bem vindo ao sistema da faculdade!\nO que gostaria de fazer?");
             System.out.println(
                     "1 - Criação, Edição e Remoção de Registros\n" +
@@ -107,7 +107,7 @@ public class Menu {
     public static void menuCruds() {
         int option;
         do {
-            System.out.println("Escolha a entidade que deseja gerenciar:");
+            System.out.println("\nEscolha a entidade que deseja gerenciar:");
             System.out.println(
                     "1 - Cursos\n2 - Disciplinas\n3 - Turmas\n4 - Alunos\n5 - Professores\n6 - Atividades Avaliativas\n7 - Departamentos\n8 - Notas\n9 - Tipos de atividade\n10 - Sair");
             option = Menu.buscaOpcaoInteira();
@@ -148,7 +148,7 @@ public class Menu {
     public static void menuEntidade(Controller controller, String entidade) {
         int option;
         do {
-            System.out.println("Escolha uma das ações na entidade " + entidade + ": ");
+            System.out.println("\nEscolha uma das ações na entidade " + entidade + ": ");
             System.out.println(
                     "1 - Criar registro\n2 - Editar registro\n3 - Consultar um registro\n4 - Listar todos os registros\n5 - Apagar um registro\n6 - Sair");
             option = Menu.buscaOpcaoInteira();
@@ -184,7 +184,7 @@ public class Menu {
         int option;
         OperacoesController operacoes = new OperacoesController();
         do {
-            System.out.println("Escolha a consulta que deseja realizar:");
+            System.out.println("\nEscolha a consulta que deseja realizar:");
             System.out.println(
                     "1 - Consulta de disciplinas em cada curso\n" +
                             "2 - Consulta de professores com ou sem filtro por departamento\n" +
@@ -249,7 +249,7 @@ public class Menu {
                 System.out.println("Erro: " + e.getMessage());
                 Menu.menuOutrasConsultas();
             }
-        } while (option != 7);
+        } while (option != 14);
     }
 
 }

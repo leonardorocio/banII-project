@@ -33,6 +33,10 @@ public class Conexao {
         return connection;
     }
 
+    public static void closeConnection() throws SQLException {
+        connection.close();
+    }
+
     public static Conexao getInstance() {
         try {
             if (instance == null || instance.getConnection().isClosed()) {

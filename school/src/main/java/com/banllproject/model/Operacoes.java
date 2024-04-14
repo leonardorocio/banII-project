@@ -4,9 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
-
-import javax.naming.spi.DirStateFactory.Result;
 
 import com.banllproject.Conexao;
 import com.banllproject.view.Menu;
@@ -183,6 +180,7 @@ public class Operacoes {
                     resultSet.getString("nome_disciplina"),
                     resultSet.getDouble("aprovados"),
                     resultSet.getDouble("reprovados"));
+            Menu.pausaMenu();
         }
     }
 
@@ -257,6 +255,7 @@ public class Operacoes {
                     String.format(
                             "Meninos: %.2f%%\nMeninas: %.2f%%",
                             resultSet.getDouble("percentual_meninos"), resultSet.getDouble("percentual_meninos")));
+                    Menu.pausaMenu();
         } else {
             System.out.println("Não foi possível buscar os dados para a turma informada!");
         }
@@ -298,6 +297,7 @@ public class Operacoes {
                     resultSet.getString("nome"),
                     resultSet.getInt("carga_horaria"),
                     resultSet.getString("ano_semestre"));
+            Menu.pausaMenu();
         }
     }
 
@@ -326,6 +326,7 @@ public class Operacoes {
                     resultSet.getString("nome"),
                     resultSet.getInt("carga_horaria"),
                     resultSet.getString("ano_semestre"));
+            Menu.pausaMenu();
         }
     }
 
