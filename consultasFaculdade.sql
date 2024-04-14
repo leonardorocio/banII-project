@@ -86,12 +86,13 @@ order by 3
 select 
 	a.id_atividade,
 	a.descricao_atividade,
-	a.tipo_atividade,
+	ta.descricao,
 	a.descricao_atividade,
 	avg(aa.nota) media
 from atividade_aluno aa
-	join atividades a on a.id_atividade = aa.id_atividade 
-group by 1
+	join atividades a on a.id_atividade = aa.id_atividade
+	join tipo_atividade ta on ta.id_atividade = a.fk_tipo_atividade 
+group by 1, 3
 order by 1
 
 /* -------------- taxa de reprovacao em um disciplina por semestre -------------- */
@@ -101,16 +102,16 @@ select
 	n.ano_semestre,
 	n.nome_disciplina,
 	n.id_disciplina,
-	count(
+	(count(
 		case 
 			when n.media >= 7 then 1
 		end
-	)/count(*)::decimal as aprovados,
-	count(
+	)/count(*)::decimal) * 100 as aprovados,
+	(count(
 		case 
 			when n.media <= 7 then 1
 		end
-	)/ count(*)::decimal as reprovados
+	)/ count(*)::decimal) * 100 as reprovados
 from(
 	select
 		aa.id_aluno,
@@ -122,11 +123,12 @@ from(
 	from atividade_aluno aa
 		join atividades a on a.id_atividade = aa.id_atividade
 		join turmas t on t.id_turma = a.fk_turma
-		join disciplinas d on d.id_disciplina = t.fk_disciplina 
+		join disciplinas d on d.id_disciplina = t.fk_disciplina
+			and d.id_disciplina = $1
 	group by aa.id_aluno, t.id_turma, d.id_disciplina
 	order by 1
 ) n 
--- where n.id_disciplina = $1
+where n.id_disciplina = $1
 group by n.id_turma, n.ano_semestre, n.nome_disciplina, n.id_disciplina
 
 
@@ -154,7 +156,7 @@ select
 from turma_aluno ta 
 	join turmas t on t.id_turma = ta.id_turma
 	join disciplinas d on d.id_disciplina = t.fk_disciplina
-where ta.id_aluno = %1
+where ta.id_aluno = $1
 
 
 /* -------------- Consulta de disciplinas lecionadas por um professor em determinado semestre -------------- */
@@ -171,10 +173,11 @@ where tp.id_professor = $1
 /* -------------- Consulta de atividades aplicadas por determinado professor -------------- */
 select
 	a.id_atividade,
-	a.tipo_atividade,
+	ta.descricao,
 	a.descricao_atividade ,
 	a.dt_entrega
 from atividades a
+	join tipo_atividade ta on ta.id_atividade = a.fk_tipo_atividade 
 where a.fk_professor = 2
 
 /* -------------- Consulta de atividades por turma com ou sem filtro por professor  -------------- */
@@ -186,7 +189,7 @@ select
 	array_agg(
 		jsonb_build_object(
 			'id', a.id_atividade,
-			'tipo', a.tipo_atividade,
+			'tipo', ta.descricao,
 			'descricao', a.descricao_atividade,
 			'entrega', a.dt_entrega
 		) 
@@ -194,6 +197,7 @@ select
 from atividades a
 	join turmas t on t.id_turma = a.fk_turma
 	join disciplinas d on t.fk_disciplina = d.id_disciplina
+	join tipo_atividade ta on ta.id_atividade = a.fk_tipo_atividade
 where a.fk_professor = $1 or $1 = -1
 group by t.id_turma, d.nome
 
@@ -207,7 +211,7 @@ select
 	array_agg(
 		jsonb_build_object(
 			'id', a.id_atividade,
-			'tipo', a.tipo_atividade,
+			'tipo', ta.descricao,
 			'descricao', a.descricao_atividade,
 			'entrega', a.dt_entrega,
 			'nota', aa.nota
@@ -216,4 +220,5 @@ select
 from atividade_aluno aa 
 	join atividades a on a.id_atividade = aa.id_atividade
 	join alunos a2 on a2.id_aluno = aa.id_aluno
+	join tipo_atividade ta on ta.id_atividade = a.fk_tipo_atividade
 group by 1
