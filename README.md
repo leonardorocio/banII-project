@@ -11,7 +11,7 @@ Para executar este projeto existem alguns pré-requisitos:
       <li>Para isto, basta baixar o Maven versão bin, conforme seu sistema operacional no link: https://maven.apache.org/download.cgi</li>
       <li>Extrair o conteúdo e configurar o Path adicionando a pasta bin. Mais informações: https://maven.apache.org/install.html</li>
   </ol>
-  <li>Executar o script de dump do banco de dados;</li>
+  <li>Criar um banco de dados PostgreSQL e executar o script de dump;</li>
   <li>No arquivo project.properties, alterar as configurações de conexão do banco de dados inserindo suas próprias credenciais e o banco de dados no qual foi executado o arquivo de dump;</li>
   <li>Após configurados Java e Maven, em um terminal na pasta do projeto, mais especificamente em /banII-project/school,  utilizar o seguinte comando: mvn compile exec:java</li>
   <li>Pronto! O projeto já está executando.</li>
