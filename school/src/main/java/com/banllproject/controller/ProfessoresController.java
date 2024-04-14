@@ -12,7 +12,7 @@ public class ProfessoresController extends Controller {
     @Override
     public void getById() throws SQLException {
         int idProfessor = Menu.buscaOpcaoInteira("Digite o id do professor: ");
-        Professores.getById(idProfessor);
+        Professores.getById(idProfessor).imprimeProfessor();
     }
 
     @Override

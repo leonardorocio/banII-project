@@ -62,6 +62,9 @@ public class Alunos {
         this.fkCursoObject = fkCursoObject;
     }
 
+    public Alunos() {
+    }
+
     public int getIdTurmaDoAluno() {
         return idTurmaDoAluno;
     }
@@ -129,7 +132,7 @@ public class Alunos {
     public void imprimeAluno() {
         System.out.println(
                 String.format(
-                        "\nInformações do aluno:\nID: %d\nNome: %s\nSobrenome: %s\nSexo: %s\nCPF: %s\nData de nascimento: %s\nData de Ingresso: %s",
+                        "\nInformações do aluno:\nID: %d\nNome: %s %s\nSexo: %s\nCPF: %s\nData de nascimento: %s\nData de Ingresso: %s",
                         this.getIdAluno(), this.getNome(), this.getSobrenome(), this.getSexoBiologico(), this.getCpf(),
                         this.getDtNascimento().toString(), this.getDtIngresso().toString()));
         if (this.getFkCursoObject() != null) {

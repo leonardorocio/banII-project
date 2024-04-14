@@ -124,7 +124,7 @@ public class Professores {
     public void imprimeProfessor() {
         System.out.println(
                 String.format(
-                        "\nInformações do professor:\nID: %d\nNome: %s\nSobrenome: %s\nSexo: %s\nCPF: %s\nData de nascimento: %s",
+                        "\nInformações do professor:\nID: %d\nNome Completo: %s %s\nSexo: %s\nCPF: %s\nData de nascimento: %s",
                         this.getIdProfessor(), this.getNome(), this.getSobrenome(), this.getSexoBiologico(),
                         this.getCpf(),
                         this.getDtNascimento().toString()));

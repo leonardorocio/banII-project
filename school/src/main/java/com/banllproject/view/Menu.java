@@ -1,6 +1,5 @@
 package com.banllproject.view;
 
-import java.sql.SQLException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -70,9 +69,8 @@ public class Menu {
             System.out.println("Bem vindo ao sistema da faculdade!\nO que gostaria de fazer?");
             System.out.println(
                     "1 - Criação, Edição e Remoção de Registros\n" +
-                    "2 - Outras consultas\n" +
-                    "3 - Geração de Relatórios\n" +
-                    "4 - Sair");
+                            "2 - Relatórios e outras consultas\n" +
+                            "3 - Sair");
             option = Menu.buscaOpcaoInteira();
             switch (option) {
                 case 1:
@@ -159,8 +157,9 @@ public class Menu {
                     case 6:
                         break;
                 }
-            } catch (SQLException e) {
+            } catch (Exception e) {
                 System.out.println("Erro: " + e.getMessage());
+                Menu.menuEntidade(controller, entidade);
             }
         } while (option != 6);
     }
@@ -172,29 +171,42 @@ public class Menu {
         do {
             System.out.println("Escolha a consulta que deseja realizar:");
             System.out.println(
-                "1 - Consulta de disciplinas em cada curso\n" +
-                "2 - Consulta de professores com ou sem filtro por departamento\n" +
-                "3 - Consulta de alunos com ou sem filtro por curso \n" +
-                "4 - Consulta de turmas filtradas ou não por semestre\n" +
-                "5 - Consulta taxa de reprovação em um disciplina por semestre\n" +
-                "6 - Consulta de alunos em uma determinada turma com média\n"
-            );
+                    "1 - Consulta de disciplinas em cada curso\n" +
+                            "2 - Consulta de professores com ou sem filtro por departamento\n" +
+                            "3 - Consulta de alunos com ou sem filtro por curso \n" +
+                            "4 - Consulta de turmas filtradas ou não por semestre\n" +
+                            "5 - Consulta taxa de reprovação em um disciplina por semestre\n" +
+                            "6 - Consulta de alunos em uma determinada turma com média\n" +
+                            "7 - Sair");
             option = Menu.buscaOpcaoInteira();
-            switch (option) {
-                case 1:
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    break;
-                case 5:
-                    break;
-                case 6:
-                    break;
+            try {
+                switch (option) {
+                    case 1:
+                        operacoes.consultaDisciplinaPorCurso();
+                        break;
+                    case 2:
+                        operacoes.consultaProfessoresPorDepartamento();
+                        break;
+                    case 3:
+                        operacoes.consultaAlunosPorCurso();
+                        break;
+                    case 4:
+                        operacoes.consultaTurmasPorSemestre();
+                        break;
+                    case 5:
+                        operacoes.consultaTaxaDeReprovacaoDeDisciplinaPorSemestre();
+                        break;
+                    case 6:
+                        operacoes.consultaAlunoPorTurma();
+                        break;
+                    case 7:
+                        break;
+                }
+            } catch (Exception e) {
+                System.out.println("Erro: " + e.getMessage());
+                Menu.menuOutrasConsultas();
             }
-        } while (option != 4);
+        } while (option != 7);
     }
 
     public static void menuRelatórios() {

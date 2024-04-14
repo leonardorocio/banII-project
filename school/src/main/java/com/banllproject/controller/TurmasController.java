@@ -23,7 +23,7 @@ public class TurmasController extends Controller {
     @Override
     public void create() throws SQLException {
         Turmas novaTurma = new Turmas(
-                Menu.buscaDadoString("Digite o ano e semestre da turma (AAAA/SS): "),
+                Menu.buscaDadoString("Digite o ano e semestre da turma (AAAA/S): "),
                 Menu.buscaDadoString("Digite o local de aula da turma: "),
                 Menu.buscaOpcaoInteira("Digite o id da disciplina dessa turma: "),
                 Menu.buscaOpcaoInteira("Digite o id do professor que dá aula nesta turma: "));
@@ -37,7 +37,7 @@ public class TurmasController extends Controller {
         Turmas turmaAtualizada = new Turmas(
                 idTurma,
                 Menu.buscaDadoString(
-                        "Digite o novo ano e semestre da turma (AAAA/SS) (Digite . para manter o atual): "),
+                        "Digite o novo ano e semestre da turma (AAAA/S) (Digite . para manter o atual): "),
                 Menu.buscaDadoString("Digite o novo local de aula da turma (Digite . para manter o atual): "));
 
         List<String> updatedFieldNames = new ArrayList<>();
