@@ -9,6 +9,7 @@ import com.banllproject.controller.Controller;
 import com.banllproject.controller.CursosController;
 import com.banllproject.controller.DepartamentosController;
 import com.banllproject.controller.DisciplinasController;
+import com.banllproject.controller.NotasController;
 import com.banllproject.controller.OperacoesController;
 import com.banllproject.controller.ProfessoresController;
 import com.banllproject.controller.TurmasController;
@@ -57,6 +58,19 @@ public class Menu {
         return returnValue;
     }
 
+    public static double buscaDadoDouble(String msg) {
+        System.out.println(msg);
+        try {
+            double returnValue = Menu.scanner.nextDouble();
+            Menu.scanner.nextLine();
+            return returnValue;
+        } catch (InputMismatchException e) {
+            System.out.println("Erro! É necessário digitar um número");
+            Menu.scanner.nextLine();
+            return Menu.buscaDadoDouble(msg);
+        }
+    }
+
     public static void pausaMenu() {
         System.out.print("Aperte Enter para continuar...");
         Menu.scanner.nextLine();
@@ -80,12 +94,9 @@ public class Menu {
                     Menu.menuOutrasConsultas();
                     break;
                 case 3:
-                    Menu.menuRelatórios();
-                    break;
-                case 4:
                     break;
             }
-        } while (option != 4);
+        } while (option != 3);
         System.out.println("Obrigado por usar nosso sistema!");
     }
 
@@ -98,7 +109,7 @@ public class Menu {
         do {
             System.out.println("Escolha a entidade que deseja gerenciar:");
             System.out.println(
-                    "1 - Cursos\n2 - Disciplinas\n3 - Turmas\n4 - Alunos\n5 - Professores\n6 - Atividades Avaliativas\n7 - Departamentos\n8 - Sair");
+                    "1 - Cursos\n2 - Disciplinas\n3 - Turmas\n4 - Alunos\n5 - Professores\n6 - Atividades Avaliativas\n7 - Departamentos\n8 - Notas\n9 - Tipos de atividade\n10 - Sair");
             option = Menu.buscaOpcaoInteira();
             switch (option) {
                 case 1:
@@ -123,11 +134,15 @@ public class Menu {
                     Menu.menuEntidade(new DepartamentosController(), "Departamentos");
                     break;
                 case 8:
-                    Menu.menuEntidade(new AtividadesController(), "Notas das atividades");
+                    Menu.menuEntidade(new NotasController(), "Notas das atividades");
                     break;
                 case 9:
+                    Menu.menuEntidade(new AtividadesController(), "Tipos de Atividade");
+                    break;
+                case 10:
+                    break;
             }
-        } while (option != 8);
+        } while (option != 10);
     }
 
     public static void menuEntidade(Controller controller, String entidade) {
@@ -177,7 +192,12 @@ public class Menu {
                             "4 - Consulta de turmas filtradas ou não por semestre\n" +
                             "5 - Consulta taxa de reprovação em um disciplina por semestre\n" +
                             "6 - Consulta de alunos em uma determinada turma com média\n" +
-                            "7 - Sair");
+                            "7 - Consulta percentual de gênero dos alunos por turma\n" +
+                            "8 - Consulta de disciplina em curso ou já cursadas por aluno\n" +
+                            "9 - Consulta de disciplinas lecionadas por um professor em determinado semestre\n" +
+                            "10 - Consulta de disciplinas lecionadas por um professor em determinado semestre\n" +
+                            "11 - Consulta de disciplinas lecionadas por um professor em determinado semestre\n" +
+                            "12 - Sair");
             option = Menu.buscaOpcaoInteira();
             try {
                 switch (option) {
@@ -207,29 +227,6 @@ public class Menu {
                 Menu.menuOutrasConsultas();
             }
         } while (option != 7);
-    }
-
-    public static void menuRelatórios() {
-        int option;
-        do {
-            System.out.println("Bem vindo ao sistema da faculdade!\nO que gostaria de fazer?");
-            System.out.println(
-                    "1 - Mostra relatório 1\n2 - Mostra relatório 2\n3 - Mostra relatório 3\n4 - Sair");
-            option = Menu.buscaOpcaoInteira();
-            switch (option) {
-                case 1:
-                    System.out.println("Mostra relatório 1");
-                    break;
-                case 2:
-                    System.out.println("Mostra relatório 2");
-                    break;
-                case 3:
-                    System.out.println("Mostra relatório 3");
-                    break;
-                case 4:
-                    break;
-            }
-        } while (option != 4);
     }
 
 }
