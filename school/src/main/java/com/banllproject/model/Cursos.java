@@ -107,7 +107,7 @@ public class Cursos {
         }
     }
 
-    public static void create(Cursos curso) throws SQLException {
+    public static int create(Cursos curso) throws SQLException {
         String sql = "INSERT INTO cursos (nome, duracao_minima, duracao_maxima, sigla) VALUES (?, ?, ?, ?)";
         PreparedStatement preparedStatement = conexao.prepareStatement(sql);
         preparedStatement.setString(1, curso.getNome());
@@ -115,7 +115,14 @@ public class Cursos {
         preparedStatement.setInt(3, curso.getDuracaoMaxima());
         preparedStatement.setString(4, curso.getSigla());
         preparedStatement.execute();
+        ResultSet keys = preparedStatement.getGeneratedKeys();
+        int keyValue = -1;
+        if (keys.next()) {
+            keyValue = keys.getInt(1);
+            return keyValue;
+        }
         preparedStatement.close();
+        return keyValue;
     }
 
     public static void update(List<String> updatedFields, Cursos curso) throws SQLException {

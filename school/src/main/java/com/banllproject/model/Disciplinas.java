@@ -107,15 +107,22 @@ public class Disciplinas {
         preparedStatement.close();
     }
 
-    public static void create(Disciplinas disciplina) throws SQLException {
+    public static int create(Disciplinas disciplina) throws SQLException {
         String sql = "INSERT INTO disciplinas (nome) VALUES (?, ?)";
         PreparedStatement preparedStatement = conexao.prepareStatement(sql);
         preparedStatement.setString(1, disciplina.getNome());
         preparedStatement.setInt(2, disciplina.getCargaHoraria());
         preparedStatement.execute();
+        ResultSet keys = preparedStatement.getGeneratedKeys();
+        int keyValue = -1;
+        if (keys.next()) {
+            keyValue = keys.getInt(1);
+            return keyValue;
+        }
         preparedStatement.close();
-
         Disciplinas.createManyToManyRelation(disciplina);
+        return keyValue;
+
     }
 
     public static void update(List<String> updatedFields, Disciplinas disciplina) throws SQLException {

@@ -102,14 +102,21 @@ public class Notas {
         return notas;
     }
 
-    public static void create(Notas nota) throws SQLException {
+    public static int create(Notas nota) throws SQLException {
         String sql = "INSERT INTO atividade_aluno (id_aluno, id_atividade, nota) VALUES (?, ?, ?)";
         PreparedStatement statement = conexao.prepareStatement(sql);
         statement.setInt(1, nota.getIdAluno());
         statement.setInt(2, nota.getIdAtividade());
         statement.setDouble(3, nota.getNota());
         statement.execute();
+        ResultSet keys = statement.getGeneratedKeys();
+        int keyValue = -1;
+        if (keys.next()) {
+            keyValue = keys.getInt(1);
+            return keyValue;
+        }
         statement.close();
+        return keyValue;
     }
 
     public static void update(Notas nota) throws SQLException {

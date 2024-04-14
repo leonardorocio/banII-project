@@ -164,7 +164,7 @@ public class Professores {
         }
     }
 
-    public static void create(Professores professores) throws SQLException {
+    public static int create(Professores professores) throws SQLException {
         String sql = "INSERT INTO professores (nome, sobrenome, sexo_biologico, cpf, dt_nascimento, fk_departamento) VALUES (?, ?, ?, ?, ?, ?)";
         PreparedStatement preparedStatement = conexao.prepareStatement(sql);
         preparedStatement.setString(1, professores.getNome());
@@ -174,7 +174,14 @@ public class Professores {
         preparedStatement.setDate(5, professores.getDtNascimento());
         preparedStatement.setInt(6, professores.getFkDepartamento());
         preparedStatement.execute();
+        ResultSet keys = preparedStatement.getGeneratedKeys();
+        int keyValue = -1;
+        if (keys.next()) {
+            keyValue = keys.getInt(1);
+            return keyValue;
+        }
         preparedStatement.close();
+        return keyValue;
     }
 
     public static void update(List<String> updatedFields, Professores professores) throws SQLException {

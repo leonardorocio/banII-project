@@ -23,13 +23,13 @@ public class AtividadesController extends Controller {
     @Override
     public void create() throws SQLException {
         Atividades novaAtividade = new Atividades(
-                Menu.buscaDadoString("Digite o tipo da nova atividade: "),
+                Menu.buscaDadoString("Digite a descrição da nova atividade: "),
                 convertStringToSQLDate(Menu.buscaDadoString("Digite a data de entrega da nova atividade: ")),
                 Menu.buscaOpcaoInteira("Digite o id do professor que aplicou a atividade: "),
                 Menu.buscaOpcaoInteira("Digite o id da turma a qual foi aplicada a atividade: "),
                 Menu.buscaOpcaoInteira("Digite o id do tipo da atividade: "));
-        Atividades.create(novaAtividade);
-        System.out.println("Atividade criada com sucesso!");
+        int tableKey = Atividades.create(novaAtividade);
+        System.out.println("Atividade " + tableKey + "criada com sucesso!");
     }
 
     @Override

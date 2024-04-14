@@ -26,8 +26,8 @@ public class DisciplinasController extends Controller {
                 Menu.buscaDadoString("Digite o nome da disciplina: "),
                 Menu.buscaOpcaoInteira("Digite a carga horária da disciplina: "),
                 Menu.buscaOpcaoInteira("Digite o curso que será inserida a disciplina: "));
-        Disciplinas.create(novaDisciplina);
-        System.out.println("Disciplina criada com sucesso!");
+        int tableKey = Disciplinas.create(novaDisciplina);
+        System.out.println("Disciplina " + tableKey + "criada com sucesso!");
     }
 
     @Override

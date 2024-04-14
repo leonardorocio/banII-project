@@ -175,7 +175,6 @@ public class Menu {
                 }
             } catch (Exception e) {
                 System.out.println("Erro: " + e.getMessage());
-                e.printStackTrace();
                 return Menu.menuEntidade(controller, entidade);
             }
         } while (option != 6);

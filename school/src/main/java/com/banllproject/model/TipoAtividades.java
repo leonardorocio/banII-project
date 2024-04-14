@@ -81,12 +81,19 @@ public class TipoAtividades {
         return tipoAtividades;
     }
 
-    public static void create(TipoAtividades tipoAtividades) throws SQLException {
+    public static int create(TipoAtividades tipoAtividades) throws SQLException {
         String sql = "INSERT INTO tipo_atividade (descricao) VALUES (?)";
         PreparedStatement statement = conexao.prepareStatement(sql);
         statement.setString(1, tipoAtividades.getDescricaoTipoAtividade());
         statement.execute();
+        ResultSet keys = statement.getGeneratedKeys();
+        int keyValue = -1;
+        if (keys.next()) {
+            keyValue = keys.getInt(1);
+            return keyValue;
+        }
         statement.close();
+        return keyValue;
     }
 
     public static void update(TipoAtividades tipoAtividades) throws SQLException {

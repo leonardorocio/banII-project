@@ -30,8 +30,8 @@ public class ProfessoresController extends Controller {
                 convertStringToSQLDate(
                         Menu.buscaDadoString("Digite a data de nascimento do novo professor (dd/MM/aaaa): ")),
                 Menu.buscaOpcaoInteira("Digite o departamento desse professor: "));
-        Professores.create(novoProfessor);
-        System.out.println("Professor criado com sucesso!");
+        int tableKey = Professores.create(novoProfessor);
+        System.out.println("Professor " + tableKey + "criado com sucesso!");
     }
 
     @Override

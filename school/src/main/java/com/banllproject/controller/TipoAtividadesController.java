@@ -12,8 +12,8 @@ public class TipoAtividadesController extends Controller {
         TipoAtividades novoTipoAtividades = new TipoAtividades(
             Menu.buscaDadoString("Digite a descrição dessa atividade avaliativa: ")
         );
-        TipoAtividades.create(novoTipoAtividades);
-        System.out.println("Tipo de atividade criado com sucesso!");
+        int tableKey = TipoAtividades.create(novoTipoAtividades);
+        System.out.println("Tipo de atividade " + tableKey + "criado com sucesso!");
     }
 
     @Override

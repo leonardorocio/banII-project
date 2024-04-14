@@ -14,8 +14,8 @@ public class NotasController extends Controller {
             Menu.buscaOpcaoInteira("Digite o id da atividade: "),
             Menu.buscaDadoDouble("Digite a nota do aluno nesta atividade: ")
         );
-        Notas.create(novaNota);
-        System.out.println("Nota inserida com sucesso!");
+        int tableKey = Notas.create(novaNota);
+        System.out.println("Nota " + tableKey + "inserida com sucesso!");
     }
 
     @Override
@@ -23,6 +23,7 @@ public class NotasController extends Controller {
         int idAluno = Menu.buscaOpcaoInteira("Digite o id do aluno: ");
         int idAtividade = Menu.buscaOpcaoInteira("Digite o id da atividade: ");
         Notas.delete(idAluno, idAtividade);
+        System.out.println("Nota deletada com sucesso!");
     }
 
     @Override

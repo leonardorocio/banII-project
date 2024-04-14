@@ -80,14 +80,21 @@ public class Departamentos {
         }
     }
 
-    public static void create(Departamentos departamento) throws SQLException {
+    public static int create(Departamentos departamento) throws SQLException {
         String sql = "INSERT INTO departamentos (departamento, sigla) VALUES (?, ?)";
         PreparedStatement preparedStatement = conexao.prepareStatement(sql);
         departamento.imprimeDepartamento();
         preparedStatement.setString(1, departamento.getNome());
         preparedStatement.setString(2, departamento.getSigla());
         preparedStatement.execute();
+        ResultSet keys = preparedStatement.getGeneratedKeys();
+        int keyValue = -1;
+        if (keys.next()) {
+            keyValue = keys.getInt(1);
+            return keyValue;
+        }
         preparedStatement.close();
+        return keyValue;
     }
 
     public static void update(List<String> updatedFields, Departamentos departamento) throws SQLException {

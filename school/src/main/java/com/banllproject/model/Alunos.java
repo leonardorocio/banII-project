@@ -197,7 +197,7 @@ public class Alunos {
         preparedStatement.close();
     }
 
-    public static void create(Alunos aluno) throws SQLException {
+    public static int create(Alunos aluno) throws SQLException {
         String sql = "INSERT INTO alunos (nome, sobrenome, sexo_biologico, cpf, dt_nascimento, dt_ingresso, fk_curso) VALUES (?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement preparedStatement = conexao.prepareStatement(sql);
         preparedStatement.setString(1, aluno.getNome());
@@ -208,9 +208,16 @@ public class Alunos {
         preparedStatement.setDate(6, aluno.getDtIngresso());
         preparedStatement.setInt(7, aluno.getFkCurso());
         preparedStatement.execute();
+        ResultSet keys = preparedStatement.getGeneratedKeys();
+        int keyValue = -1;
+        if (keys.next()) {
+            keyValue = keys.getInt(1);
+            return keyValue;
+        }
         preparedStatement.close();
-
         Alunos.createManyToManyRelation(aluno);
+        return keyValue;
+
     }
 
     public static void update(List<String> updatedFields, Alunos aluno) throws SQLException {

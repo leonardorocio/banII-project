@@ -27,8 +27,8 @@ public class TurmasController extends Controller {
                 Menu.buscaDadoString("Digite o local de aula da turma: "),
                 Menu.buscaOpcaoInteira("Digite o id da disciplina dessa turma: "),
                 Menu.buscaOpcaoInteira("Digite o id do professor que dá aula nesta turma: "));
-        Turmas.create(novaTurma);
-        System.out.println("Nova turma criada com sucesso!");
+        int tableKey = Turmas.create(novaTurma);
+        System.out.println("Turma + " + tableKey + "criada com sucesso!");
     }
 
     @Override

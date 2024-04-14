@@ -140,16 +140,23 @@ public class Turmas {
         preparedStatement.close();
     }
 
-    public static void create(Turmas turmas) throws SQLException {
+    public static int create(Turmas turmas) throws SQLException {
         String sql = "INSERT INTO turmas (ano_semestre, local_aula, fk_disciplina) VALUES (?, ?, ?)";
         PreparedStatement preparedStatement = conexao.prepareStatement(sql);
         preparedStatement.setString(1, turmas.getAnoSemestre());
         preparedStatement.setString(2, turmas.getLocalAula());
         preparedStatement.setInt(3, turmas.getFkDisciplina());
         preparedStatement.execute();
+        ResultSet keys = preparedStatement.getGeneratedKeys();
+        int keyValue = -1;
+        if (keys.next()) {
+            keyValue = keys.getInt(1);
+            return keyValue;
+        }
         preparedStatement.close();
-
         Turmas.createManyToManyRelation(turmas);
+        return keyValue;
+
     }
 
     public static void update(List<String> updatedFields, Turmas turmas) throws SQLException {

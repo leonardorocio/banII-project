@@ -30,8 +30,8 @@ public class AlunosController extends Controller {
                 Menu.buscaDadoString("Digite o cpf do novo aluno: "),
                 convertStringToSQLDate(Menu.buscaDadoString("Digite a data de ingresso do novo aluno: ")),
                 Menu.buscaOpcaoInteira("Digite o id do curso do aluno: "));
-        Alunos.create(novoAluno);
-        System.out.println("Aluno criado com sucesso!");
+        int tableKey = Alunos.create(novoAluno);
+        System.out.println("Aluno " + tableKey + "criado com sucesso!");
     }
 
     @Override

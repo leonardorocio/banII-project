@@ -40,6 +40,7 @@ public class Atividades {
         this.descricaoAtividade = descricaoAtividade;
         this.dtEntrega = dtEntrega;
         this.fkProfessores = fkProfessores;
+        this.fkTurma = fkTurma;
         this.fkTipoAtividade = fkTipoAtividade;
     }
 
@@ -200,27 +201,24 @@ public class Atividades {
         }
     }
 
-    private static void createManyToManyRelation(Atividades atividades) throws SQLException {
-        String sql = "INSERT INTO atividade_aluno (id_turma, id_aluno) VALUES (?, ?)";
-        PreparedStatement preparedStatement = conexao.prepareStatement(sql);
-        preparedStatement.setInt(1, atividades.getIdAtividade());
-        preparedStatement.setInt(2, atividades.getIdAlunoAtividade());
-        preparedStatement.execute();
-        preparedStatement.close();
-    }
-
-    public static void create(Atividades atividade) throws SQLException {
+    public static int create(Atividades atividade) throws SQLException {
+        atividade.imprimeAtividade();
         String sql = "INSERT INTO atividades (descricao_atividade, dt_entrega, fk_professor, fk_turma, fk_tipo_atividade) VALUES (?, ?, ?, ?, ?)";
-        PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+        PreparedStatement preparedStatement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         preparedStatement.setString(1, atividade.getDescricaoAtividade());
         preparedStatement.setDate(2, atividade.getDtEntrega());
         preparedStatement.setInt(3, atividade.getFkProfessores());
         preparedStatement.setInt(4, atividade.getFkTurma());
         preparedStatement.setInt(5, atividade.getFkTipoAtividade());
         preparedStatement.execute();
+        ResultSet keys = preparedStatement.getGeneratedKeys();
+        int keyValue = -1;
+        if (keys.next()) {
+            keyValue = keys.getInt(1);
+            return keyValue;
+        }
         preparedStatement.close();
-
-        Atividades.createManyToManyRelation(atividade);
+        return keyValue;
     }
 
     public static void update(List<String> updatedFields, Atividades atividade) throws SQLException {
