@@ -49,6 +49,8 @@ public class Atividades {
         this.dtEntrega = dtEntrega;
         this.fkProfessores = fkProfessores;
         this.fkProfessoresObject = fkProfessoresObject;
+        this.fkTurma = fkTurma;
+        this.fkTurmasObject = fkTurmasObject;
     }
 
     public int getIdAtividade() {
@@ -131,15 +133,17 @@ public class Atividades {
                         this.getDtEntrega().toString()));
         if (this.getFkProfessoresObject() != null) {
             this.getFkProfessoresObject().imprimeProfessor();
-        }
+        } 
         if (this.getFkTurmasObject() != null) {
             this.getFkTurmasObject().imprimeTurma();
         }
-        Menu.pausaMenu();
+        if (this.getFkProfessoresObject() == null && this.getFkTurmasObject() == null) {
+            Menu.pausaMenu();
+        }
     }
 
     public static Atividades getById(int idAtividade) throws SQLException {
-        String sql = "SELECT * FROM atividades WHERE id_aluno = ?";
+        String sql = "SELECT * FROM atividades WHERE id_atividade = ?";
         PreparedStatement statement = conexao.prepareStatement(sql);
         statement.setInt(1, idAtividade);
         ResultSet result = statement.executeQuery();

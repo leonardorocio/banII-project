@@ -130,8 +130,9 @@ public class Professores {
                         this.getDtNascimento().toString()));
         if (this.getFkDepartamentoObject() != null) {
             this.getFkDepartamentoObject().imprimeDepartamento();
+        } else {
+            Menu.pausaMenu();
         }
-        Menu.pausaMenu();
     }
 
     public static Professores getById(int idProfessor) throws SQLException {
@@ -141,7 +142,7 @@ public class Professores {
         ResultSet result = statement.executeQuery();
         if (result.next()) {
 
-            int fk = result.getInt("fk_disciplina");
+            int fk = result.getInt("fk_departamento");
             Departamentos departamentos = new Departamentos();
             if (fk != 0) {
                 departamentos = Departamentos.getById(fk);
@@ -218,7 +219,7 @@ public class Professores {
         ResultSet resultList = statement.executeQuery(sql);
         List<Professores> professores = new ArrayList<>();
         while (resultList.next()) {
-            int fk = resultList.getInt("fk_disciplina");
+            int fk = resultList.getInt("fk_departamento");
             Departamentos departamentos = new Departamentos();
             if (fk != 0) {
                 departamentos = Departamentos.getById(fk);
