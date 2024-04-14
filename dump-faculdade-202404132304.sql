@@ -5,7 +5,7 @@
 -- Dumped from database version 16.2
 -- Dumped by pg_dump version 16.2
 
--- Started on 2024-04-07 22:49:55
+-- Started on 2024-04-13 23:04:20
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -23,12 +23,6 @@ SET row_security = off;
 -- Name: faculdade; Type: DATABASE; Schema: -; Owner: postgres
 --
 
-CREATE DATABASE faculdade WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER = libc LOCALE = 'Portuguese_Brazil.1252';
-
-
-ALTER DATABASE faculdade OWNER TO postgres;
-
-\connect faculdade
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -40,24 +34,6 @@ SET check_function_bodies = false;
 SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
-
---
--- TOC entry 4 (class 2615 OID 2200)
--- Name: public; Type: SCHEMA; Schema: -; Owner: pg_database_owner
---
-
-CREATE SCHEMA public;
-
-
-ALTER SCHEMA public OWNER TO pg_database_owner;
-
---
--- TOC entry 4948 (class 0 OID 0)
--- Dependencies: 4
--- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: pg_database_owner
---
-
-COMMENT ON SCHEMA public IS 'standard public schema';
 
 
 SET default_tablespace = '';
@@ -656,7 +632,6 @@ INSERT INTO public.alunos VALUES (228, 'Ana', 'Barros', '2004-09-15', '565820175
 INSERT INTO public.alunos VALUES (229, 'Rafael', 'Ferreira', '2004-01-25', '48859830393', 'M', '2023-01-01', 2);
 INSERT INTO public.alunos VALUES (230, 'Giovanna', 'Costa', '2003-07-01', '95703403308', 'F', '2023-01-01', 2);
 INSERT INTO public.alunos VALUES (231, 'Vinicius', 'Sousa', '2004-02-12', '03324068382', 'M', '2023-01-01', 2);
-INSERT INTO public.alunos VALUES (232, 'Tatiane', 'Silva', '2003-08-22', '71320508305', 'F', '2023-01-01', 2);
 INSERT INTO public.alunos VALUES (233, 'Renato', 'Gonçalves', '2004-03-03', '18842138309', 'M', '2023-01-01', 2);
 INSERT INTO public.alunos VALUES (234, 'Luiza', 'Melo', '2003-09-05', '36622053750', 'F', '2023-01-01', 2);
 INSERT INTO public.alunos VALUES (235, 'Bruno', 'Carvalho', '2004-04-20', '69386163300', 'M', '2023-01-01', 2);
@@ -685,6 +660,7 @@ INSERT INTO public.alunos VALUES (282, 'Gabriel', 'Ferreira', '2002-10-30', '290
 INSERT INTO public.alunos VALUES (283, 'Carolina', 'Gonçalves', '2003-05-01', '15024603306', 'F', '2023-07-01', 2);
 INSERT INTO public.alunos VALUES (284, 'Rafael', 'Moraes', '2002-11-10', '70062217308', 'M', '2023-07-01', 2);
 INSERT INTO public.alunos VALUES (285, 'Mariana', 'Barbosa', '2003-06-20', '08859830393', 'F', '2023-07-01', 2);
+INSERT INTO public.alunos VALUES (232, 'Tatiane', 'Silva', '2003-08-22', '71320508305', 'M', '2023-01-01', 2);
 
 
 --
@@ -1505,7 +1481,7 @@ SELECT pg_catalog.setval('public.professores_id_professor_seq', 15, true);
 -- Name: turmas_id_turma_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.turmas_id_turma_seq', 5, true);
+SELECT pg_catalog.setval('public.turmas_id_turma_seq', 6, true);
 
 
 --
@@ -1635,21 +1611,21 @@ ALTER TABLE ONLY public.alunos
 
 
 --
--- TOC entry 4779 (class 2606 OID 16678)
+-- TOC entry 4779 (class 2606 OID 16749)
 -- Name: atividade_aluno atividade_aluno_id_aluno_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.atividade_aluno
-    ADD CONSTRAINT atividade_aluno_id_aluno_fkey FOREIGN KEY (id_aluno) REFERENCES public.alunos(id_aluno);
+    ADD CONSTRAINT atividade_aluno_id_aluno_fkey FOREIGN KEY (id_aluno) REFERENCES public.alunos(id_aluno) ON DELETE CASCADE;
 
 
 --
--- TOC entry 4780 (class 2606 OID 16673)
+-- TOC entry 4780 (class 2606 OID 16754)
 -- Name: atividade_aluno atividade_aluno_id_atividade_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.atividade_aluno
-    ADD CONSTRAINT atividade_aluno_id_atividade_fkey FOREIGN KEY (id_atividade) REFERENCES public.atividades(id_atividade);
+    ADD CONSTRAINT atividade_aluno_id_atividade_fkey FOREIGN KEY (id_atividade) REFERENCES public.atividades(id_atividade) ON DELETE CASCADE;
 
 
 --
@@ -1698,39 +1674,39 @@ ALTER TABLE ONLY public.professores
 
 
 --
--- TOC entry 4775 (class 2606 OID 16629)
+-- TOC entry 4775 (class 2606 OID 16759)
 -- Name: turma_aluno turma_aluno_id_aluno_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.turma_aluno
-    ADD CONSTRAINT turma_aluno_id_aluno_fkey FOREIGN KEY (id_aluno) REFERENCES public.alunos(id_aluno);
+    ADD CONSTRAINT turma_aluno_id_aluno_fkey FOREIGN KEY (id_aluno) REFERENCES public.alunos(id_aluno) ON DELETE CASCADE;
 
 
 --
--- TOC entry 4776 (class 2606 OID 16624)
+-- TOC entry 4776 (class 2606 OID 16764)
 -- Name: turma_aluno turma_aluno_id_turma_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.turma_aluno
-    ADD CONSTRAINT turma_aluno_id_turma_fkey FOREIGN KEY (id_turma) REFERENCES public.turmas(id_turma);
+    ADD CONSTRAINT turma_aluno_id_turma_fkey FOREIGN KEY (id_turma) REFERENCES public.turmas(id_turma) ON DELETE CASCADE;
 
 
 --
--- TOC entry 4777 (class 2606 OID 16644)
+-- TOC entry 4777 (class 2606 OID 16769)
 -- Name: turma_professor turma_professor_id_professor_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.turma_professor
-    ADD CONSTRAINT turma_professor_id_professor_fkey FOREIGN KEY (id_professor) REFERENCES public.professores(id_professor);
+    ADD CONSTRAINT turma_professor_id_professor_fkey FOREIGN KEY (id_professor) REFERENCES public.professores(id_professor) ON DELETE CASCADE;
 
 
 --
--- TOC entry 4778 (class 2606 OID 16639)
+-- TOC entry 4778 (class 2606 OID 16774)
 -- Name: turma_professor turma_professor_id_turma_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.turma_professor
-    ADD CONSTRAINT turma_professor_id_turma_fkey FOREIGN KEY (id_turma) REFERENCES public.turmas(id_turma);
+    ADD CONSTRAINT turma_professor_id_turma_fkey FOREIGN KEY (id_turma) REFERENCES public.turmas(id_turma) ON DELETE CASCADE;
 
 
 --
@@ -1742,7 +1718,7 @@ ALTER TABLE ONLY public.turmas
     ADD CONSTRAINT turmas_fk_disciplina_fkey FOREIGN KEY (fk_disciplina) REFERENCES public.disciplinas(id_disciplina);
 
 
--- Completed on 2024-04-07 22:49:55
+-- Completed on 2024-04-13 23:04:20
 
 --
 -- PostgreSQL database dump complete
