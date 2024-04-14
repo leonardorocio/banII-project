@@ -195,9 +195,11 @@ public class Menu {
                             "7 - Consulta percentual de gênero dos alunos por turma\n" +
                             "8 - Consulta de disciplina em curso ou já cursadas por aluno\n" +
                             "9 - Consulta de disciplinas lecionadas por um professor em determinado semestre\n" +
-                            "10 - Consulta de disciplinas lecionadas por um professor em determinado semestre\n" +
-                            "11 - Consulta de disciplinas lecionadas por um professor em determinado semestre\n" +
-                            "12 - Sair");
+                            "10 - Consulta de atividades aplicadas por determinado professor\n" +
+                            "11 - Consulta de atividades por turma com ou sem filtro por professor\n" +
+                            "12 - Consulta de atividades com nota de uma disciplina por aluno\n" +
+                            "13 - Consulta média de notas das atividades\n" +
+                            "14 - Sair");
             option = Menu.buscaOpcaoInteira();
             try {
                 switch (option) {
@@ -220,6 +222,27 @@ public class Menu {
                         operacoes.consultaAlunoPorTurma();
                         break;
                     case 7:
+                        operacoes.consultaPercentualGeneroAlunosPorTurma();
+                        break;
+                    case 8:
+                        operacoes.consultaDisciplinasCursadasPorAluno();
+                        break;
+                    case 9:
+                        operacoes.consultaDisciplinasLecionadasPorProfessorNoSemestre();
+                        break;
+                    case 10:
+                        operacoes.consultaAtividadesAplicadasPorProfessor();
+                        break;
+                    case 11:
+                        operacoes.consultaAtividadesPorTurmaEProfessor();
+                        break;
+                    case 12:
+                        operacoes.consultaAtividadePorAlunoPorDisciplina();
+                        break;
+                    case 13:
+                        operacoes.consultaMediaDeNotasDeAtividade();
+                        break;
+                    case 14:
                         break;
                 }
             } catch (Exception e) {

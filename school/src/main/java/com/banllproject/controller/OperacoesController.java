@@ -36,4 +36,42 @@ public class OperacoesController {
         int idTurma = Menu.buscaOpcaoInteira("Digite o id da turma: ");
         Operacoes.buscaAlunoPorTurma(idTurma);
     }
+
+    public void consultaPercentualGeneroAlunosPorTurma() throws SQLException {
+        int idTurma = Menu.buscaOpcaoInteira("Digite o id da turma: ");
+        Operacoes.buscaPercentualGeneroAlunosPorTurma(idTurma);
+    }
+
+    public void consultaDisciplinasCursadasPorAluno() throws SQLException {
+        int idAluno = Menu.buscaOpcaoInteira("Digite o id do aluno: ");
+        Operacoes.buscaDisciplinasCursadasPorAluno(idAluno);
+    }
+
+    public void consultaDisciplinasLecionadasPorProfessorNoSemestre() throws SQLException {
+        int idProfessor = Menu.buscaOpcaoInteira("Digite o id do professor: ");
+        String anoSemestre = Menu.buscaDadoString("Digite o ano e semestre desejado (AAAA/S): ");
+        Operacoes.buscaDisciplinasLecionadasPorProfessorNoSemestre(idProfessor, anoSemestre);
+    }
+    
+    public void consultaAtividadesAplicadasPorProfessor() throws SQLException {
+        int idProfessor = Menu.buscaOpcaoInteira("Digite o id do professor: ");
+        Operacoes.buscaAtividadesAplicadasPorProfessor(idProfessor);
+    }
+
+    public void consultaAtividadesPorTurmaEProfessor() throws SQLException {
+        int idTurma = Menu.buscaOpcaoInteira("Digite o id da turma: ");
+        int idProfessor = Menu.buscaOpcaoInteira("Digite o id do professor (-1 para todos): ");
+        Operacoes.buscaAtividadePorTurmaEProfessor(idTurma, idProfessor);
+    }
+
+    public void consultaAtividadePorAlunoPorDisciplina() throws SQLException {
+        int idAluno = Menu.buscaOpcaoInteira("Digite o id do aluno: ");
+        int idDisciplina = Menu.buscaOpcaoInteira("Digite o id da disciplina: ");
+        Operacoes.buscaAtividadePorAlunoPorDisciplina(idAluno, idDisciplina);
+    }
+
+    public void consultaMediaDeNotasDeAtividade() throws SQLException {
+        int idAtividade = Menu.buscaOpcaoInteira("Digite o id da atividade: ");
+        Operacoes.buscaMediaDeNotasDaAtividade(idAtividade);
+    }
 }

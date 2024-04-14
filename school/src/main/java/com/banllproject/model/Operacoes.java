@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
+
+import javax.naming.spi.DirStateFactory.Result;
 
 import com.banllproject.Conexao;
 import com.banllproject.view.Menu;
@@ -21,10 +24,10 @@ public class Operacoes {
         statement.setInt(2, idCurso);
         ResultSet result = statement.executeQuery();
         Disciplinas disciplinas = new Disciplinas();
-        if (idCurso != -1) {
-            Cursos.getById(idCurso).imprimeCurso();
-        }
         while (result.next()) {
+            if (result.isFirst()) {
+                Cursos.getById(idCurso).imprimeCurso();
+            }
             disciplinas = new Disciplinas(
                     result.getInt("id_disciplina"),
                     result.getString("nome"),
@@ -34,7 +37,8 @@ public class Operacoes {
     }
 
     public static void buscaProfessoresPorDepartamento(int idDepartamento) throws SQLException {
-        String sql = "select p.id_professor, p.nome, p.sobrenome, p.cpf, p.sexo_biologico, p.dt_nascimento, p.fk_departamento from professores p " +
+        String sql = "select p.id_professor, p.nome, p.sobrenome, p.cpf, p.sexo_biologico, p.dt_nascimento, p.fk_departamento from professores p "
+                +
                 "where p.fk_departamento = ? or ? = -1 order by 2";
         PreparedStatement statement = conexao.prepareStatement(sql);
         statement.setInt(1, idDepartamento);
@@ -61,7 +65,8 @@ public class Operacoes {
     }
 
     public static void buscaAlunosPorCurso(int idCurso) throws SQLException {
-        String sql = "select a.id_aluno, a.nome, a.sobrenome, a.cpf, a.fk_curso, a.dt_nascimento, a.dt_ingresso, a.sexo_biologico from alunos a " +
+        String sql = "select a.id_aluno, a.nome, a.sobrenome, a.cpf, a.fk_curso, a.dt_nascimento, a.dt_ingresso, a.sexo_biologico from alunos a "
+                +
                 "where a.fk_curso = ? or ? = -1 order by 2";
         PreparedStatement statement = conexao.prepareStatement(sql);
         statement.setInt(1, idCurso);
@@ -113,18 +118,18 @@ public class Operacoes {
         }
     }
 
-    private static void mostraTaxaDeReprovacao(int idTurma, String anoSemestre, int idDisciplina, String disciplina, double aprovacao, double reprovacao) {
+    private static void mostraTaxaDeReprovacao(int idTurma, String anoSemestre, int idDisciplina, String disciplina,
+            double aprovacao, double reprovacao) {
         System.out.println(
-            String.format("""
+                String.format("""
 
-            ID da turma: %d
-            Ano e semestre: %s
-            ID da disciplina: %d
-            Disciplina: %s
-            Taxa de Aprovação: %.2f%%
-            Taxa de Reprovação: %.2f%%
-            """, idTurma, anoSemestre, idDisciplina, disciplina, aprovacao, reprovacao)
-        );
+                        ID da turma: %d
+                        Ano e semestre: %s
+                        ID da disciplina: %d
+                        Disciplina: %s
+                        Taxa de Aprovação: %.2f%%
+                        Taxa de Reprovação: %.2f%%
+                        """, idTurma, anoSemestre, idDisciplina, disciplina, aprovacao, reprovacao));
     }
 
     public static void buscaTaxaDeReprovacaoDeDisciplinaPorSemestre(int idDisciplina) throws SQLException {
@@ -155,7 +160,7 @@ public class Operacoes {
                     from atividade_aluno aa
                         join atividades a on a.id_atividade = aa.id_atividade
                         join turmas t on t.id_turma = a.fk_turma
-                        join disciplinas d on d.id_disciplina = t.fk_disciplina 
+                        join disciplinas d on d.id_disciplina = t.fk_disciplina
                         and d.id_disciplina = ?
                     group by aa.id_aluno, t.id_turma, d.id_disciplina
                     order by 1
@@ -167,53 +172,175 @@ public class Operacoes {
         statement.setInt(1, idDisciplina);
         statement.setInt(2, idDisciplina);
         ResultSet resultSet = statement.executeQuery();
-        Disciplinas.getById(idDisciplina).imprimeDisciplina();
-        while(resultSet.next()) {
+        while (resultSet.next()) {
+            if (resultSet.isFirst()) {
+                Disciplinas.getById(idDisciplina).imprimeDisciplina();
+            }
             Operacoes.mostraTaxaDeReprovacao(
-                resultSet.getInt("id_turma"),
-                resultSet.getString("ano_semestre"),
-                resultSet.getInt("id_disciplina"),
-                resultSet.getString("nome_disciplina"),
-                resultSet.getDouble("aprovados"),
-                resultSet.getDouble("reprovados"));
+                    resultSet.getInt("id_turma"),
+                    resultSet.getString("ano_semestre"),
+                    resultSet.getInt("id_disciplina"),
+                    resultSet.getString("nome_disciplina"),
+                    resultSet.getDouble("aprovados"),
+                    resultSet.getDouble("reprovados"));
         }
     }
 
     private static void mostraAlunoComMedia(int idAluno, String nomeCompleto, double media) {
         System.out.println(
-            String.format("""
-                    ID do aluno: %d
-                    Nome completo: %s
-                    Média: %.2f
-                    """, idAluno, nomeCompleto, media)
-        );
+                String.format("""
+                        ID do aluno: %d
+                        Nome completo: %s
+                        Média: %.2f
+                        """, idAluno, nomeCompleto, media));
     }
 
     public static void buscaAlunoPorTurma(int idTurma) throws SQLException {
         String sql = """
-            select
-            a.id_aluno,
-            a.nome, a.sobrenome,
-            avg(aa.nota) as nota
-        from turma_aluno ta
-            join alunos a on ta.id_aluno = a.id_aluno
-            join atividades at on at.fk_turma = 1
-            join atividade_aluno aa on aa.id_atividade = at.id_atividade 
-                and aa.id_aluno = a.id_aluno
-        where ta.id_turma = ?
-        group by 1
-        order by 2
-                """;
+                    select
+                    a.id_aluno,
+                    a.nome, a.sobrenome,
+                    avg(aa.nota) as nota
+                from turma_aluno ta
+                    join alunos a on ta.id_aluno = a.id_aluno
+                    join atividades at on at.fk_turma = 1
+                    join atividade_aluno aa on aa.id_atividade = at.id_atividade
+                        and aa.id_aluno = a.id_aluno
+                where ta.id_turma = ?
+                group by 1
+                order by 2
+                        """;
         PreparedStatement statement = conexao.prepareStatement(sql);
         statement.setInt(1, idTurma);
         ResultSet resultSet = statement.executeQuery();
-        Turmas.getById(idTurma).imprimeTurma();
-        while(resultSet.next()) {
+        while (resultSet.next()) {
+            if (resultSet.isFirst()) {
+                Turmas.getById(idTurma).imprimeTurma();
+            }
             mostraAlunoComMedia(
-                resultSet.getInt("id_aluno"),
-                resultSet.getString("nome") + " " + resultSet.getString("sobrenome"),
-                resultSet.getDouble("nota"));
+                    resultSet.getInt("id_aluno"),
+                    resultSet.getString("nome") + " " + resultSet.getString("sobrenome"),
+                    resultSet.getDouble("nota"));
             Menu.pausaMenu();
         }
     }
+
+    public static void buscaPercentualGeneroAlunosPorTurma(int idTurma) throws SQLException {
+        String sql = """
+                    select
+                    case
+                        when count(*) = 0 then null
+                        else (count(
+                        case
+                            when a.sexo_biologico = 'M' then 1
+                        end
+                    ) / count(*)::decimal) * 100
+                    end as percentual_meninos,
+                    case
+                        when count(*) = 0 then null
+                        else (count(
+                        case
+                            when a.sexo_biologico = 'F' then 1
+                        end
+                    ) / count(*)::decimal) * 100
+                    end as percentual_meninas
+                from turma_aluno ta
+                    join alunos a on a.id_aluno = ta.id_aluno
+                where ta.id_turma = ?
+                        """;
+        PreparedStatement statement = conexao.prepareStatement(sql);
+        statement.setInt(1, idTurma);
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            Turmas.getById(idTurma).imprimeTurma();
+            System.out.println(
+                    String.format(
+                            "Meninos: %.2f%%\nMeninas: %.2f%%",
+                            resultSet.getDouble("percentual_meninos"), resultSet.getDouble("percentual_meninos")));
+        } else {
+            System.out.println("Não foi possível buscar os dados para a turma informada!");
+        }
+    }
+
+    private static void mostraDisciplinaParticipada(int idTurma, String nome, int cargaHoraria, String anoSemestre) {
+        System.out.println(
+                String.format(
+                        """
+                                ID da turma: %d
+                                Disciplina: %s
+                                Carga horária: %d
+                                Ano e semestre: %s
+                                """, idTurma, nome, cargaHoraria, anoSemestre));
+    }
+
+    public static void buscaDisciplinasCursadasPorAluno(int idAluno) throws SQLException {
+        String sql = """
+                    select
+                    t.id_turma,
+                    d.nome,
+                    d.carga_horaria,
+                    t.ano_semestre
+                from turma_aluno ta
+                    join turmas t on t.id_turma = ta.id_turma
+                    join disciplinas d on d.id_disciplina = t.fk_disciplina
+                where ta.id_aluno = ?
+                        """;
+        PreparedStatement statement = conexao.prepareStatement(sql);
+        statement.setInt(1, idAluno);
+        ResultSet resultSet = statement.executeQuery();
+        
+        while (resultSet.next()) {
+            if (resultSet.isFirst()) {
+                Alunos.getById(idAluno).imprimeAluno();
+            }
+            mostraDisciplinaParticipada(
+                    resultSet.getInt("id_turma"),
+                    resultSet.getString("nome"),
+                    resultSet.getInt("carga_horaria"),
+                    resultSet.getString("ano_semestre"));
+        }
+    }
+
+    public static void buscaDisciplinasLecionadasPorProfessorNoSemestre(int idProfessor, String anoSemestre) throws SQLException {
+        String sql = """
+                    select
+                    t.id_turma,
+                    d.nome,
+                    d.carga_horaria,
+                    t.ano_semestre
+                from turma_professor tp
+                    join turmas t on t.id_turma = tp.id_turma and t.ano_semestre = ?
+                    join disciplinas d on d.id_disciplina = t.fk_disciplina
+                where tp.id_professor = ?
+                        """;
+        PreparedStatement statement = conexao.prepareStatement(sql);
+        statement.setString(1, anoSemestre);
+        statement.setInt(2, idProfessor);
+        ResultSet resultSet = statement.executeQuery();
+        while(resultSet.next()) {
+            if (resultSet.isFirst()) {
+                Professores.getById(idProfessor).imprimeProfessor();
+            }
+            mostraDisciplinaParticipada(
+                    resultSet.getInt("id_turma"),
+                    resultSet.getString("nome"),
+                    resultSet.getInt("carga_horaria"),
+                    resultSet.getString("ano_semestre"));
+        }
+    }
+
+    public static void buscaAtividadesAplicadasPorProfessor(int idProfessor) throws SQLException {
+        // TODO: refazer consulta devido a criação de tabela tipo_atividade
+    }
+
+    public static void buscaAtividadePorTurmaEProfessor(int idTurma, int idProfessor) {
+    }
+
+    public static void buscaAtividadePorAlunoPorDisciplina(int idAluno, int idDisciplina) {
+    }
+
+    public static void buscaMediaDeNotasDaAtividade(int idAtividade) {
+        // TODO: Alterar a consulta para sair a média de uma atividade apenas 
+    }
+
 }
