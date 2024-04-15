@@ -5,7 +5,7 @@
 -- Dumped from database version 16.2
 -- Dumped by pg_dump version 16.2
 
--- Started on 2024-04-14 19:25:34
+-- Started on 2024-04-14 20:55:05
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -321,7 +321,7 @@ ALTER SEQUENCE public.professores_id_professor_seq OWNED BY public.professores.i
 --
 
 CREATE TABLE public.tipo_atividade (
-    id_atividade integer NOT NULL,
+    id_tipo_atividade integer NOT NULL,
     descricao character varying NOT NULL
 );
 
@@ -350,7 +350,7 @@ ALTER SEQUENCE public.tipo_atividade_id_seq OWNER TO postgres;
 -- Name: tipo_atividade_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE public.tipo_atividade_id_seq OWNED BY public.tipo_atividade.id_atividade;
+ALTER SEQUENCE public.tipo_atividade_id_seq OWNED BY public.tipo_atividade.id_tipo_atividade;
 
 
 --
@@ -469,10 +469,10 @@ ALTER TABLE ONLY public.professores ALTER COLUMN id_professor SET DEFAULT nextva
 
 --
 -- TOC entry 4747 (class 2604 OID 16925)
--- Name: tipo_atividade id_atividade; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: tipo_atividade id_tipo_atividade; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.tipo_atividade ALTER COLUMN id_atividade SET DEFAULT nextval('public.tipo_atividade_id_seq'::regclass);
+ALTER TABLE ONLY public.tipo_atividade ALTER COLUMN id_tipo_atividade SET DEFAULT nextval('public.tipo_atividade_id_seq'::regclass);
 
 
 --
@@ -1645,7 +1645,7 @@ ALTER TABLE ONLY public.professores
 --
 
 ALTER TABLE ONLY public.tipo_atividade
-    ADD CONSTRAINT tipo_atividade_pk PRIMARY KEY (id_atividade);
+    ADD CONSTRAINT tipo_atividade_pk PRIMARY KEY (id_tipo_atividade);
 
 
 --
@@ -1717,7 +1717,7 @@ ALTER TABLE ONLY public.atividades
 --
 
 ALTER TABLE ONLY public.atividades
-    ADD CONSTRAINT atividades_tipo_atividade_fk FOREIGN KEY (fk_tipo_atividade) REFERENCES public.tipo_atividade(id_atividade);
+    ADD CONSTRAINT atividades_tipo_atividade_fk FOREIGN KEY (fk_tipo_atividade) REFERENCES public.tipo_atividade(id_tipo_atividade);
 
 
 --
@@ -1801,7 +1801,7 @@ ALTER TABLE ONLY public.turmas
     ADD CONSTRAINT turmas_fk_disciplina_fkey FOREIGN KEY (fk_disciplina) REFERENCES public.disciplinas(id_disciplina);
 
 
--- Completed on 2024-04-14 19:25:34
+-- Completed on 2024-04-14 20:55:05
 
 --
 -- PostgreSQL database dump complete
