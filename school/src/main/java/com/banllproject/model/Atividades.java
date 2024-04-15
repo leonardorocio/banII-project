@@ -149,17 +149,11 @@ public class Atividades {
                         "\nInformações da atividade:\nID: %d\nDescrição: %s\nData de Entrega: %s",
                         this.getIdAtividade(), this.getDescricaoAtividade(),
                         this.getDtEntrega().toString()));
-        if (this.getFkProfessoresObject() != null) {
-            this.getFkProfessoresObject().imprimeProfessor();
-        }
-        if (this.getFkTurmasObject() != null) {
-            this.getFkTurmasObject().imprimeTurma();
-        }
+                        
         if (this.getFkTipoAtividadesObject() != null) {
             this.getFkTipoAtividadesObject().imprimeTipoAtividade();
         }
-        if (this.getFkProfessoresObject() == null && this.getFkTurmasObject() == null
-                && this.getFkTipoAtividadesObject() == null) {
+        if (this.getFkTipoAtividadesObject() == null) {
             Menu.pausaMenu();
         }
     }

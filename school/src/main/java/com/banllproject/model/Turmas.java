@@ -151,6 +151,7 @@ public class Turmas {
         int keyValue = -1;
         if (keys.next()) {
             keyValue = keys.getInt(1);
+            turmas.setIdTurma(keyValue);
             return keyValue;
         }
         preparedStatement.close();

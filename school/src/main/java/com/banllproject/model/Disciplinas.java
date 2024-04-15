@@ -117,6 +117,7 @@ public class Disciplinas {
         int keyValue = -1;
         if (keys.next()) {
             keyValue = keys.getInt(1);
+            disciplina.setIdDisciplina(keyValue);
             return keyValue;
         }
         preparedStatement.close();

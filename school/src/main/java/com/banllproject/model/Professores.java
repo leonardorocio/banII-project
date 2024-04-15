@@ -169,7 +169,7 @@ public class Professores {
         PreparedStatement preparedStatement = conexao.prepareStatement(sql);
         preparedStatement.setString(1, professores.getNome());
         preparedStatement.setString(2, professores.getSobrenome());
-        preparedStatement.setString(3, professores.getSexoBiologico());
+        preparedStatement.setString(3, professores.getSexoBiologico().trim());
         preparedStatement.setString(4, professores.getCpf());
         preparedStatement.setDate(5, professores.getDtNascimento());
         preparedStatement.setInt(6, professores.getFkDepartamento());

@@ -26,7 +26,7 @@ public class ProfessoresController extends Controller {
                 Menu.buscaDadoString("Digite o nome do novo professor: "),
                 Menu.buscaDadoString("Digite o sobrenome do novo professor: "),
                 Menu.buscaDadoString("Digite o sexo biológico do novo professor: "),
-                Menu.buscaDadoString("Digite o CPF do novo professor: "),
+                Menu.buscaDadoString("Digite o CPF do novo professor (com máscara): "),
                 convertStringToSQLDate(
                         Menu.buscaDadoString("Digite a data de nascimento do novo professor (dd/MM/aaaa): ")),
                 Menu.buscaOpcaoInteira("Digite o departamento desse professor: "));
@@ -41,7 +41,7 @@ public class ProfessoresController extends Controller {
                 idProfessor,
                 Menu.buscaDadoString("Digite o nome do novo professor (Digite . para manter o atual): "),
                 Menu.buscaDadoString("Digite o sobrenome do novo professor (Digite . para manter o atual): "),
-                Menu.buscaDadoString("Digite o sexo biológico do novo professor (Digite . para manter o atual): "),
+                Menu.buscaDadoString("Digite o sexo biológico do novo professor (M/F) (Digite . para manter o atual): "),
                 convertStringToSQLDate(Menu.buscaDadoString(
                         "Digite a data de nascimento do novo professor (dd/MM/aaaa) (Digite . para manter o atual): ")));
         List<String> updatedFieldNames = new ArrayList<>();
@@ -55,7 +55,7 @@ public class ProfessoresController extends Controller {
         if (!professorAtualizado.getSexoBiologico().equals(".")) {
             updatedFieldNames.add("sexo_biologico");
         }
-        if (!professorAtualizado.getDtNascimento().toString().equals(".")) {
+        if (!professorAtualizado.getDtNascimento().toString().equals("1969-12-31")) {
             updatedFieldNames.add("dt_nascimento");
         }
 

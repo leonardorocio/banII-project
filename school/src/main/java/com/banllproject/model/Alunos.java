@@ -212,6 +212,7 @@ public class Alunos {
         int keyValue = -1;
         if (keys.next()) {
             keyValue = keys.getInt(1);
+            aluno.setIdAluno(keyValue);
             return keyValue;
         }
         preparedStatement.close();

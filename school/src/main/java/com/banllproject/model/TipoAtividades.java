@@ -49,18 +49,18 @@ public class TipoAtividades {
         if (this.getIdTipoAtividade() == 0)
             return;
         System.out.println(
-                String.format("\nID: %d\nDescrição: %s", this.getIdTipoAtividade(), this.getDescricaoTipoAtividade()));
+                String.format("\nTipo de Atividade\nID: %d\nDescrição: %s", this.getIdTipoAtividade(), this.getDescricaoTipoAtividade()));
         Menu.pausaMenu();
     }
 
     public static TipoAtividades getById(int idTipoAtividade) throws SQLException {
-        String sql = "SELECT * FROM tipo_atividade WHERE id_atividade = ?";
+        String sql = "SELECT * FROM tipo_atividade WHERE id_tipo_atividade = ?";
         PreparedStatement statement = conexao.prepareStatement(sql);
         statement.setInt(1, idTipoAtividade);
         ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
             return new TipoAtividades(
-                    resultSet.getInt("id_atividade"),
+                    resultSet.getInt("id_tipo_atividade"),
                     resultSet.getString("descricao"));
         } else {
             System.out.println("Tipo de atividade não encontrado com esse ID");
@@ -75,7 +75,7 @@ public class TipoAtividades {
         List<TipoAtividades> tipoAtividades = new ArrayList<>();
         while (resultSet.next()) {
             tipoAtividades.add(new TipoAtividades(
-                    resultSet.getInt("id_atividade"),
+                    resultSet.getInt("id_tipo_atividade"),
                     resultSet.getString("descricao")));
         }
         return tipoAtividades;
@@ -97,7 +97,7 @@ public class TipoAtividades {
     }
 
     public static void update(TipoAtividades tipoAtividades) throws SQLException {
-        String sql = "UPDATE tipo_atividade SET descricao = ? WHERE id_atividade = ?";
+        String sql = "UPDATE tipo_atividade SET descricao = ? WHERE id_tipo_atividade = ?";
         PreparedStatement statement = conexao.prepareStatement(sql);
         statement.setString(1, tipoAtividades.getDescricaoTipoAtividade());
         statement.setInt(2, tipoAtividades.getIdTipoAtividade());
@@ -106,7 +106,7 @@ public class TipoAtividades {
     }
 
     public static void delete(int idTipoAtividade) throws SQLException {
-        String sql = "DELETE FROM tipo_atividade WHERE id_atividade = ?";
+        String sql = "DELETE FROM tipo_atividade WHERE id_tipo_atividade = ?";
         PreparedStatement statement = conexao.prepareStatement(sql);
         statement.setInt(1, idTipoAtividade);
         statement.executeUpdate();

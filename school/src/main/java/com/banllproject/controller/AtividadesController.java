@@ -24,7 +24,7 @@ public class AtividadesController extends Controller {
     public void create() throws SQLException {
         Atividades novaAtividade = new Atividades(
                 Menu.buscaDadoString("Digite a descrição da nova atividade: "),
-                convertStringToSQLDate(Menu.buscaDadoString("Digite a data de entrega da nova atividade: ")),
+                convertStringToSQLDate(Menu.buscaDadoString("Digite a data de entrega da nova atividade (dd/MM/aaaa): ")),
                 Menu.buscaOpcaoInteira("Digite o id do professor que aplicou a atividade: "),
                 Menu.buscaOpcaoInteira("Digite o id da turma a qual foi aplicada a atividade: "),
                 Menu.buscaOpcaoInteira("Digite o id do tipo da atividade: "));
@@ -39,7 +39,7 @@ public class AtividadesController extends Controller {
                 idAtividade,
                 Menu.buscaDadoString("Digite a descrição da atividade (Digite . para manter o atual): "),
                 convertStringToSQLDate(Menu
-                        .buscaDadoString("Digite a data de entrega da atividade (Digite . para manter o atual): ")));
+                        .buscaDadoString("Digite a data de entrega da atividade (dd/MM/aaaa) (Digite . para manter o atual): ")));
 
         List<String> updatedFieldNames = new ArrayList<>();
 
@@ -47,7 +47,7 @@ public class AtividadesController extends Controller {
             updatedFieldNames.add("descricao_atividade");
         }
 
-        if (!atividadeAtualizada.getDtEntrega().toString().equals(".")) {
+        if (!atividadeAtualizada.getDtEntrega().toString().equals("1969-12-31")) {
             updatedFieldNames.add("dt_entrega");
         }
 

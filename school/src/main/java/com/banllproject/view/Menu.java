@@ -47,15 +47,13 @@ public class Menu {
 
     public static String buscaDadoString() {
         System.out.println("Digite sua opção: ");
-        String returnValue = Menu.scanner.next();
-        Menu.scanner.nextLine();
+        String returnValue = Menu.scanner.nextLine();
         return returnValue;
     }
 
     public static String buscaDadoString(String msg) {
         System.out.println(msg);
-        String returnValue = Menu.scanner.next();
-        Menu.scanner.nextLine();
+        String returnValue = Menu.scanner.nextLine();
         return returnValue;
     }
 
