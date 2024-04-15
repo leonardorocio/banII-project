@@ -91,7 +91,7 @@ select
 	avg(aa.nota) media
 from atividade_aluno aa
 	join atividades a on a.id_atividade = aa.id_atividade
-	join tipo_atividade ta on ta.id_atividade = a.fk_tipo_atividade 
+	join tipo_atividade ta on ta.id_tipo_atividade = a.fk_tipo_atividade 
 group by 1, 3
 order by 1
 
@@ -177,7 +177,7 @@ select
 	a.descricao_atividade ,
 	a.dt_entrega
 from atividades a
-	join tipo_atividade ta on ta.id_atividade = a.fk_tipo_atividade 
+	join tipo_atividade ta on ta.id_tipo_atividade = a.fk_tipo_atividade 
 where a.fk_professor = 2
 
 /* -------------- Consulta de atividades por turma com ou sem filtro por professor  -------------- */
@@ -188,37 +188,38 @@ select
 	t.local_aula,
 	array_agg(
 		jsonb_build_object(
-			'id', a.id_atividade,
-			'tipo', ta.descricao,
-			'descricao', a.descricao_atividade,
-			'entrega', a.dt_entrega
+			'Id', a.id_atividade,
+			'Tipo de Atividade', ta.descricao,
+			'Descrição', a.descricao_atividade,
+			'Data de entrega', a.dt_entrega
 		) 
 	) as atividades
 from atividades a
 	join turmas t on t.id_turma = a.fk_turma
 	join disciplinas d on t.fk_disciplina = d.id_disciplina
-	join tipo_atividade ta on ta.id_atividade = a.fk_tipo_atividade
+	join tipo_atividade ta on ta.id_tipo_atividade = a.fk_tipo_atividade
 where a.fk_professor = $1 or $1 = -1
 group by t.id_turma, d.nome
 
 /* -------------- Consulta de atividades por aluno -------------- */
-
---- aqui ainda da para agrupar por disciplina, se quiser
 
 select
 	a2.id_aluno,
 	concat(a2.nome, ' ', a2.sobrenome) as nome_completo,
 	array_agg(
 		jsonb_build_object(
-			'id', a.id_atividade,
-			'tipo', ta.descricao,
-			'descricao', a.descricao_atividade,
-			'entrega', a.dt_entrega,
-			'nota', aa.nota
+			'Id', a.id_atividade,
+			'Tipo', ta.descricao,
+			'Descrição', a.descricao_atividade,
+			'Data de entrega', a.dt_entrega,
+			'Nota', aa.nota
 		) 
 	) as atividades
 from atividade_aluno aa 
 	join atividades a on a.id_atividade = aa.id_atividade
+	join turmas t on t.id_turma = a.fk_turma
+		and t.fk_disciplina = $2
 	join alunos a2 on a2.id_aluno = aa.id_aluno
-	join tipo_atividade ta on ta.id_atividade = a.fk_tipo_atividade
+	join tipo_atividade ta on ta.id_tipo_atividade = a.fk_tipo_atividade
+where a2.id_aluno = $1
 group by 1
