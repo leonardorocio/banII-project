@@ -260,7 +260,7 @@ public class Operacoes {
             System.out.println(
                     String.format(
                             "Meninos: %.2f%%\nMeninas: %.2f%%",
-                            resultSet.getDouble("percentual_meninos"), resultSet.getDouble("percentual_meninos")));
+                            resultSet.getDouble("percentual_meninos"), resultSet.getDouble("percentual_meninas")));
             Menu.pausaMenu();
         } else {
             System.out.println("Não foi possível buscar os dados para a turma informada!");
