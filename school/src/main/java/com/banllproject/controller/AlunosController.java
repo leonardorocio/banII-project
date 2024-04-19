@@ -27,7 +27,7 @@ public class AlunosController extends Controller {
                 Menu.buscaDadoString("Digite o sobrenome do novo aluno: "),
                 convertStringToSQLDate(Menu.buscaDadoString("Digite a data de nascimento do novo aluno (dd/MM/aaaa) : ")),
                 Menu.buscaDadoString("Digite o CPF do novo aluno (com máscara): "),
-                Menu.buscaDadoString("Digite o sexo biológico do novo aluno: "),
+                Menu.buscaDadoString("Digite o sexo biológico do novo aluno (M/F): "),
                 convertStringToSQLDate(Menu.buscaDadoString("Digite a data de ingresso do novo aluno (dd/MM/aaaa) : ")),
                 Menu.buscaOpcaoInteira("Digite o id do curso do aluno: "));
         int tableKey = Alunos.create(novoAluno);

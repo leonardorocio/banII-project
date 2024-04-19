@@ -25,7 +25,7 @@ public class ProfessoresController extends Controller {
         Professores novoProfessor = new Professores(
                 Menu.buscaDadoString("Digite o nome do novo professor: "),
                 Menu.buscaDadoString("Digite o sobrenome do novo professor: "),
-                Menu.buscaDadoString("Digite o sexo biológico do novo professor: "),
+                Menu.buscaDadoString("Digite o sexo biológico do novo professor (M/F): "),
                 Menu.buscaDadoString("Digite o CPF do novo professor (com máscara): "),
                 convertStringToSQLDate(
                         Menu.buscaDadoString("Digite a data de nascimento do novo professor (dd/MM/aaaa): ")),
