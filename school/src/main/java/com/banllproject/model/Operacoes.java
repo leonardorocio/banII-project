@@ -1,12 +1,18 @@
 package com.banllproject.model;
 
+import java.sql.Statement;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Map.Entry;
 
 import com.banllproject.Conexao;
 import com.banllproject.view.Menu;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 public class Operacoes {
 
@@ -254,8 +260,8 @@ public class Operacoes {
             System.out.println(
                     String.format(
                             "Meninos: %.2f%%\nMeninas: %.2f%%",
-                            resultSet.getDouble("percentual_meninos"), resultSet.getDouble("percentual_meninos")));
-                    Menu.pausaMenu();
+                            resultSet.getDouble("percentual_meninos"), resultSet.getDouble("percentual_meninas")));
+            Menu.pausaMenu();
         } else {
             System.out.println("Não foi possível buscar os dados para a turma informada!");
         }
@@ -287,7 +293,7 @@ public class Operacoes {
         PreparedStatement statement = conexao.prepareStatement(sql);
         statement.setInt(1, idAluno);
         ResultSet resultSet = statement.executeQuery();
-        
+
         while (resultSet.next()) {
             if (resultSet.isFirst()) {
                 Alunos.getById(idAluno).imprimeAluno();
@@ -301,7 +307,8 @@ public class Operacoes {
         }
     }
 
-    public static void buscaDisciplinasLecionadasPorProfessorNoSemestre(int idProfessor, String anoSemestre) throws SQLException {
+    public static void buscaDisciplinasLecionadasPorProfessorNoSemestre(int idProfessor, String anoSemestre)
+            throws SQLException {
         String sql = """
                     select
                     t.id_turma,
@@ -317,7 +324,7 @@ public class Operacoes {
         statement.setString(1, anoSemestre);
         statement.setInt(2, idProfessor);
         ResultSet resultSet = statement.executeQuery();
-        while(resultSet.next()) {
+        while (resultSet.next()) {
             if (resultSet.isFirst()) {
                 Professores.getById(idProfessor).imprimeProfessor();
             }
@@ -330,18 +337,184 @@ public class Operacoes {
         }
     }
 
+    private static void mostraAtividadeAplicada(int idAtividade, String tipo, String descricao, Date dataEntrega) {
+        System.out.println(
+                String.format("""
+                            ID da atividade: %d
+                            Tipo: %s
+                            Descrição: %s
+                            Data: %s
+                        """, idAtividade, tipo, descricao, dataEntrega.toString()));
+    }
+
     public static void buscaAtividadesAplicadasPorProfessor(int idProfessor) throws SQLException {
-        // TODO: refazer consulta devido a criação de tabela tipo_atividade
+        String sql = """
+                    select
+                    a.id_atividade,
+                    ta.descricao,
+                    a.descricao_atividade ,
+                    a.dt_entrega
+                from atividades a
+                    join tipo_atividade ta on ta.id_tipo_atividade = a.fk_tipo_atividade
+                where a.fk_professor = ?
+                        """;
+        PreparedStatement statement = conexao.prepareStatement(sql);
+        statement.setInt(1, idProfessor);
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            if (resultSet.isFirst()) {
+                Professores.getById(idProfessor).imprimeProfessor();
+            }
+            mostraAtividadeAplicada(
+                    resultSet.getInt("id_atividade"), resultSet.getString("descricao"),
+                    resultSet.getString("descricao_atividade"), resultSet.getDate("dt_entrega"));
+            Menu.pausaMenu();
+        }
     }
 
-    public static void buscaAtividadePorTurmaEProfessor(int idTurma, int idProfessor) {
+    private static void mostraTurmaParticipada(int idTurma, String nome, String anoSemestre, String localAula) {
+        System.out.println(
+                String.format(
+                        """
+                                ID da turma: %d
+                                Disciplina: %s
+                                Ano e semestre: %s
+                                Local de aula: %s
+                                """, idTurma, nome, anoSemestre, localAula));
     }
 
-    public static void buscaAtividadePorAlunoPorDisciplina(int idAluno, int idDisciplina) {
+    public static void buscaAtividadePorTurmaEProfessor(int idProfessor) throws SQLException {
+        String sql = """
+                    select
+                    t.id_turma,
+                    d.nome,
+                    t.ano_semestre,
+                    t.local_aula,
+                    array_agg(
+                        jsonb_build_object(
+                            'id', a.id_atividade,
+                            'tipo', ta.descricao,
+                            'descricao', a.descricao_atividade,
+                            'entrega', a.dt_entrega
+                        )
+                    ) as atividades
+                from atividades a
+                    join turmas t on t.id_turma = a.fk_turma
+                    join disciplinas d on t.fk_disciplina = d.id_disciplina
+                    join tipo_atividade ta on ta.id_tipo_atividade = a.fk_tipo_atividade
+                where a.fk_professor = ? or ? = -1
+                group by t.id_turma, d.nome
+                        """;
+        PreparedStatement statement = conexao.prepareStatement(sql);
+        statement.setInt(1, idProfessor);
+        statement.setInt(2, idProfessor);
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            if (resultSet.isFirst()) {
+                Professores.getById(idProfessor).imprimeProfessor();
+            }
+
+            mostraTurmaParticipada(resultSet.getInt("id_turma"), resultSet.getString("nome"),
+                    resultSet.getString("ano_semestre"), resultSet.getString("local_aula"));
+
+            ResultSet resultArray = resultSet.getArray("atividades").getResultSet();
+            while (resultArray.next()) {
+                JsonObject json = new Gson().fromJson(resultArray.getString(2), JsonObject.class);
+                for (Entry<String, JsonElement> entry : json.entrySet()) {
+                    System.out.println(
+                            String.format("%s: %s", entry.getKey(), entry.getValue().getAsString()));
+                }
+            }
+            Menu.pausaMenu();
+        }
     }
 
-    public static void buscaMediaDeNotasDaAtividade(int idAtividade) {
-        // TODO: Alterar a consulta para sair a média de uma atividade apenas 
+    public static void buscaAtividadePorAlunoPorDisciplina(int idAluno, int idDisciplina) throws SQLException {
+        String sql = """
+                    select
+                    a2.id_aluno,
+                    a2.nome,
+                    a2.sobrenome,
+                    array_agg(
+                        jsonb_build_object(
+                            'Id', a.id_atividade,
+                            'Tipo', ta.descricao,
+                            'Descrição', a.descricao_atividade,
+                            'Data de entrega', a.dt_entrega,
+                            'Nota', aa.nota
+                        )
+                    ) as atividades
+                from atividade_aluno aa
+                    join atividades a on a.id_atividade = aa.id_atividade
+                    join turmas t on t.id_turma = a.fk_turma
+                        and t.fk_disciplina = ?
+                    join alunos a2 on a2.id_aluno = aa.id_aluno
+                    join tipo_atividade ta on ta.id_tipo_atividade = a.fk_tipo_atividade
+                where a2.id_aluno = ?
+                group by 1
+                                """;
+        PreparedStatement statement = conexao.prepareStatement(sql);
+        statement.setInt(1, idDisciplina);
+        statement.setInt(2, idAluno);
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()) {
+            if (resultSet.isFirst()) {
+                Disciplinas.getById(idDisciplina).imprimeDisciplina();
+            }
+
+            System.out.println(
+                    String.format("""
+
+                            ID do aluno: %d
+                            Nome completo: %s %s
+                            """, resultSet.getInt("id_aluno"), resultSet.getString("nome"),
+                            resultSet.getString("sobrenome")));
+
+            ResultSet resultArray = resultSet.getArray("atividades").getResultSet();
+            while (resultArray.next()) {
+                JsonObject json = new Gson().fromJson(resultArray.getString(2), JsonObject.class);
+                for (Entry<String, JsonElement> entry : json.entrySet()) {
+                    System.out.println(
+                            String.format("%s: %s", entry.getKey(), entry.getValue().getAsString()));
+                }
+                System.out.println();
+            }
+            Menu.pausaMenu();
+        }
+    }
+
+    private static void mostraMediaAtividade(int idAtividade, String descricao, String tipo, double media) {
+        System.out.println(
+                String.format("""
+
+                        ID da atividade: %d
+                        Descrição: %s
+                        Tipo: %s
+                        Média: %.2f
+                        """, idAtividade, descricao, tipo, media));
+    }
+
+    public static void buscaMediaDeNotasDaAtividade() throws SQLException {
+        String sql = """
+                    select
+                    a.id_atividade,
+                    a.descricao_atividade,
+                    ta.descricao,
+                    avg(aa.nota) media
+                from atividade_aluno aa
+                    join atividades a on a.id_atividade = aa.id_atividade
+                    join tipo_atividade ta on ta.id_tipo_atividade = a.fk_tipo_atividade
+                group by 1, 3
+                order by 1
+                        """;
+        Statement statement = conexao.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+        while (resultSet.next()) {
+            mostraMediaAtividade(
+                    resultSet.getInt("id_atividade"), resultSet.getString("descricao_atividade"),
+                    resultSet.getString("descricao"), resultSet.getDouble("media"));
+            Menu.pausaMenu();
+        }
     }
 
 }

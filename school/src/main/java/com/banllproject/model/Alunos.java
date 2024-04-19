@@ -199,7 +199,7 @@ public class Alunos {
 
     public static int create(Alunos aluno) throws SQLException {
         String sql = "INSERT INTO alunos (nome, sobrenome, sexo_biologico, cpf, dt_nascimento, dt_ingresso, fk_curso) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+        PreparedStatement preparedStatement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         preparedStatement.setString(1, aluno.getNome());
         preparedStatement.setString(2, aluno.getSobrenome());
         preparedStatement.setString(3, aluno.getSexoBiologico());

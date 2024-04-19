@@ -59,9 +59,8 @@ public class OperacoesController {
     }
 
     public void consultaAtividadesPorTurmaEProfessor() throws SQLException {
-        int idTurma = Menu.buscaOpcaoInteira("Digite o id da turma: ");
         int idProfessor = Menu.buscaOpcaoInteira("Digite o id do professor (-1 para todos): ");
-        Operacoes.buscaAtividadePorTurmaEProfessor(idTurma, idProfessor);
+        Operacoes.buscaAtividadePorTurmaEProfessor(idProfessor);
     }
 
     public void consultaAtividadePorAlunoPorDisciplina() throws SQLException {
@@ -71,7 +70,6 @@ public class OperacoesController {
     }
 
     public void consultaMediaDeNotasDeAtividade() throws SQLException {
-        int idAtividade = Menu.buscaOpcaoInteira("Digite o id da atividade: ");
-        Operacoes.buscaMediaDeNotasDaAtividade(idAtividade);
+        Operacoes.buscaMediaDeNotasDaAtividade();
     }
 }

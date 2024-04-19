@@ -25,7 +25,7 @@ public class CursosController extends Controller {
                 Menu.buscaOpcaoInteira("Digite a duração máxima (semestres) do novo curso: "),
                 Menu.buscaDadoString("Digite a sigla do novo curso: "));
         int tableKey = Cursos.create(novoCurso);
-        System.out.println("Curso " + tableKey + "criado com sucesso!");
+        System.out.println("Curso " + tableKey + " criado com sucesso!");
     }
 
     public void update() throws SQLException {
