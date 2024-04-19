@@ -109,7 +109,7 @@ public class Disciplinas {
 
     public static int create(Disciplinas disciplina) throws SQLException {
         String sql = "INSERT INTO disciplinas (nome) VALUES (?, ?)";
-        PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+        PreparedStatement preparedStatement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         preparedStatement.setString(1, disciplina.getNome());
         preparedStatement.setInt(2, disciplina.getCargaHoraria());
         preparedStatement.execute();

@@ -109,7 +109,7 @@ public class Cursos {
 
     public static int create(Cursos curso) throws SQLException {
         String sql = "INSERT INTO cursos (nome, duracao_minima, duracao_maxima, sigla) VALUES (?, ?, ?, ?)";
-        PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+        PreparedStatement preparedStatement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         preparedStatement.setString(1, curso.getNome());
         preparedStatement.setInt(2, curso.getDuracaoMinima());
         preparedStatement.setInt(3, curso.getDuracaoMaxima());

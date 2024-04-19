@@ -83,7 +83,7 @@ public class TipoAtividades {
 
     public static int create(TipoAtividades tipoAtividades) throws SQLException {
         String sql = "INSERT INTO tipo_atividade (descricao) VALUES (?)";
-        PreparedStatement statement = conexao.prepareStatement(sql);
+        PreparedStatement statement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         statement.setString(1, tipoAtividades.getDescricaoTipoAtividade());
         statement.execute();
         ResultSet keys = statement.getGeneratedKeys();

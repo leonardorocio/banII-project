@@ -142,7 +142,7 @@ public class Turmas {
 
     public static int create(Turmas turmas) throws SQLException {
         String sql = "INSERT INTO turmas (ano_semestre, local_aula, fk_disciplina) VALUES (?, ?, ?)";
-        PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+        PreparedStatement preparedStatement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         preparedStatement.setString(1, turmas.getAnoSemestre());
         preparedStatement.setString(2, turmas.getLocalAula());
         preparedStatement.setInt(3, turmas.getFkDisciplina());

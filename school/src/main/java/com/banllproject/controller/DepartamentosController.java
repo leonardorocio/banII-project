@@ -26,7 +26,7 @@ public class DepartamentosController extends Controller {
                 Menu.buscaDadoString("Digite o nome do novo departamento: "),
                 Menu.buscaDadoString("Digite a sigla do novo departamento: "));
         int tableKey = Departamentos.create(novoDepartamento);
-        System.out.println("Departamento " + tableKey + "criado com sucesso!");
+        System.out.println("Departamento " + tableKey + " criado com sucesso!");
     }
 
     @Override

@@ -166,7 +166,7 @@ public class Professores {
 
     public static int create(Professores professores) throws SQLException {
         String sql = "INSERT INTO professores (nome, sobrenome, sexo_biologico, cpf, dt_nascimento, fk_departamento) VALUES (?, ?, ?, ?, ?, ?)";
-        PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+        PreparedStatement preparedStatement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         preparedStatement.setString(1, professores.getNome());
         preparedStatement.setString(2, professores.getSobrenome());
         preparedStatement.setString(3, professores.getSexoBiologico().trim());

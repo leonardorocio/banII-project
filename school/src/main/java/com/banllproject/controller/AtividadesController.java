@@ -29,7 +29,7 @@ public class AtividadesController extends Controller {
                 Menu.buscaOpcaoInteira("Digite o id da turma a qual foi aplicada a atividade: "),
                 Menu.buscaOpcaoInteira("Digite o id do tipo da atividade: "));
         int tableKey = Atividades.create(novaAtividade);
-        System.out.println("Atividade " + tableKey + "criada com sucesso!");
+        System.out.println("Atividade " + tableKey + " criada com sucesso!");
     }
 
     @Override

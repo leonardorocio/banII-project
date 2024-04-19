@@ -82,7 +82,7 @@ public class Departamentos {
 
     public static int create(Departamentos departamento) throws SQLException {
         String sql = "INSERT INTO departamentos (departamento, sigla) VALUES (?, ?)";
-        PreparedStatement preparedStatement = conexao.prepareStatement(sql);
+        PreparedStatement preparedStatement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         departamento.imprimeDepartamento();
         preparedStatement.setString(1, departamento.getNome());
         preparedStatement.setString(2, departamento.getSigla());

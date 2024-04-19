@@ -31,7 +31,7 @@ public class AlunosController extends Controller {
                 convertStringToSQLDate(Menu.buscaDadoString("Digite a data de ingresso do novo aluno (dd/MM/aaaa) : ")),
                 Menu.buscaOpcaoInteira("Digite o id do curso do aluno: "));
         int tableKey = Alunos.create(novoAluno);
-        System.out.println("Aluno " + tableKey + "criado com sucesso!");
+        System.out.println("Aluno " + tableKey + " criado com sucesso!");
     }
 
     @Override
